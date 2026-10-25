@@ -1,0 +1,404 @@
+<!doctype html>
+<!--
+  해냄 도감 — 소개 페이지
+  ───────────────────────────────────────────────────────────
+  배포할 때 두 군데만 채우면 됩니다.
+   1) 아래 <head> 안 og:url  → 이 소개 페이지의 주소
+   2) 맨 아래 <script>의 var APP → 앱(해냄 도감 본체)의 주소
+      같은 폴더에 앱을 app.html 이름으로 두면 그대로 동작합니다.
+  앱 주소를 http(s)로 적으면 「우리 반에서 써 보기」에 학급 배포용 QR이 자동으로 생깁니다.
+  ───────────────────────────────────────────────────────────
+-->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>해냄 도감 — 내가 고른 목표, 어른에게 인증받아 모으는 1년</title>
+<meta name="description" content="2022 개정 교육과정 성취기준 611개로 만든 초등 목표 기록 도구. 학생이 스스로 목표를 고르고, 학부모·교사에게 인증받아 한 해 동안 모읍니다. 회원가입도 서버도 없습니다.">
+<!-- ▼ 배포 주소가 정해지면 아래 네 줄의 주소를 채워 주세요 (공유 미리보기용) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="해냄 도감 — 내가 고른 목표, 어른에게 인증받아 모으는 1년">
+<meta property="og:description" content="2022 개정 교육과정 성취기준 611개. 회원가입도 서버도 없이, 기기와 파일 하나로 한 해의 성장을 기록합니다.">
+<meta property="og:url" content="">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23F4F1EA%22%2F%3E%3Cpath%20d%3D%22M16%2021V10.4%22%20stroke%3D%22%232F7D5B%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M16%2012.8c0-3.6%202.9-6.2%206.5-6.2%200%203.6-2.9%206.2-6.5%206.2Z%22%20fill%3D%22%23C9A227%22%2F%3E%3Cpath%20d%3D%22M16%2016.8c0-3.2-2.6-5.7-5.9-5.7%200%203.2%202.6%205.7%205.9%205.7Z%22%20fill%3D%22%23C97C2C%22%2F%3E%3Cpath%20d%3D%22M3.2%2019.9c4.3-2%208.8-1.5%2012.8%201.4%204-2.9%208.5-3.4%2012.8-1.4v6.4c-4.3-1.4-8.8-1-12.8%201.2-4-2.2-8.5-2.6-12.8-1.2Z%22%20fill%3D%22%232F7D5B%22%2F%3E%3Cpath%20d%3D%22M16%2021.6v5.6%22%20stroke%3D%22%23F4F1EA%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+:root{--paper:#F4F1EA;--card:#fff;--card-2:#FAF8F4;--ink:#1E2328;--ink-2:#5E6670;
+--ink-3:#8D97A1;--line:#E2DDD2;--line-2:#CFC8B9;--grow:#C97C2C;--bloom:#2F7D5B;
+--bloom-bg:#E6F2EB;--wait:#2F6DAA;--wait-bg:#E7EFF8;--star:#C9A227;--r:14px;
+--sh:0 1px 2px rgba(30,35,40,.04),0 4px 14px rgba(30,35,40,.05)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);line-height:1.6;
+font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",system-ui,sans-serif;
+-webkit-font-smoothing:antialiased;word-break:keep-all}
+.ct{max-width:980px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+border:1px solid var(--line-2);background:var(--card);color:var(--ink);border-radius:12px;
+padding:13px 20px;font:inherit;font-weight:700;font-size:15px;cursor:pointer;
+text-decoration:none;transition:.14s}
+.btn:hover{border-color:var(--ink-3);transform:translateY(-1px)}
+.btn-p{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn-p:hover{background:#000}
+.btn-s{padding:9px 14px;font-size:13.5px;border-radius:10px}
+
+header{border-bottom:1px solid var(--line);background:rgba(244,241,234,.92);
+backdrop-filter:blur(8px);position:sticky;top:0;z-index:9}
+.hd{display:flex;align-items:center;gap:10px;padding:13px 0}
+.lg{width:30px;height:30px;flex-shrink:0}
+.hd b{font-size:17px;letter-spacing:-.03em}
+.hd span{font-size:12.5px;color:var(--ink-3);margin-left:2px}
+.hd .sp{flex:1}
+.hd .btn{opacity:0;transform:translateY(-4px);pointer-events:none;transition:.22s}
+header.on .hd .btn{opacity:1;transform:none;pointer-events:auto}
+
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center;
+padding:52px 0 44px}
+.hero h1{font-size:34px;line-height:1.3;letter-spacing:-.035em;margin:0 0 14px}
+.hero h1 em{font-style:normal;color:var(--bloom)}
+.hero p{font-size:15.5px;color:var(--ink-2);margin:0 0 24px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.note-s{font-size:12.5px;color:var(--ink-3);margin-top:12px}
+
+.prev{background:var(--card);border:1px solid var(--line);border-radius:18px;
+padding:17px 16px;box-shadow:var(--sh)}
+.prev-h{font-size:11.5px;font-weight:800;letter-spacing:.08em;color:var(--ink-3);margin-bottom:11px}
+.prev-g{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:13px}
+.pj{background:var(--card-2);border:1px solid var(--line);border-radius:11px;
+padding:8px 4px 7px;text-align:center}
+.pj .jar{width:100%;height:auto;max-width:62px;display:block;margin:0 auto}
+.pj b{display:block;font-size:12px;margin-top:1px}
+.pj span{font-size:10.5px;color:var(--ink-3)}
+.prev-s{display:flex;align-items:center;gap:7px;background:var(--card-2);
+border:1px solid var(--line);border-radius:11px;padding:9px 11px}
+.prev-s em{font-style:normal;font-size:11.5px;font-weight:800;color:var(--ink-3);margin-right:2px}
+.gem{position:relative;display:grid;place-items:center;flex-shrink:0}
+.gem::before{content:"";position:absolute;inset:0;background:var(--ec);
+clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.gem::after{content:"";position:absolute;inset:3px;background:var(--eb);
+clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.gem i{position:relative;z-index:1;font-style:normal;font-size:14px;line-height:1}
+.gslot{width:34px;height:34px;position:relative;opacity:.4;flex-shrink:0}
+.gslot::before{content:"";position:absolute;inset:0;background:var(--line-2);
+clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.gslot::after{content:"";position:absolute;inset:2px;background:var(--card-2);
+clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+
+section{padding:42px 0}
+section.alt{background:var(--card-2);border-top:1px solid var(--line);
+border-bottom:1px solid var(--line)}
+h2{font-size:22px;letter-spacing:-.03em;margin:0 0 6px}
+.lead{font-size:14.5px;color:var(--ink-2);margin:0 0 24px}
+
+.nums{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.num{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+padding:20px 18px;box-shadow:var(--sh)}
+.num b{display:block;font-size:30px;letter-spacing:-.04em;line-height:1.15;color:var(--bloom)}
+.num strong{display:block;font-size:14.5px;margin:5px 0 3px}
+.num span{font-size:12.5px;color:var(--ink-3);line-height:1.6}
+
+.safe{margin-top:12px;background:var(--bloom-bg);border:1px solid #BBDCC9;
+border-radius:var(--r);padding:21px 22px}
+.safe-h{display:flex;align-items:center;gap:9px;color:var(--bloom)}
+.safe-h svg{width:25px;height:25px;flex-shrink:0}
+.safe-h b{font-size:20px;letter-spacing:-.03em}
+.safe p{margin:9px 0 0;font-size:14px;line-height:1.75;color:#2A5243}
+.safe p b{color:#17432F}
+.safe ul{margin:11px 0 0;padding-left:17px;font-size:12.5px;line-height:1.8;color:#3C6354}
+.safe ul b{color:#17432F}
+
+.flow{display:flex;align-items:stretch;gap:0}
+.fs{flex:1;background:var(--bg);border:1px solid var(--c);border-radius:var(--r);
+padding:18px 15px 16px;text-align:center;border-color:color-mix(in srgb,var(--c) 32%,#fff)}
+.fi{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;
+margin:0 auto 10px;background:#fff;border:1.5px solid color-mix(in srgb,var(--c) 40%,#fff);
+color:var(--c)}
+.fi svg{width:23px;height:23px}
+.fs b{display:block;font-size:15.5px;letter-spacing:-.025em;color:var(--c)}
+.fs .fd{display:block;font-size:12.5px;color:var(--ink-2);line-height:1.6;margin-top:2px}
+.fa{align-self:center;flex:0 0 24px;text-align:center;font-size:23px;color:var(--ink-3);
+line-height:1;opacity:.55}
+
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rc{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+padding:20px 18px;box-shadow:var(--sh);display:flex;flex-direction:column}
+.rc h3{font-size:16.5px;margin:13px 0 4px;letter-spacing:-.02em}
+.rc>p{font-size:13.5px;color:var(--ink-2);margin:0 0 12px;flex:1}
+.rc .lnk{font-size:13.5px;font-weight:700;color:var(--wait);text-decoration:none;
+display:inline-flex;align-items:center;gap:5px}
+.rc .lnk span{transition:.14s;display:inline-block}
+.rc .lnk:hover span{transform:translateX(3px)}
+
+/* 실제 화면을 줄여 그린 미니어처 */
+.mini{background:var(--card-2);border:1px solid var(--line);border-radius:12px;
+padding:9px;overflow:hidden;min-height:204px;display:flex}
+.mini .mc{flex:1;align-self:flex-start}
+.mc{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 10px;
+box-shadow:0 1px 2px rgba(30,35,40,.05)}
+.mc-t{display:flex;align-items:center;gap:4px;margin-bottom:6px}
+.mc-t .sp{flex:1}
+.chip{font-size:9.5px;font-weight:800;line-height:1.5;padding:1.5px 6px;border-radius:99px;
+color:var(--c);background:var(--b);border:1px solid var(--d);white-space:nowrap}
+.mc-h{font-size:11.5px;font-weight:700;line-height:1.5;letter-spacing:-.02em;
+display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mc-s{font-size:10px;color:var(--ink-3);margin-top:3px}
+.mc-q{font-size:11px;color:var(--ink-2);line-height:1.6;margin-top:5px;
+background:var(--card-2);border-left:2px solid var(--line-2);padding:4px 7px;border-radius:0 6px 6px 0}
+.mc-l{display:flex;gap:4px;margin-top:7px}
+.mc-l i{flex:1;font-style:normal;text-align:center;font-size:10px;font-weight:800;
+padding:3px 0;border-radius:6px;color:var(--ink-3);background:var(--card-2);
+border:1px solid var(--line)}
+.mc-l i.on{color:#fff;background:var(--grow);border-color:var(--grow)}
+.mc-b{display:flex;gap:4px;margin-top:8px}
+.mb{flex:1;text-align:center;font-size:10px;font-weight:700;padding:4.5px 0;border-radius:7px;
+background:var(--card-2);border:1px solid var(--line);color:var(--ink-3);white-space:nowrap}
+.mb-p{background:var(--ink);border-color:var(--ink);color:#fff}
+.mb-g{background:var(--bloom);border-color:var(--bloom);color:#fff}
+.mr{display:flex;align-items:center;gap:6px;margin-top:6px}
+.mr b{font-size:10.5px;font-weight:700;width:38px;flex-shrink:0}
+.mbar{flex:1;height:6px;border-radius:99px;background:var(--card-2);
+border:1px solid var(--line);overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--bloom);border-radius:99px}
+.mr em{font-style:normal;font-size:9.5px;font-weight:800;width:16px;text-align:center;
+color:#fff;background:var(--wait);border-radius:99px;flex-shrink:0}
+.mr em.o{background:none;color:var(--line-2)}
+
+.qa{display:flex;flex-direction:column;gap:8px}
+details.q{background:var(--card);border:1px solid var(--line);border-radius:12px;
+padding:14px 17px}
+details.q>summary{cursor:pointer;list-style:none;font-size:15px;font-weight:700;
+letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
+details.q>summary::-webkit-details-marker{display:none}
+details.q>summary::after{content:"＋";margin-left:auto;color:var(--ink-3);font-weight:400}
+details.q[open]>summary::after{content:"－"}
+details.q p{margin:10px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.8}
+details.q p b{color:var(--ink)}
+details.q pre{margin:12px 0 11px}
+details.q>summary:focus-visible{outline:2px solid var(--wait);outline-offset:3px}
+
+.t3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.ts{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:17px 16px}
+.ts i{font-style:normal;font-size:11.5px;font-weight:800;color:var(--bloom);
+background:var(--bloom-bg);border:1px solid #BBDCC9;border-radius:99px;padding:2px 9px}
+.ts b{display:block;font-size:15px;margin:9px 0 3px;letter-spacing:-.02em}
+.ts span{font-size:12.5px;color:var(--ink-3);line-height:1.65}
+pre{white-space:pre-wrap;background:var(--card);border:1px solid var(--line);
+border-radius:12px;padding:14px 16px;margin:0 0 11px;font:inherit;font-size:13px;
+line-height:1.8;color:var(--ink-2);max-height:230px;overflow:auto}
+
+.start{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;
+background:var(--card);border:1px solid var(--line);border-radius:18px;
+padding:26px 28px;box-shadow:var(--sh)}
+.start h2{margin-bottom:4px}
+.qr{text-align:center;flex-shrink:0}
+.qr canvas,.qr .ph{width:132px;height:132px;border-radius:12px;border:1px solid var(--line);
+background:var(--card-2);display:grid;place-items:center}
+.qr .ph{font-size:12px;color:var(--ink-3);padding:14px;line-height:1.6}
+.qr span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:7px}
+
+footer{border-top:1px solid var(--line);padding:26px 0 40px;font-size:12.5px;color:var(--ink-3)}
+footer p{margin:0 0 5px;line-height:1.75}
+footer a{color:var(--ink-2)}
+.warn{background:#FDF6E6;border:1px solid #EBD9AE;border-radius:12px;padding:13px 15px;
+font-size:13px;line-height:1.75;color:#8A5A1E;margin-top:16px}
+.warn b{color:#6B460F}
+
+@media (max-width:860px){
+ .hero{grid-template-columns:1fr;gap:26px;padding:34px 0 30px}
+ .hero h1{font-size:27px}
+ .nums,.t3{grid-template-columns:repeat(2,1fr);gap:9px}
+ .num{padding:15px 14px}
+ .num b{font-size:25px}
+ .roles{grid-template-columns:1fr;gap:9px}
+ .rc{flex-direction:row;align-items:flex-start;gap:13px;padding:14px}
+ .rc .mini{flex:0 0 43%;padding:7px;min-height:0}
+ .mc-t{flex-wrap:wrap;row-gap:3px}
+ .mc-t .sp{display:none}
+ .mc{padding:8px}
+ .rc .rcx{flex:1;min-width:0}
+ .rc h3{margin:0 0 3px;font-size:15.5px}
+ .rc>.rcx>p{margin:0 0 8px;font-size:13px}
+ .flow{flex-direction:column;gap:0}
+ .fs{display:flex;align-items:center;gap:11px;text-align:left;padding:12px 14px}
+ .fi{margin:0;width:36px;height:36px;flex-shrink:0}
+ .fs b{font-size:14.5px}
+ .fa{flex:0 0 auto;align-self:flex-start;margin-left:31px;height:12px;
+   font-size:15px;transform:rotate(90deg);line-height:.6}
+ .safe{padding:17px 16px}
+ .safe-h b{font-size:17.5px}
+ .start{grid-template-columns:1fr;gap:20px}
+ .qr{justify-self:start}
+}
+@media print{
+ header{position:static;background:none}
+ .cta,.qr,.btn{display:none!important}
+ section{padding:16px 0;break-inside:avoid}
+ section.alt{background:none}
+ details.q{break-inside:avoid}
+ details.q>summary::after{content:""}
+ details.q>*{display:block!important}   /* 접혀 있어도 인쇄엔 다 나오게 */
+ pre{max-height:none}
+ body{background:#fff}
+}
+</style>
+</head>
+<body>
+
+<header><div class="ct hd"><svg class="lg" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 21V10.4" stroke="#2F7D5B" stroke-width="2.4" stroke-linecap="round"/><path d="M16 12.8c0-3.6 2.9-6.2 6.5-6.2 0 3.6-2.9 6.2-6.5 6.2Z" fill="#C9A227"/><path d="M16 16.8c0-3.2-2.6-5.7-5.9-5.7 0 3.2 2.6 5.7 5.9 5.7Z" fill="#C97C2C"/><path d="M3.2 19.9c4.3-2 8.8-1.5 12.8 1.4 4-2.9 8.5-3.4 12.8-1.4v6.4c-4.3-1.4-8.8-1-12.8 1.2-4-2.2-8.5-2.6-12.8-1.2Z" fill="#2F7D5B"/><path d="M16 21.6v5.6" stroke="#F4F1EA" stroke-width="1.3" stroke-linecap="round"/></svg><b>해냄 도감</b><span>소개</span>
+  <span class="sp"></span>
+  <a class="btn btn-s btn-p" data-app="?r=demo" href="#">샘플로 둘러보기</a>
+</div></header>
+
+<div class="ct">
+  <div class="hero">
+    <div>
+      <h1>내가 고른 목표,<br><em>어른에게 인증받아</em> 모으는 1년</h1>
+      <p>2022 개정 교육과정 초등 성취기준 <b>611개 전부</b>에서 아이가 스스로 목표를 고릅니다.
+         해낸 만큼 단계를 올리고, 부모님과 선생님에게 확인을 받으면 보석이 되어 한 해에 쌓입니다.</p>
+      <div class="cta">
+        <a class="btn btn-p" data-app="?r=demo" href="#">샘플로 둘러보기</a>
+        <a class="btn" data-app="" href="#">바로 시작하기</a>
+      </div>
+      <p class="note-s">샘플은 한 해를 보낸 3학년 한 명의 화면입니다 · 설치·회원가입 없음</p>
+    </div>
+    <div class="prev"><div class="prev-h">목표 지도</div><div class="prev-g"><div class="pj"><svg class="jar" viewBox="0 0 132 94" aria-hidden="true"><ellipse cx="66" cy="80" rx="32" ry="3.4" fill="#000" opacity=".06"/><path d="M48 10 h36 v5 l-3.5 4 v3 h5 a9 9 0 0 1 9 9 v38 a9 9 0 0 1 -9 9 H46.5 a9 9 0 0 1 -9 -9 V31 a9 9 0 0 1 9 -9 h5 v-3 L48 15 Z" fill="#fff" fill-opacity=".7" stroke="#B4B2A9" stroke-width="1.7" stroke-opacity=".5"/><polygon points="50 57.4,56.6 61.2,56.6 68.8,50 72.6,43.4 68.8,43.4 61.2" fill="#4C86C6"/><polygon points="66 57.4,72.6 61.2,72.6 68.8,66 72.6,59.4 68.8,59.4 61.2" fill="none" stroke="#4C86C6" stroke-width="1.5" opacity=".5"/><polygon points="82 57.4,88.6 61.2,88.6 68.8,82 72.6,75.4 68.8,75.4 61.2" fill="none" stroke="#4C86C6" stroke-width="1.5" opacity=".5"/><path d="M55 10 h22" stroke="#C9C6BB" stroke-width="4.4" stroke-linecap="round"/></svg><b>국어</b><span>3 / 30</span></div><div class="pj"><svg class="jar" viewBox="0 0 132 94" aria-hidden="true"><ellipse cx="66" cy="80" rx="32" ry="3.4" fill="#000" opacity=".06"/><path d="M48 10 h36 v5 l-3.5 4 v3 h5 a9 9 0 0 1 9 9 v38 a9 9 0 0 1 -9 9 H46.5 a9 9 0 0 1 -9 -9 V31 a9 9 0 0 1 9 -9 h5 v-3 L48 15 Z" fill="#fff" fill-opacity=".7" stroke="#B4B2A9" stroke-width="1.7" stroke-opacity=".5"/><polygon points="50 57.4,56.6 61.2,56.6 68.8,50 72.6,43.4 68.8,43.4 61.2" fill="none" stroke="#6F64C8" stroke-width="1.5" opacity=".5"/><path d="M55 10 h22" stroke="#C9C6BB" stroke-width="4.4" stroke-linecap="round"/></svg><b>수학</b><span>1 / 47</span></div><div class="pj"><svg class="jar" viewBox="0 0 132 94" aria-hidden="true"><ellipse cx="66" cy="80" rx="32" ry="3.4" fill="#000" opacity=".06"/><path d="M48 10 h36 v5 l-3.5 4 v3 h5 a9 9 0 0 1 9 9 v38 a9 9 0 0 1 -9 9 H46.5 a9 9 0 0 1 -9 -9 V31 a9 9 0 0 1 9 -9 h5 v-3 L48 15 Z" fill="#fff" fill-opacity=".7" stroke="#B4B2A9" stroke-width="1.7" stroke-opacity=".5"/><polygon points="50 57.4,56.6 61.2,56.6 68.8,50 72.6,43.4 68.8,43.4 61.2" fill="#2F9D7E"/><polygon points="66 57.4,72.6 61.2,72.6 68.8,66 72.6,59.4 68.8,59.4 61.2" fill="#2F9D7E"/><polygon points="82 57.4,88.6 61.2,88.6 68.8,82 72.6,75.4 68.8,75.4 61.2" fill="#2F9D7E"/><path d="M55 10 h22" stroke="#C9C6BB" stroke-width="4.4" stroke-linecap="round"/></svg><b>과학</b><span>3 / 51</span></div><div class="pj"><svg class="jar" viewBox="0 0 132 94" aria-hidden="true"><ellipse cx="66" cy="80" rx="32" ry="3.4" fill="#000" opacity=".06"/><path d="M48 10 h36 v5 l-3.5 4 v3 h5 a9 9 0 0 1 9 9 v38 a9 9 0 0 1 -9 9 H46.5 a9 9 0 0 1 -9 -9 V31 a9 9 0 0 1 9 -9 h5 v-3 L48 15 Z" fill="#fff" fill-opacity=".7" stroke="#DA9427" stroke-width="1.7" stroke-opacity=".75"/><polygon points="50 57.4,56.6 61.2,56.6 68.8,50 72.6,43.4 68.8,43.4 61.2" fill="#DA9427"/><polygon points="66 57.4,72.6 61.2,72.6 68.8,66 72.6,59.4 68.8,59.4 61.2" fill="#DA9427"/><polygon points="82 57.4,88.6 61.2,88.6 68.8,82 72.6,75.4 68.8,75.4 61.2" fill="#DA9427"/><polygon points="50 43.4,56.6 47.2,56.6 54.8,50 58.6,43.4 54.8,43.4 47.2" fill="#DA9427"/><polygon points="66 43.4,72.6 47.2,72.6 54.8,66 58.6,59.4 54.8,59.4 47.2" fill="#DA9427"/><polygon points="82 43.4,88.6 47.2,88.6 54.8,82 58.6,75.4 54.8,75.4 47.2" fill="#DA9427"/><polygon points="50 29.4,56.6 33.2,56.6 40.8,50 44.6,43.4 40.8,43.4 33.2" fill="#DA9427"/><polygon points="66 29.4,72.6 33.2,72.6 40.8,66 44.6,59.4 40.8,59.4 33.2" fill="#DA9427"/><polygon points="82 29.4,88.6 33.2,88.6 40.8,82 44.6,75.4 40.8,75.4 33.2" fill="#DA9427"/><path d="M55 10 h22" stroke="#DA9427" stroke-width="4.4" stroke-linecap="round"/></svg><b>체육</b><span>11 / 23</span></div></div><div class="prev-s"><em>보물 선반</em><span class="gem" style="--ec:#DA9427;--eb:#FAEEDA;width:34px;height:34px"><i>💪</i></span><span class="gem" style="--ec:#4C86C6;--eb:#E6F1FB;width:34px;height:34px"><i>🗣</i></span><span class="gem" style="--ec:#2F9D7E;--eb:#E1F5EE;width:34px;height:34px"><i>🔍</i></span><span class="gem" style="--ec:#6F64C8;--eb:#EEEDFE;width:34px;height:34px"><i>🔢</i></span><span class="gslot"></span><span class="gslot"></span></div></div>
+  </div>
+</div>
+
+<section class="alt"><div class="ct">
+  <h2>무엇이 들어 있나</h2>
+  <p class="lead">교육과정에서 가져온 것과, 이 도구가 보태는 것을 나누어 적었습니다.</p>
+  <div class="nums"><div class="num"><b>611</b><strong>성취기준 전부</strong><span>2022 개정 교육과정 초등 교과 성취기준을 하나도 빼지 않고 담았습니다.</span></div><div class="num"><b>3</b><strong>단계로 나눈 성취수준</strong><span>평가원 성취수준 A·B·C를 학생이 읽을 수 있는 말로 +1 +2 +3에 놓았습니다.</span></div></div>
+  <div class="safe"><div class="safe-h"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.2 5 6v5.6c0 4.3 2.9 8.1 7 9.2 4.1-1.1 7-4.9 7-9.2V6l-7-2.8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12.2 11.2 14.4 15.4 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><b>서버가 없습니다</b></div><p>아이 이름도 기록도 <b>그 기기의 브라우저에만</b> 저장되고, 어디로도 전송되지 않습니다. 회원가입·로그인·수집하는 개인정보가 없습니다.</p><ul><li>보호자 PIN과 교사 서명 PIN은 기기에만 남고 <b>파일에는 담기지 않습니다</b></li><li>기록은 <b>사람이 직접 파일로 주고받습니다</b> — 자동으로 오가는 것이 없습니다</li><li>다만 저장소를 지우거나 기기를 바꾸면 사라지니, 내보낸 파일을 보관해 주세요</li></ul></div>
+</div></section>
+
+<section><div class="ct">
+  <h2>이렇게 돌아갑니다</h2>
+  <p class="lead">회원가입도 서버도 없습니다. 기기와 파일 하나로 네 걸음이 반복됩니다.</p>
+  <div class="flow"><div class="fs" style="--c:#8A8F98;--bg:#F1EFEA"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.1" fill="currentColor"/></svg></span><b>고른다</b><span class="fd">내 학년 목표를 담아요</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#C97C2C;--bg:#FBF0E2"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19.6V6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.9 11.5 12 6.4l5.1 5.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>해낸다</b><span class="fd">+1 +2 +3으로 단계를 올려요</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#2F6DAA;--bg:#E7EFF8"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><path d="M8.1 12.3l2.8 2.8 5.2-5.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>확인받는다</b><span class="fd">부모님 확인 · 선생님 인증</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#2F7D5B;--bg:#E6F2EB"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.6 18.6 8v8L12 19.4 5.4 16V8L12 4.6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 11.6 18.6 8M12 11.6 5.4 8M12 11.6v7.8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><b>쌓인다</b><span class="fd">보석이 되어 한 해에 남아요</span></div></div>
+</div></section>
+
+<section class="alt"><div class="ct">
+  <h2>세 사람이 함께 씁니다</h2>
+  <p class="lead">같은 주소에서 역할만 고릅니다. 각자 자기 화면만 보게 됩니다.</p>
+  <div class="roles"><div class="rc"><div class="mini"><div class="mc"><div class="mc-t"><span class="chip" style="--c:#26215C;--b:#EEEDFE;--d:#7F77DD">희귀</span><span class="chip" style="--c:#185FA5;--b:#E6F1FB;--d:#85B7EB">🗣 소리</span><span class="sp"></span><span class="chip" style="--c:#1B5085;--b:#E7EFF8;--d:#B9D0EA">확인 기다리는 중</span></div><div class="mc-h">자신의 경험과 관련지어 책 읽고 기억에 남는 부분을 그림으로 표현하기</div><div class="mc-s">국어 · [4국01-05]</div><div class="mc-l"><i class="on">+1</i><i class="on">+2</i><i>+3</i></div><div class="mc-b"><span class="mb mb-p">확인 요청하기</span><span class="mb">인증 코드 입력</span></div></div></div><div class="rcx"><h3>학생</h3><p>자기 학년 목표를 고르고, 도전하고, 인증을 모읍니다.</p><a class="lnk" data-app="?r=student" href="#">학생 화면 열기 <span>→</span></a></div></div><div class="rc"><div class="mini"><div class="mc"><div class="mc-t"><span class="chip" style="--c:#1B5085;--b:#E7EFF8;--d:#B9D0EA">이서연 · 3학년</span></div><div class="mc-h" style="font-size:12.5px">책을 읽고 친구들과 독서 토의하기</div><div class="mc-q">“모둠에서 내 의견을 두 번 말했어요.”</div><div class="mc-s">+3까지 올림 · 10월 18일</div><div class="mc-b"><span class="mb mb-g">✓ 확인해 주기</span><span class="mb">아직이에요</span></div></div></div><div class="rcx"><h3>학부모</h3><p>아이가 보낸 파일을 열어 성취를 확인해 줍니다.</p><a class="lnk" data-app="?r=parent" href="#">학부모 화면 열기 <span>→</span></a></div></div><div class="rc"><div class="mini"><div class="mc"><div class="mc-t"><span class="chip" style="--c:#1D5B40;--b:#E6F2EB;--d:#BBDCC9">우리 반 현황</span><span class="sp"></span><span class="mc-s" style="margin:0">학생 6명</span></div><div class="mr"><b>김민준</b><span class="mbar"><i style="width:72%"></i></span><em>2</em></div><div class="mr"><b>이서연</b><span class="mbar"><i style="width:48%"></i></span><em class="o">—</em></div><div class="mr"><b>박지후</b><span class="mbar"><i style="width:91%"></i></span><em>1</em></div><div class="mr"><b>최하윤</b><span class="mbar"><i style="width:26%"></i></span><em class="o">—</em></div><div class="mc-b"><span class="mb mb-p">인증 코드 한 번에</span></div></div></div><div class="rcx"><h3>교사</h3><p>학급 전체를 한눈에 보고 인증 코드를 발급합니다.</p><a class="lnk" data-app="?r=teacher" href="#">교사 화면 열기 <span>→</span></a></div></div></div>
+</div></section>
+
+<section><div class="ct">
+  <h2>선생님은 세 단계만</h2>
+  <p class="lead">학기 초에 한 번 정해 두면 한 해 동안 그대로 씁니다.</p>
+  <div class="t3"><div class="ts"><i>1단계</i><b>교사 서명 PIN 정하기</b><span>인증 코드가 이 PIN으로 서명됩니다. 학생 기기에서 위조 여부가 대조됩니다.</span></div><div class="ts"><i>2단계</i><b>우리 반에 안내 보내기</b><span>알림장에 붙여 넣을 안내문이 만들어집니다. 복사해서 그대로 쓰시면 됩니다.</span></div><div class="ts"><i>3단계</i><b>학생 기록 파일 받기</b><span>여러 개를 한꺼번에 올리면 우리 반 현황과 코드 발급이 열립니다.</span></div></div>
+  <details class="q" style="margin-top:18px">
+    <summary>학급에 보낼 안내문 — 그대로 복사해 쓰세요</summary>
+    <pre id="note">「해냄 도감」으로 한 해 목표를 기록합니다.
+1. 아래 주소를 엽니다.
+   (여기에 우리 학교가 쓰는 주소를 적어 주세요)
+2. 첫 화면에서 ‘학생’을 고르고 이름과 학년을 넣습니다.
+3. 목표 지도에서 하고 싶은 목표를 담고, 해낸 만큼 +1 +2 +3을 누릅니다.
+4. 다 해내면 ‘기록 내보내기’로 파일을 만들어 선생님께 보냅니다.
+※ 기록은 각자 기기에 저장됩니다. 내보낸 파일을 꼭 보관해 주세요.</pre>
+    <button class="btn btn-s" id="copy">안내문 복사</button>
+  </details>
+  <div class="warn"><b>기록은 각 기기에만 저장됩니다.</b>
+    서버가 없어 브라우저 저장소를 지우거나 기기를 바꾸면 사라집니다.
+    학생이 「기록 내보내기」로 받은 파일을 꼭 보관하도록 안내해 주세요.</div>
+</div></section>
+
+<section class="alt"><div class="ct">
+  <h2>학교가 묻는 것</h2>
+  <p class="lead">도입을 검토하실 때 먼저 확인하시는 것들을 모았습니다.</p>
+  <div class="qa"><details class="q" open><summary>아이 정보가 어디에 저장되나요?</summary><p>서버가 없습니다. 이름과 기록은 <b>그 기기의 브라우저에만</b> 저장되고, 어디로도 전송되지 않습니다. 보호자 PIN과 교사 서명 PIN도 기기에만 남고 파일에는 담기지 않습니다. 다만 서버가 없다는 것은 <b>브라우저 저장소를 지우거나 기기를 바꾸면 사라진다</b>는 뜻이기도 합니다. 그래서 「기록 내보내기」로 받은 파일을 보관하도록 안내합니다.</p></details><details class="q"><summary>성적이나 평가와 관계가 있나요?</summary><p>없습니다. 목표 문장과 세 단계는 교육과정과 성취수준에서 가져왔지만, 여기에서 받는 <b>인증은 학교 평가 결과가 아닙니다.</b> 속성·등급·보석은 아이가 모으는 재미를 위해 이 도구가 자체로 정한 장치입니다.</p></details><details class="q"><summary>어떤 내용이 들어 있나요?</summary><p>교육부 고시 제2022-33호 「초·중등학교 교육과정」(2022 개정 교육과정)의 초등학교 교과 <b>성취기준 611개 전부</b>와, 한국교육과정평가원의 <b>성취기준별 성취수준</b>(3수준 A·B·C)을 학생이 읽을 수 있는 말로 다듬어 +1 +2 +3으로 놓았습니다. 학교 평가계획이 다룬 목표에는 「우리 학교 평가」 표시가 붙습니다.</p></details><details class="q"><summary>저작권은 괜찮나요?</summary><p>교육부 고시와 성취수준은 저작권법 제7조에 따라 보호 대상이 아닌 저작물입니다. 화면의 그림·아이콘·문구는 모두 직접 만들었고, 외부 이미지를 쓰지 않습니다. 쓰는 글꼴과 라이브러리는 OFL·Apache-2.0·MIT 등 자유 이용 허락 조건이며, 앱 오른쪽 아래 「오픈소스 라이선스」에서 전문을 볼 수 있습니다.</p></details><details class="q"><summary>어떤 기기에서 쓰나요?</summary><p>크롬·사파리·엣지 같은 최신 브라우저면 됩니다. 휴대폰·태블릿·PC 모두 맞게 보입니다. 설치나 회원가입은 없습니다. 학교 기기를 여러 학생이 돌려 쓰는 경우에는 <b>한 학생이 끝낼 때마다 파일로 내보내도록</b> 안내해 주세요.</p></details><details class="q"><summary>한 해를 어떻게 운영하나요?</summary><p>학기 초에 교사가 PIN을 정하고 학급에 주소를 안내합니다. 학생은 평소에 목표를 담고 단계를 올리며, 어른에게 확인을 받습니다. 학기 말에 학생이 파일을 보내면 교사가 모아 <b>우리 반 현황</b>과 <b>인증 코드</b>를 처리하고, 「우리 반 도감」으로 한 해를 정리합니다.</p></details></div>
+</div></section>
+
+<section><div class="ct">
+  <div class="start">
+    <div>
+      <h2>우리 반에서 써 보기</h2>
+      <p class="lead" style="margin-bottom:18px">먼저 샘플로 한 바퀴 둘러보신 뒤,
+        교사 화면에서 PIN을 정하고 학급에 안내를 보내면 시작됩니다.</p>
+      <div class="cta">
+        <a class="btn btn-p" data-app="?r=teacher" href="#">교사로 시작하기</a>
+        <a class="btn" data-app="?r=demo" href="#">먼저 샘플 보기</a>
+      </div>
+    </div>
+    <div class="qr" id="qr"></div>
+  </div>
+</div></section>
+
+<footer><div class="ct">
+  <p>교육부 고시 제2022-33호 「초·중등학교 교육과정」(2022 개정 교육과정)의 초등학교 교과 성취기준 611개와,
+     한국교육과정평가원의 성취기준별 성취수준을 바탕으로 만들었습니다.
+     속성·등급·보석은 이 도구가 자체로 정한 장치이며 교육과정이나 평가 결과와 관계가 없습니다.</p>
+  <p>만든이 2026 최창훈 · <a href="https://edu-hub-alpha-ten.vercel.app/" target="_blank" rel="noopener">학교 연장통</a>의 도구</p>
+</div></footer>
+
+<script>
+/* ───────────────────────────────────────────────────────────────
+   ▼ 앱 주소 — 배포한 주소로 바꾸세요.
+     같은 폴더에 앱을 app.html 이라는 이름으로 두면 그대로 동작합니다.
+     예) var APP = "https://haenaem.example.com/";
+   ─────────────────────────────────────────────────────────────── */
+var APP = "app.html";
+
+var QRC=(function(){var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1})},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(o*r,n*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(){var t=n("友");if(2!=t.length||38726!=(t[0]<<8|t[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}(function(){return qrcode});
+return qrcode;})();
+
+(function(){
+  var abs = /^https?:/i.test(APP) ? APP
+          : (location.protocol==="file:" ? "" : new URL(APP, location.href).href);
+
+  /* 단추를 앱으로 잇는다 */
+  var bs=document.querySelectorAll("[data-app]"), i;
+  for(i=0;i<bs.length;i++){
+    bs[i].setAttribute("href", APP + bs[i].getAttribute("data-app"));
+  }
+
+  /* 머리글 단추는 히어로를 지나친 뒤에 나타난다 */
+  var hd=document.querySelector("header"), hero=document.querySelector(".hero");
+  if(hero && "IntersectionObserver" in window){
+    new IntersectionObserver(function(es){
+      hd.classList.toggle("on", !es[0].isIntersecting);
+    },{rootMargin:"-60px 0px 0px 0px"}).observe(hero);
+  } else { hd.classList.add("on"); }
+
+  /* 안내문 복사 */
+  document.getElementById("copy").addEventListener("click",function(){
+    var t=document.getElementById("note").textContent, b=this;
+    var ok=function(){var o=b.textContent;b.textContent="복사했어요";
+      setTimeout(function(){b.textContent=o;},1600);};
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(ok,fb);
+    } else fb();
+    function fb(){
+      var a=document.createElement("textarea");
+      a.value=t;a.style.position="fixed";a.style.opacity="0";
+      document.body.appendChild(a);a.select();
+      try{document.execCommand("copy");ok();}catch(e){b.textContent="복사가 막혔어요";}
+      a.remove();
+    }
+  });
+
+  /* QR — 주소가 정해져 있을 때만 */
+  var box=document.getElementById("qr");
+  if(abs){
+    try{
+      var q=QRC(0,"M"); q.addData(abs); q.make();
+      var n=q.getModuleCount(), cell=4, pad=12, px=n*cell+pad*2;
+      var cv=document.createElement("canvas");
+      cv.width=cv.height=px; cv.style.width=cv.style.height="132px";
+      var x=cv.getContext("2d");
+      x.fillStyle="#fff"; x.fillRect(0,0,px,px); x.fillStyle="#1E2328";
+      for(var r=0;r<n;r++) for(var c=0;c<n;c++)
+        if(q.isDark(r,c)) x.fillRect(pad+c*cell, pad+r*cell, cell, cell);
+      box.appendChild(cv);
+      box.insertAdjacentHTML("beforeend","<span>학생에게 보여 줄 QR</span>");
+    }catch(e){ box.innerHTML=""; }
+  } else {
+    box.innerHTML='<div class="ph">배포 주소를 넣으면<br>학급 배포용 QR이<br>여기에 만들어집니다</div>'
+      +'<span>index.html 맨 아래 APP</span>';
+  }
+})();
+</script>
+</body>
+</html>
