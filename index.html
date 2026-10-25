@@ -164,6 +164,43 @@ border:1px solid var(--line);overflow:hidden}
 color:#fff;background:var(--wait);border-radius:99px;flex-shrink:0}
 .mr em.o{background:none;color:var(--line-2)}
 
+/* 등급과 속성 */
+.tnot{display:flex;gap:8px;flex-wrap:wrap;margin:-10px 0 18px}
+.tnot span{font-size:12.5px;font-weight:700;color:#8A5A1E;background:#FDF6E6;
+  border:1px solid #EBD9AE;border-radius:99px;padding:6px 13px}
+.tnot span::before{content:"✕ ";opacity:.6}
+.tiers{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+.tcard{display:flex;flex-direction:column;align-items:flex-start;
+  background:var(--card);border:1px solid var(--line);border-top:3px solid var(--td);
+  border-radius:var(--r);padding:16px 15px 15px;box-shadow:var(--sh)}
+.tgem{width:38px;height:42px;margin-bottom:8px}
+.tname{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--tf);
+  background:var(--tb);border:1px solid var(--td);border-radius:99px;padding:2px 12px}
+.tpct{font-size:12px;font-weight:700;color:var(--ink-3);margin:7px 0 5px}
+.tdesc{font-size:13px;line-height:1.6;color:var(--ink-2);flex:1}
+.tex{margin-top:11px;padding-top:10px;border-top:1px dashed var(--line);
+  font-size:11.5px;line-height:1.6;color:var(--ink-3)}
+.tex b{display:block;color:var(--tf);font-weight:800;margin-bottom:2px}
+
+.twhy{margin-top:14px;background:var(--card-2);border:1px solid var(--line);
+  border-radius:var(--r);padding:18px 20px}
+.twhy h3{font-size:15px;margin:0 0 9px;letter-spacing:-.02em}
+.twhy ol{margin:0;padding-left:19px;font-size:13.5px;line-height:1.8;color:var(--ink-2)}
+.twhy ol b{color:var(--ink)}
+.twhy-p{margin:13px 0 0;padding-top:12px;border-top:1px solid var(--line);
+  font-size:13px;line-height:1.7;color:var(--ink-2)}
+.twhy-p b{color:var(--ink)}
+
+.esub{font-size:17px;letter-spacing:-.025em;margin:30px 0 6px}
+.elems{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.ecard{display:flex;align-items:center;gap:10px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+.eic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;
+  font-size:16px;border:1px solid;flex-shrink:0}
+.etx{min-width:0}
+.etx b{display:block;font-size:14px;letter-spacing:-.02em;line-height:1.35}
+.etx span{display:block;font-size:11.5px;color:var(--ink-3);line-height:1.5}
+
 .qa{display:flex;flex-direction:column;gap:8px}
 details.q{background:var(--card);border:1px solid var(--line);border-radius:12px;
 padding:14px 17px}
@@ -219,6 +256,14 @@ padding:1px 6px;font-size:12.5px}
  .hero{grid-template-columns:1fr;gap:26px;padding:34px 0 30px}
  .hero h1{font-size:27px}
  .nums,.t3{grid-template-columns:repeat(2,1fr);gap:9px}
+ .tiers{grid-template-columns:repeat(2,1fr);gap:9px}
+ .tcard{padding:13px 12px}
+ .tgem{width:32px;height:35px}
+ .tex{font-size:11px}
+ .elems{grid-template-columns:repeat(2,1fr);gap:7px}
+ .ecard{padding:9px 10px;gap:8px}
+ .etx span{font-size:10.5px}
+ .twhy{padding:15px 16px}
  .num{padding:15px 14px}
  .num b{font-size:25px}
  .roles{grid-template-columns:1fr;gap:9px}
@@ -297,6 +342,32 @@ padding:1px 6px;font-size:12.5px}
 </div></section>
 
 <section><div class="ct">
+  <h2>보석에는 등급과 속성이 있습니다</h2>
+  <p class="lead">방금 보신 학생 화면의 「희귀」 같은 표시입니다.
+     교육과정에서 가져온 것이 아니라, 아이가 모으는 재미를 위해 이 도구가 정한 장치입니다.</p>
+  <div class="tnot"><span>성적이 아닙니다</span><span>난이도가 아닙니다</span>
+    <span>교육과정이 정한 것이 아닙니다</span></div>
+  <div class="tiers"><div class="tcard" style="--tf:#5F5E5A;--tb:#F1EFE8;--td:#D3D1C7"><svg class="tgem" viewBox="0 0 40 44" aria-hidden="true"><polygon points="20 2,37 11.5,37 32.5,20 42,3 32.5,3 11.5" fill="#F1EFE8" stroke="#D3D1C7" stroke-width="2.2" stroke-linejoin="round"/><polygon points="20 9,31 15.2,31 28.8,20 35,9 28.8,9 15.2" fill="none" stroke="#D3D1C7" stroke-width="1.2" opacity=".5"/></svg><span class="tname">기본</span><span class="tpct">목표의 35%</span><span class="tdesc">그 교과에서 가장 흔한 종류의 활동</span><span class="tex"><b>[4과02-01]</b>여러 가지 동물을 관찰하여 특징에 따라 동물을 분류하기</span></div><div class="tcard" style="--tf:#26215C;--tb:#EEEDFE;--td:#7F77DD"><svg class="tgem" viewBox="0 0 40 44" aria-hidden="true"><polygon points="20 2,37 11.5,37 32.5,20 42,3 32.5,3 11.5" fill="#EEEDFE" stroke="#7F77DD" stroke-width="2.2" stroke-linejoin="round"/><polygon points="20 9,31 15.2,31 28.8,20 35,9 28.8,9 15.2" fill="none" stroke="#7F77DD" stroke-width="1.2" opacity=".5"/></svg><span class="tname">희귀</span><span class="tpct">목표의 30%</span><span class="tdesc">조금 덜 나오는 종류 — 설계하거나 만들어 보는 쪽</span><span class="tex"><b>[4과05-03]</b>다양한 물질의 성질을 이용하여 쓰임새 있는 물체를 설계하기</span></div><div class="tcard" style="--tf:#185FA5;--tb:#E6F1FB;--td:#378ADD"><svg class="tgem" viewBox="0 0 40 44" aria-hidden="true"><polygon points="20 2,37 11.5,37 32.5,20 42,3 32.5,3 11.5" fill="#E6F1FB" stroke="#378ADD" stroke-width="2.2" stroke-linejoin="round"/><polygon points="20 9,31 15.2,31 28.8,20 35,9 28.8,9 15.2" fill="none" stroke="#378ADD" stroke-width="1.2" opacity=".5"/></svg><span class="tname">영웅</span><span class="tpct">목표의 25%</span><span class="tdesc">여럿이 함께하거나 조사해서 표현해야 하는 쪽</span><span class="tex"><b>[4과14-02]</b>생물 요소들의 먹고 먹히는 관계를 조사하여 먹이그물로 표현하기</span></div><div class="tcard" style="--tf:#854F0B;--tb:#FAEEDA;--td:#EF9F27"><svg class="tgem" viewBox="0 0 40 44" aria-hidden="true"><polygon points="20 2,37 11.5,37 32.5,20 42,3 32.5,3 11.5" fill="#FAEEDA" stroke="#EF9F27" stroke-width="2.2" stroke-linejoin="round"/><polygon points="20 9,31 15.2,31 28.8,20 35,9 28.8,9 15.2" fill="none" stroke="#EF9F27" stroke-width="1.2" opacity=".5"/></svg><span class="tname">전설</span><span class="tpct">목표의 10%</span><span class="tdesc">그 교과에서 가장 드문 종류 · 오래 걸리는 목표</span><span class="tex"><b>[4과04-02]</b>식물이 자라는 데 필요한 조건을 찾는 실험을 설계하여 수행하기</span></div></div>
+  <div class="twhy">
+    <h3>무엇이 등급을 정하나</h3>
+    <ol>
+      <li><b>그 교과에서 드문 종류일수록</b> 위로 갑니다. 과학에서 관찰·분류는 흔하고,
+          설계·토의·만들기는 드뭅니다.</li>
+      <li><b>오래 걸리는 목표</b>는 한 단계 더 올라갑니다
+          (「꾸준히」, 「일주일 동안」, 「실천하는 태도」가 들어간 것).</li>
+      <li><b>교과마다 같은 비율</b>로 나눕니다. 그래서 「수학은 죄다 기본, 국어는 죄다 전설」이
+          되는 일이 없습니다. 위 네 가지 예는 모두 <b>같은 3~4학년 과학</b>에서 나왔습니다.</li>
+    </ol>
+    <p class="twhy-p"><b>왜 두었나.</b> 아이가 늘 하던 교과, 늘 하던 종류만 고르지 않도록
+      드문 쪽을 눈에 띄게 했습니다.</p>
+  </div>
+  <h3 class="esub">속성 일곱 가지</h3>
+  <p class="lead" style="margin-bottom:16px">등급이 <b>얼마나 드문가</b>라면,
+     속성은 <b>어떤 종류인가</b>입니다. 목표마다 하나씩 붙고, 보물 주머니에서 속성별로 모을 수 있습니다.</p>
+  <div class="elems"><div class="ecard"><span class="eic" style="color:#185FA5;background:#E6F1FB;border-color:#85B7EB">🗣</span><div class="etx"><b>소리</b><span>말하기 · 듣기 · 읽기 · 토의</span></div></div><div class="ecard"><span class="eic" style="color:#0F6E56;background:#E1F5EE;border-color:#5DCAA5">🔍</span><div class="etx"><b>탐구</b><span>관찰 · 실험 · 조사 발표</span></div></div><div class="ecard"><span class="eic" style="color:#993C1D;background:#FAECE7;border-color:#F0997B">✋</span><div class="etx"><b>손재주</b><span>만들기 · 연주 · 글씨 쓰기</span></div></div><div class="ecard"><span class="eic" style="color:#3B6D11;background:#EAF3DE;border-color:#97C459">🌿</span><div class="etx"><b>자연</b><span>환경 · 우리나라</span></div></div><div class="ecard"><span class="eic" style="color:#854F0B;background:#FAEEDA;border-color:#EF9F27">💪</span><div class="etx"><b>몸</b><span>몸으로 움직이기</span></div></div><div class="ecard"><span class="eic" style="color:#993556;background:#FBEAF0;border-color:#ED93B1">❤️</span><div class="etx"><b>마음</b><span>실천 · 협력 · 배려</span></div></div><div class="ecard"><span class="eic" style="color:#534AB7;background:#EEEDFE;border-color:#AFA9EC">🔢</span><div class="etx"><b>수리</b><span>셈하기 · 도형 · 규칙 찾기</span></div></div></div>
+</div></section>
+
+<section class="alt"><div class="ct">
   <h2>선생님은 세 단계만</h2>
   <p class="lead">학기 초에 한 번 정해 두면 한 해 동안 그대로 씁니다.</p>
   <div class="t3"><div class="ts"><i>1단계</i><b>교사 서명 PIN 정하기</b><span>인증 코드가 이 PIN으로 서명됩니다. 학생 기기에서 위조 여부가 대조됩니다.</span></div><div class="ts"><i>2단계</i><b>우리 반에 안내 보내기</b><span>알림장에 붙여 넣을 안내문이 만들어집니다. 복사해서 그대로 쓰시면 됩니다.</span></div><div class="ts"><i>3단계</i><b>학생 기록 파일 받기</b><span>여러 개를 한꺼번에 올리면 우리 반 현황과 코드 발급이 열립니다.</span></div></div>
@@ -316,13 +387,13 @@ padding:1px 6px;font-size:12.5px}
     학생이 「기록 내보내기」로 받은 파일을 꼭 보관하도록 안내해 주세요.</div>
 </div></section>
 
-<section class="alt"><div class="ct">
+<section><div class="ct">
   <h2>학교가 묻는 것</h2>
   <p class="lead">도입을 검토하실 때 먼저 확인하시는 것들을 모았습니다.</p>
-  <div class="qa"><details class="q" open><summary>아이 정보가 어디에 저장되나요?</summary><p>서버가 없습니다. 이름과 기록은 <b>그 기기의 브라우저에만</b> 저장되고, 어디로도 전송되지 않습니다. 보호자 PIN과 교사 서명 PIN도 기기에만 남고 파일에는 담기지 않습니다. 다만 서버가 없다는 것은 <b>브라우저 저장소를 지우거나 기기를 바꾸면 사라진다</b>는 뜻이기도 합니다. 그래서 「기록 내보내기」로 받은 파일을 보관하도록 안내합니다.</p></details><details class="q"><summary>성적이나 평가와 관계가 있나요?</summary><p>없습니다. 목표 문장과 세 단계는 교육과정과 성취수준에서 가져왔지만, 여기에서 받는 <b>인증은 학교 평가 결과가 아닙니다.</b> 속성·등급·보석은 아이가 모으는 재미를 위해 이 도구가 자체로 정한 장치입니다.</p></details><details class="q"><summary>어떤 내용이 들어 있나요?</summary><p>교육부 고시 제2022-33호 「초·중등학교 교육과정」(2022 개정 교육과정)의 초등학교 교과 <b>성취기준 611개 전부</b>와, 한국교육과정평가원의 <b>성취기준별 성취수준</b>(3수준 A·B·C)을 학생이 읽을 수 있는 말로 다듬어 +1 +2 +3으로 놓았습니다. 학교 평가계획이 다룬 목표에는 「우리 학교 평가」 표시가 붙습니다.</p></details><details class="q"><summary>저작권은 괜찮나요?</summary><p>교육부 고시와 성취수준은 저작권법 제7조에 따라 보호 대상이 아닌 저작물입니다. 화면의 그림·아이콘·문구는 모두 직접 만들었고, 외부 이미지를 쓰지 않습니다. 쓰는 글꼴과 라이브러리는 OFL·Apache-2.0·MIT 등 자유 이용 허락 조건이며, 앱 오른쪽 아래 「오픈소스 라이선스」에서 전문을 볼 수 있습니다.</p></details><details class="q"><summary>어떤 기기에서 쓰나요?</summary><p>크롬·사파리·엣지 같은 최신 브라우저면 됩니다. 휴대폰·태블릿·PC 모두 맞게 보입니다. 설치나 회원가입은 없습니다. 학교 기기를 여러 학생이 돌려 쓰는 경우에는 <b>한 학생이 끝낼 때마다 파일로 내보내도록</b> 안내해 주세요.</p></details><details class="q"><summary>한 해를 어떻게 운영하나요?</summary><p>학기 초에 교사가 PIN을 정하고 학급에 주소를 안내합니다. 학생은 평소에 목표를 담고 단계를 올리며, 어른에게 확인을 받습니다. 학기 말에 학생이 파일을 보내면 교사가 모아 <b>우리 반 현황</b>과 <b>인증 코드</b>를 처리하고, 「우리 반 도감」으로 한 해를 정리합니다.</p></details></div>
+  <div class="qa"><details class="q" open><summary>아이 정보가 어디에 저장되나요?</summary><p>서버가 없습니다. 이름과 기록은 <b>그 기기의 브라우저에만</b> 저장되고, 어디로도 전송되지 않습니다. 보호자 PIN과 교사 서명 PIN도 기기에만 남고 파일에는 담기지 않습니다. 다만 서버가 없다는 것은 <b>브라우저 저장소를 지우거나 기기를 바꾸면 사라진다</b>는 뜻이기도 합니다. 그래서 「기록 내보내기」로 받은 파일을 보관하도록 안내합니다.</p></details><details class="q"><summary>성적이나 평가와 관계가 있나요?</summary><p>없습니다. 목표 문장과 세 단계는 교육과정과 성취수준에서 가져왔지만, 여기에서 받는 <b>인증은 학교 평가 결과가 아닙니다.</b> 속성·등급·보석은 아이가 모으는 재미를 위해 이 도구가 자체로 정한 장치입니다.</p></details><details class="q"><summary>등급이 높으면 더 어려운 목표인가요?</summary><p>아닙니다. 등급은 어려움이 아니라 <b>그 교과 안에서 얼마나 드문 종류인가</b>를 나타냅니다. 관찰이나 계산처럼 그 교과에 흔한 활동은 「기본」, 설계·토의·만들기처럼 덜 나오는 활동은 위쪽 등급이 됩니다. 교과마다 <b>기본 35 · 희귀 30 · 영웅 25 · 전설 10%</b>로 똑같이 나누어, 특정 교과만 높은 등급으로 몰리지 않게 했습니다. 아이가 늘 하던 종류만 고르지 않도록 드문 쪽을 눈에 띄게 한 장치일 뿐, 학습의 중요도나 평가와는 관계가 없습니다.</p></details><details class="q"><summary>어떤 내용이 들어 있나요?</summary><p>교육부 고시 제2022-33호 「초·중등학교 교육과정」(2022 개정 교육과정)의 초등학교 교과 <b>성취기준 611개 전부</b>와, 한국교육과정평가원의 <b>성취기준별 성취수준</b>(3수준 A·B·C)을 학생이 읽을 수 있는 말로 다듬어 +1 +2 +3으로 놓았습니다. 학교 평가계획이 다룬 목표에는 「우리 학교 평가」 표시가 붙습니다.</p></details><details class="q"><summary>저작권은 괜찮나요?</summary><p>교육부 고시와 성취수준은 저작권법 제7조에 따라 보호 대상이 아닌 저작물입니다. 화면의 그림·아이콘·문구는 모두 직접 만들었고, 외부 이미지를 쓰지 않습니다. 쓰는 글꼴과 라이브러리는 OFL·Apache-2.0·MIT 등 자유 이용 허락 조건이며, 앱 오른쪽 아래 「오픈소스 라이선스」에서 전문을 볼 수 있습니다.</p></details><details class="q"><summary>어떤 기기에서 쓰나요?</summary><p>크롬·사파리·엣지 같은 최신 브라우저면 됩니다. 휴대폰·태블릿·PC 모두 맞게 보입니다. 설치나 회원가입은 없습니다. 학교 기기를 여러 학생이 돌려 쓰는 경우에는 <b>한 학생이 끝낼 때마다 파일로 내보내도록</b> 안내해 주세요.</p></details><details class="q"><summary>한 해를 어떻게 운영하나요?</summary><p>학기 초에 교사가 PIN을 정하고 학급에 주소를 안내합니다. 학생은 평소에 목표를 담고 단계를 올리며, 어른에게 확인을 받습니다. 학기 말에 학생이 파일을 보내면 교사가 모아 <b>우리 반 현황</b>과 <b>인증 코드</b>를 처리하고, 「우리 반 도감」으로 한 해를 정리합니다.</p></details></div>
 </div></section>
 
-<section><div class="ct">
+<section class="alt"><div class="ct">
   <div class="start">
     <div>
       <h2>우리 반에서 써 보기</h2>
