@@ -581,18 +581,48 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .ms-bar i.d{background:var(--bloom)}
 
 /* ② 교과 격자 */
+.isttl{margin:0 0 10px;font-size:14.5px;font-weight:800;letter-spacing:-0.02em;
+  display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.isttl span{font-size:12.5px;font-weight:500;color:var(--ink-3)}
 .isgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:10px}
-.isgrid-0{margin-top:10px;opacity:.78}
-.isc{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px 10px 13px;
+.isgrid-big{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.isgrid-0{margin-top:10px;opacity:.82}
+.isc{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:14px 10px 11px;cursor:pointer;
   background:var(--card);border:1px solid var(--line);border-radius:var(--r);
   box-shadow:var(--sh);transition:.14s}
-.isc:hover{border-color:var(--ink-3);transform:translateY(-2px);
+/* ④ 누를 수 있다는 신호 — 왼쪽 교과색 띠는 손가락만 있는 기기에서도 늘 보인다 */
+.isc::before{content:"";position:absolute;left:0;top:11px;bottom:11px;width:3px;
+  border-radius:0 3px 3px 0;background:var(--sc);opacity:.45;transition:.14s}
+.isc:hover,.isc:focus-visible{border-color:var(--sc);transform:translateY(-2px);
   box-shadow:0 1px 2px rgba(42,38,30,.05),0 10px 22px -10px rgba(42,38,30,.3)}
+.isc:hover::before,.isc:focus-visible::before{opacity:1;top:0;bottom:0}
+.isc:active{transform:translateY(0)}
+/* ⑩ 목표가 많은 교과는 병도 크게 */
 .isc .jar{width:106px;height:76px;margin-bottom:0}
+.isc.jar-s .jar{width:88px;height:63px}
+.isc.jar-l .jar{width:118px;height:85px}
+.isc-big .jar{width:130px;height:93px}
+.isc-big.jar-l .jar{width:146px;height:105px}
+/* ⑥ 대표 속성 */
+.isc-el{position:absolute;top:9px;right:9px;width:25px;height:25px;border-radius:8px;
+  display:grid;place-items:center;font-size:13px;border:1px solid}
+.isc-x{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;width:100%}
 .isc-n{font-size:15px;font-weight:800;letter-spacing:-0.02em}
-.isc-c{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.isc-big .isc-n{font-size:17px}
+.isc-c{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;text-align:center}
 .isc-c b{font-weight:800;color:var(--ink-2)}
 .isc-c b.dn{color:var(--bloom)}
+/* ⑤ 맛보기 한 줄 */
+.isc-t{margin-top:7px;font-size:11.5px;line-height:1.5;color:var(--ink-3);text-align:center;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  opacity:.9}
+.isc-t::before{content:"예) "}
+/* ③ 동사와 화살표 */
+.isc-go{margin-top:9px;font-size:12.5px;font-weight:800;color:var(--sc);
+  display:inline-flex;align-items:center;gap:5px}
+.isc-go i{font-style:normal;transition:.14s;display:inline-block}
+.isc:hover .isc-go i{transform:translateX(3px)}
 .iszero{display:block;width:100%;margin-top:14px;padding:11px;border-radius:13px;
   background:var(--card-2);border:1px dashed var(--line-2);
   font-size:13px;font-weight:700;color:var(--ink-3)}
@@ -607,9 +637,22 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .isback:hover{border-color:var(--ink-3)}
 @media (max-width:640px){
   .isgrid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .isc{padding:11px 6px 11px}
+  .isgrid-big{grid-template-columns:1fr;gap:9px}
+  .isc{padding:11px 8px 10px}
   .isc .jar{width:88px;height:63px}
+  .isc.jar-s .jar{width:76px;height:55px}
+  .isc.jar-l .jar{width:96px;height:69px}
+  .isc-big{flex-direction:row;align-items:center;gap:13px;padding:13px 14px}
+  .isc-big .jar{width:82px;height:59px;flex-shrink:0}
+  .isc-big.jar-l .jar{width:90px;height:65px}
+  .isc-big .isc-x{align-items:flex-start;text-align:left;padding-right:26px}
+  .isc-big .isc-c,.isc-big .isc-t{text-align:left}
+  .isc-big .isc-n{font-size:16px}
+  .isc-big .isc-el{top:10px;right:10px}
   .isc-n{font-size:14px}
+  .isc-t{display:none}
+  .isc-big .isc-t{display:-webkit-box;margin-top:4px}
+  .isc-go{font-size:12px;margin-top:7px}
   .mf-l{min-width:0;flex:1 1 100%;padding-top:0}
   .mf-n{margin-left:0}
 }
@@ -1009,10 +1052,10 @@ button.ttl-b{cursor:pointer}
 .sendn>b{display:block;color:var(--ink-2);margin-bottom:9px}
 
 /* 처음이라면 여기부터 */
-.mstart{background:linear-gradient(180deg,var(--bloom-bg),var(--card) 56%);
-  border:1.5px solid #BBDCC9;border-radius:var(--r);padding:15px 16px;margin-bottom:14px}
+.mstart{background:var(--card-2);
+  border:1px dashed #BBDCC9;border-radius:var(--r);padding:12px 14px;margin-bottom:18px}
 .mst-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:11px}
-.mst-h b{font-size:15.5px;letter-spacing:-0.02em}
+.mst-h b{font-size:14px;letter-spacing:-0.02em}
 .mst-h span{font-size:12.5px;color:var(--ink-3)}
 .mst-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px}
 .mst-c{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;
@@ -2461,25 +2504,68 @@ function renderIsles(p, subs){
     (got?live:zero).push({sn:sn,it:it,got:got,
       dn:it.filter(function(x){return stOf(x.id)==="bloom";}).length});
   });
-  function card(o){
-    return '<button class="isc" data-isle="'+esc(o.sn)+'">'
-      +jarSvg(o.got,o.dn,o.it.length,o.sn)
-      +'<span class="isc-n">'+esc(o.sn)+'</span>'
-      +'<span class="isc-c">목표 '+o.it.length+'개 중 <b>'+o.got+'개</b> 담음'
-      +(o.dn?' · 인증 <b class="dn">'+o.dn+'</b>':'')+'</span></button>';
+  /* ⑥ 그 교과에 가장 많은 속성 — 글자보다 그림이 먼저 눈에 들어온다 */
+  function topElem(it){
+    var c={},best=null,bn=0;
+    it.forEach(function(x){var e=elemOf(x); c[e.id]=(c[e.id]||0)+1;
+      if(c[e.id]>bn){bn=c[e.id];best=e;}});
+    return best||ELEM_ETC;
   }
-  /* 아직 아무것도 안 담은 아이에게는 처음부터 펼쳐 보여 준다 */
-  var zOpen = S.zeroOpen || !live.length;
-  $("#mapList").innerHTML=
-    (live.length?'<div class="isgrid">'+live.map(card).join("")+'</div>':'')
-    +(zero.length
-      ?(live.length
+  /* ⑤ 맛보기 — 짧고 읽기 쉬운 것 하나 */
+  function taste(it){
+    var cand=it.slice().sort(function(a,b){
+      return (a.alt||a.title).length-(b.alt||b.title).length;});
+    var g=cand[Math.min(1,cand.length-1)]||it[0];
+    return g?(g.alt||g.title):"";
+  }
+  function card(o, big){
+    var e=topElem(o.it), c=JAR_C[o.sn]||"#7A9A5B";
+    /* ⑩ 목표가 많은 교과는 병도 크게 */
+    var sz=o.it.length>=40?" jar-l":(o.it.length>=20?" jar-m":" jar-s");
+    return '<button class="isc'+(big?" isc-big":"")+sz+'" data-isle="'+esc(o.sn)+'"'
+      +' style="--sc:'+c+'">'
+      +'<span class="isc-el" style="color:'+e.fg+';background:'+e.bg+';border-color:'+e.bd+'">'
+        +e.icon+'</span>'
+      +jarSvg(o.got,o.dn,o.it.length,o.sn)
+      +'<span class="isc-x">'
+      +'<span class="isc-n">'+esc(o.sn)+'</span>'
+      +'<span class="isc-c">'
+        +(o.got
+          ? '목표 '+o.it.length+'개 중 <b>'+o.got+'개</b> 담음'
+            +(o.dn?' · 인증 <b class="dn">'+o.dn+'</b>':'')
+          /* ⑦ 0을 아홉 번 보여 주지 않는다 */
+          : '아직 비어 있어요 · <b>'+o.it.length+'개</b>가 기다려요')
+      +'</span>'
+      +'<span class="isc-t">'+esc(taste(o.it))+'</span>'          /* ⑤ */
+      +'<span class="isc-go">'+o.it.length+'개 보러 가기 <i>→</i></span>'  /* ③ */
+      +'</span></button>';
+  }
+  var html="";
+  if(live.length){
+    /* 담은 교과가 있으면 — 담은 것 먼저, 나머지는 접어서 */
+    var zOpen=S.zeroOpen;
+    html='<p class="isttl">교과별로 둘러보기</p>'
+      +'<div class="isgrid">'+live.map(function(o){return card(o,false);}).join("")+'</div>'
+      +(zero.length
         ?'<button class="iszero" id="isZero" aria-expanded="'+(zOpen?"true":"false")+'">'
-          +'아직 담지 않은 교과 <b>'+zero.length+'</b>개 '+(zOpen?"▴":"▾")+'</button>':'')
-        +(zOpen?'<div class="isgrid'+(live.length?' isgrid-0':'')+'">'
-          +zero.map(card).join("")+'</div>':'')
-      :'')
-    +(!live.length&&!zero.length?'<div class="note">이 조건에 맞는 목표가 없어요.</div>':'');
+          +'아직 담지 않은 교과 <b>'+zero.length+'</b>개 '+(zOpen?"▴":"▾")+'</button>'
+          +(zOpen?'<div class="isgrid isgrid-0">'
+            +zero.map(function(o){return card(o,false);}).join("")+'</div>':'')
+        :'');
+  } else if(zero.length){
+    /* ⑨ 처음이라면 세 개만 크게 — 아홉 개를 한꺼번에 주면 고르기가 버겁다 */
+    var open=S.zeroOpen, head=zero.slice(0,3), rest=zero.slice(3);
+    html='<p class="isttl">교과별로 둘러보기<span>병을 누르면 그 교과 목표가 펼쳐집니다</span></p>'
+      +'<div class="isgrid isgrid-big">'+head.map(function(o){return card(o,true);}).join("")+'</div>'
+      +(rest.length
+        ?'<button class="iszero" id="isZero" aria-expanded="'+(open?"true":"false")+'">'
+          +'나머지 교과 <b>'+rest.length+'</b>개 더 보기 '+(open?"▴":"▾")+'</button>'
+          +(open?'<div class="isgrid">'+rest.map(function(o){return card(o,false);}).join("")+'</div>':'')
+        :'');
+  } else {
+    html='<div class="note">이 조건에 맞는 목표가 없어요.</div>';
+  }
+  $("#mapList").innerHTML=html;
   var z=$("#isZero"); if(z) z.addEventListener("click",function(){
     S.zeroOpen=!S.zeroOpen; renderMap();});
   $$("#mapList [data-isle]").forEach(function(b){b.addEventListener("click",function(){
@@ -2551,6 +2637,9 @@ function jarSvg(got, done, tot, sn){
     if(k<done)            g+=gem(cells[k][0],cells[k][1],'fill="'+c+'"');
     else if(k<done+hold)  g+=gem(cells[k][0],cells[k][1],
       'fill="none" stroke="'+c+'" stroke-width="1.5" opacity=".5"');
+    /* ② 아직 비어 있는 칸도 점선으로 그려, 여기에 보석이 쌓인다는 걸 보인다 */
+    else                  g+=gem(cells[k][0],cells[k][1],
+      'fill="none" stroke="'+c+'" stroke-width="1" stroke-dasharray="2.2 2.2" opacity=".3"');
   }
   var more=done-cells.length;
   var extra=more>0
@@ -2558,11 +2647,14 @@ function jarSvg(got, done, tot, sn){
     : "";
   return '<svg class="jar" viewBox="0 0 132 94" aria-hidden="true" focusable="false">'
     +'<ellipse cx="66" cy="80" rx="32" ry="3.4" fill="#000" opacity=".06"/>'
+    /* ① 비어 있어도 교과 색을 입힌다 — 회색 병은 '못 누르는 것'으로 보였다 */
     +'<path d="M48 10 h36 v5 l-3.5 4 v3 h5 a9 9 0 0 1 9 9 v38 a9 9 0 0 1 -9 9 H46.5'
-    +' a9 9 0 0 1 -9 -9 V31 a9 9 0 0 1 9 -9 h5 v-3 L48 15 Z" fill="#fff" fill-opacity=".7"'
-    +' stroke="'+(full?c:"#B4B2A9")+'" stroke-width="1.7" stroke-opacity="'+(full?".75":".5")+'"/>'
+    +' a9 9 0 0 1 -9 -9 V31 a9 9 0 0 1 9 -9 h5 v-3 L48 15 Z" fill="'+c+'" fill-opacity="'
+    +(done?".07":".05")+'"'
+    +' stroke="'+c+'" stroke-width="1.7" stroke-opacity="'+(full?".8":(done?".55":".4"))+'"/>'
     +g
-    +'<path d="M55 10 h22" stroke="'+(full?c:"#C9C6BB")+'" stroke-width="4.4" stroke-linecap="round"/>'
+    +'<path d="M55 10 h22" stroke="'+c+'" stroke-width="4.4" stroke-linecap="round"'
+    +' stroke-opacity="'+(full?"1":(done?".8":".55"))+'"/>'
     +extra+'</svg>';
 }
 /* ── 길 위의 칸 ── 상태를 색이 아니라 모양으로도 말한다 */
