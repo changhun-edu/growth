@@ -183,6 +183,31 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .rtry:hover{background:#F2EFE7;color:var(--ink)}
 .rtry::before{content:"▸ ";color:var(--star)}
 
+/* ① 샘플 안내 띠 — 머리글 바로 아래에 붙어 따라다닌다 */
+.sdemo{position:sticky;top:60px;z-index:49;background:#FDF6E6;
+  border-bottom:1px solid #EBD9AE;padding:env(safe-area-inset-top) 0 0}
+.sdemo.hidden{display:none}
+.sd-in{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0}
+.sd-dot{width:9px;height:9px;border-radius:50%;background:#C9A227;flex-shrink:0;
+  box-shadow:0 0 0 4px rgba(201,162,39,.18)}
+.sd-t{flex:1 1 190px;font-size:13px;line-height:1.55;color:#8A5A1E}
+.sd-t b{color:#6B460F;font-weight:800}
+.sd-b{display:flex;gap:7px;flex-wrap:wrap}
+.sd-b .btn{font-size:12.5px;padding:7px 12px;border-radius:9px}
+.sd-b .btn-p{background:#8A5A1E;border-color:#8A5A1E;color:#fff}
+@media (max-width:560px){
+  .sd-t{flex:1 1 100%}
+  .sd-b{width:100%}
+  .sd-b .btn{flex:1}
+}
+@media print{.sdemo{display:none}}
+
+/* ⑦ 샘플 이어가기 카드 */
+.resume.rz-demo{border-color:#EBD9AE;background:#FDFAF1}
+.rz-tag{display:inline-block;margin-left:7px;font-size:11px;font-weight:800;
+  color:#8A5A1E;background:#F7EBCE;border:1px solid #EBD9AE;border-radius:99px;
+  padding:2px 9px;vertical-align:2px}
+
 /* 사용법 단추 */
 .help-b{flex-shrink:0;width:30px;height:30px;border-radius:50%;margin-left:4px;
   background:var(--card);border:1px solid var(--line-2);color:var(--ink-3);
@@ -1188,6 +1213,7 @@ button.ttl-b{cursor:pointer}
   <div class="who" id="who"></div>
   <button class="help-b" id="helpBtn" type="button" aria-label="사용법">?</button>
 </div></div>
+<div class="sdemo hidden" id="sDemo"></div>
 
 <div class="wrap container" id="wrap">
 
@@ -1637,6 +1663,38 @@ var Store=(function(){
       try{return JSON.parse(localStorage.getItem(K)||"null");}catch(e){return null;}},
     clear:function(){if(mode==="local"){try{localStorage.removeItem(K);}catch(e){}}}};
 })();
+/* ② 샘플 들어가기 전 기록을 통째로 보관해 둔다.
+   새로고침해도 남도록 별도 칸(goalboard.snap)에 넣는다. 끝내면 그대로 되돌린다. */
+var SNAP_K="goalboard.snap";
+function snapTake(){
+  if(!Store.ok) return;
+  try{
+    var cur=localStorage.getItem("goalboard.v1");
+    localStorage.setItem(SNAP_K, cur===null ? "__none__" : cur);
+  }catch(e){}
+}
+function snapName(){
+  if(!Store.ok) return "";
+  try{
+    var r=localStorage.getItem(SNAP_K);
+    if(!r || r==="__none__") return "";
+    var j=JSON.parse(r); return (j&&j.me&&j.me.name)||"";
+  }catch(e){ return ""; }
+}
+function snapHas(){
+  if(!Store.ok) return false;
+  try{ return localStorage.getItem(SNAP_K)!==null; }catch(e){ return false; }
+}
+function snapBack(){
+  if(!Store.ok) return;
+  var raw=null;
+  try{ raw=localStorage.getItem(SNAP_K); localStorage.removeItem(SNAP_K); }catch(e){}
+  clearTimeout(tm);                       /* 되돌린 것을 다시 덮어쓰지 않게 */
+  try{
+    if(raw===null || raw==="__none__") localStorage.removeItem("goalboard.v1");
+    else localStorage.setItem("goalboard.v1", raw);
+  }catch(e){}
+}
 var tm=null;
 function touch(){if(!Store.ok)return;clearTimeout(tm);
   tm=setTimeout(function(){
@@ -1648,6 +1706,23 @@ function touch(){if(!Store.ok)return;clearTimeout(tm);
       tpin:S.tpin,ppin:S.ppin,roster:keep,tgrade:S.tgrade,tnames:S.tnames,
       codes:S.codes.slice(-60),numCode:S.numCode,
       at:new Date().toISOString()});},400);}
+
+/* ⑤ 소개 페이지에서 들어왔으면 그 주소를 기억해 둔다 — 머리글에 「소개」가 생긴다 */
+var INTRO="";
+function introFind(set){
+  try{
+    if(set){
+      var r=document.referrer;
+      if(r && r.indexOf(location.origin)===0 && r.split("#")[0]!==location.href.split("#")[0]) INTRO=r;
+      else INTRO=location.pathname.replace(/[^/]*$/, "index.html");
+      sessionStorage.setItem("goalboard.intro", INTRO);
+    } else {
+      INTRO=sessionStorage.getItem("goalboard.intro")||"";
+    }
+  }catch(e){}
+  return INTRO;
+}
+function goIntro(){ if(INTRO) location.href=INTRO; }
 
 /* ───────── 화면 전환 ───────── */
 function show(v){
@@ -1690,9 +1765,54 @@ function renderWho(){
   else if(S.role==="parent") h='<span class="pill pill-b">학부모</span>';
   else if(S.role==="teacher") h='<span class="pill pill-b">교사</span>';
   if(S.role) h+='<button class="btn btn-q btn-s" id="chRole">역할<span class="hd-x"> 바꾸기</span></button>';
+  if(INTRO)  h+='<button class="btn btn-q btn-s" id="hdIntro">소개</button>';
   $("#who").innerHTML=h;
   var b=$("#chRole");
-  if(b)b.addEventListener("click",function(){STU_DEMO=false;S.role=null;show("role");});
+  if(b)b.addEventListener("click",function(){S.role=null;show("role");});
+  var hi=$("#hdIntro");
+  if(hi)hi.addEventListener("click",goIntro);
+  renderSDemo();
+}
+
+/* ①③ 샘플 띠 — 지금 보고 있는 것이 샘플임을 늘 알리고, 나가는 두 길을 준다 */
+function renderSDemo(){
+  var box=$("#sDemo"); if(!box) return;
+  if(!STU_DEMO || S.role!=="student"){ box.classList.add("hidden"); box.innerHTML=""; return; }
+  box.classList.remove("hidden");
+  box.innerHTML='<div class="sd-in container"><span class="sd-dot"></span>'
+    +'<span class="sd-t"><b>지금 보고 있는 것은 샘플입니다.</b> '
+    +'한 해를 보낸 3학년 「이서연」의 화면이에요. 마음껏 눌러 보세요.</span>'
+    +'<span class="sd-b"><button class="btn btn-p" id="sdMine">'
+    +(snapName()?esc(snapName())+' 기록으로 돌아가기':'내 이름으로 시작하기')+'</button>'
+    +(INTRO?'<button class="btn" id="sdOut">소개로 돌아가기</button>':'')
+    +'</span></div>';
+  $("#sdMine").addEventListener("click",function(){ demoStuOff(true); });
+  var o=$("#sdOut"); if(o)o.addEventListener("click",function(){ demoStuOff(false); goIntro(); });
+}
+
+/* ② 샘플을 끝내고 원래 기록으로 되돌린다 */
+function demoStuOff(toStart){
+  STU_DEMO=false;
+  snapBack();
+  var d=Store.load();
+  S.me   = (d&&d.me)   || {name:"",grade:0};
+  S.my   = (d&&d.my)   || [];
+  S.mine = (d&&d.mine) || [];
+  S.seals=(d&&d.seals) || 0;
+  S.badge=(d&&d.badge) || "";
+  S.klass=(d&&d.klass) || null;
+  S.peek =(d&&d.peek)  || null;
+  S.last =(d&&d.last)  || "";
+  S.bagSeen=(d&&d.bagSeen)||0;
+  S.roster=(d&&d.roster)||{};
+  S.mapQ="";S.mapSub="";S.mapFilter="all";S.mapOpen={};S.mapTerm=0;S.mapMy=false;S.filterElem="";
+  S.bFilter="all";S.bSort="todo";S.bView="card";
+  if(!toStart){ return; }
+  S.role="student";
+  $("#sName").value=S.me.name||"";
+  renderGrades();chkStart();
+  show(S.me.name?"board":"start");
+  toast(S.me.name?"샘플을 끝냈어요":"이름과 학년을 넣어 주세요");
 }
 /* 좌측 상단 이름·로고 → 언제나 첫 화면 */
 function goHome(){
@@ -1760,12 +1880,19 @@ function renderResume(d){
     if(c.wait)  tags+='<span class="tag" style="background:var(--wait-bg);border-color:#B9D0EA;color:#1B5085">확인 기다리는 중 '+c.wait+'</span>';
     if(c.bloom) tags+='<span class="tag" style="background:var(--bloom-bg);border-color:#BBDCC9;color:#1D5B40">인증 완료 '+c.bloom+'</span>';
     if(!tags)   tags+='<span class="tag">담은 목표 '+my.length+'</span>';
-    h+='<div class="resume">'
+    var isD=snapHas();   /* ⑦ 샘플 상태면 자기 기록으로 착각하지 않게 못을 박는다 */
+    h+='<div class="resume'+(isD?' rz-demo':'')+'">'
       +'<div class="rz-av">'+st.ic+'</div>'
       +'<div class="rz-tx"><span class="nm">'+esc(d.me.name)+'</span>'
-      +'<span class="sub">'+d.me.grade+'학년 · '+st.name+'</span>'
+      +(isD?'<span class="rz-tag">샘플</span>':'')
+      +'<span class="sub">'+(isD?'둘러보기용 가상 기록입니다'
+                                :d.me.grade+'학년 · '+st.name)+'</span>'
       +'<div class="rz-st">'+tags+'</div></div>'
-      +'<button class="btn btn-p" id="rzStu">'+(my.length?'내 목표판 열기':'목표 고르러 가기')+'</button></div>';
+      +'<button class="btn btn-p" id="rzStu">'
+      +(isD?(snapName()?'샘플 끝내고 '+esc(snapName())+' 기록으로'
+                       :'샘플 지우고 내 이름으로 시작')
+           :(my.length?'내 목표판 열기':'목표 고르러 가기'))
+      +'</button></div>';
     has=true;
   }
   /* 교사 */
@@ -1785,7 +1912,12 @@ function renderResume(d){
   if(!has){ box.hidden=true; box.innerHTML=""; return; }
   box.hidden=false;
   box.innerHTML=h+'<button class="rz-other" id="rzOther">다른 사람으로 시작하기</button>';
-  var a=$("#rzStu"); if(a) a.addEventListener("click",function(){
+  var a=$("#rzStu");
+  if(a && snapHas()){                       /* ⑦ 샘플이면 지우고 내 것으로 */
+    a.addEventListener("click",function(){ STU_DEMO=true; demoStuOff(true); });
+    a=null;
+  }
+  if(a) a.addEventListener("click",function(){
     S.role="student"; show(S.my.length?"board":"map");});
   var b=$("#rzTea"); if(b) b.addEventListener("click",function(){
     S.role="teacher"; show("teacher");});
@@ -1856,7 +1988,7 @@ function demoShowcase(){
   return my;
 }
 $("#demoStu").addEventListener("click",function(){
-  if(S.my.length && !confirm("지금 담아 둔 목표 "+S.my.length+"개가 샘플로 바뀝니다. 계속할까요?"))return;
+  if(!STU_DEMO) snapTake();          /* ② 지금 기록을 통째로 보관 — 끝내면 그대로 돌아온다 */
   S.me={name:"이서연",grade:3};
   S.my=demoShowcase();
   /* 나만의 목표 — 직접 쓸 수 있다는 걸 바로 보이게. 인증까지 받아 병이 가득 찬다 */
@@ -1881,7 +2013,7 @@ $("#demoStu").addEventListener("click",function(){
   S.mapQ="";S.mapSub="";S.mapFilter="all";S.mapOpen={};S.mapTerm=0;S.mapMy=false;S.filterElem="";
   STU_DEMO=true;
   $("#sName").value=S.me.name;renderGrades();chkStart();
-  show("board");toast("샘플 목표판입니다. 자유롭게 눌러 보세요");});
+  show("board");toast("샘플입니다. 위의 띠에서 언제든 나갈 수 있어요");});
 
 /* ═══════ 나만의 목표 ═══════
    고르기만 하는 사이트가 되지 않도록, 아이가 직접 쓴 목표도 같은 흐름을 탄다. */
@@ -4472,11 +4604,17 @@ function pushGuard(){try{history.pushState({v:S.view},"",location.href);}catch(e
 var armed=false;
 window.addEventListener("popstate",function(){
   if($("#mdl")){closeModal();pushGuard();return;}
-  var back={board:"map",map:"board",pick:"board",dex:"board",start:"role",parent:"role",teacher:"role"};
+  /* ④ 예전엔 board↔map이 서로를 가리켜 영원히 못 나갔다. 이제 한 방향으로 모인다. */
+  var back={map:"board",bag:"board",pick:"board",dex:"board",
+            board:"role",start:"role",parent:"role",teacher:"role"};
   var to=back[S.view];
   if(to){ if(to==="role")S.role=null; show(to); return; }
-  if(armed)return;
-  armed=true;toast("한 번 더 누르면 사이트를 나갑니다.");pushGuard();
+  /* ④ 역할 화면에서 한 번 더 누르면 정말로 나간다 — 예전엔 아무 일도 없었다 */
+  if(armed){ if(INTRO) location.replace(INTRO); return; }
+  armed=true;
+  toast(INTRO ? "한 번 더 누르면 소개 페이지로 나갑니다."
+              : "한 번 더 누르면 사이트를 나갑니다.");
+  pushGuard();
   setTimeout(function(){armed=false;},3500);
 });
 
@@ -4519,16 +4657,20 @@ window.addEventListener("popstate",function(){
   }
   /* 소개 페이지에서 역할을 지정해 들어온 경우 — ?r=student|parent|teacher|demo */
   var qr=(location.search.match(/[?&]r=([a-z]+)/i)||[])[1];
+  introFind(!!qr);                      /* ⑤ 소개에서 왔으면 그 주소를 기억 */
+  if(snapHas()) STU_DEMO=true;          /* ② 샘플 보는 중에 새로고침한 경우 */
   if(qr){
     try{history.replaceState(null,"",location.pathname);}catch(e){}
     qr=qr.toLowerCase();
     if(qr==="demo"){ show("role");pushGuard();
       setTimeout(function(){var d2=$("#demoStu"); if(d2){S.role="student";show("start");d2.click();}},60);
       return; }
+    if(STU_DEMO && qr!=="demo") demoStuOff(false);   /* 샘플을 둔 채 다른 역할로 들어오면 정리 */
     if(qr==="student"){ S.role="student"; show(S.me.name?"board":"start"); pushGuard(); return; }
     if(qr==="parent"){  S.role="parent";  show("parent");  pushGuard(); return; }
     if(qr==="teacher"){ S.role="teacher"; show("teacher"); pushGuard(); return; }
   }
+  if(STU_DEMO){ S.role="student"; show("board"); pushGuard(); return; }
   show("role");pushGuard();
 })();
 })();
