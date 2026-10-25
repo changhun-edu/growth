@@ -557,6 +557,9 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
   border:1px dashed var(--line-2);border-radius:99px;padding:7px 14px;margin-bottom:11px}
 .kl-min:hover{color:var(--ink-2);border-color:var(--ink-3);background:var(--card)}
 .mf-t{margin:-2px 0 2px;font-size:12.5px;color:var(--ink-3)}
+.mf-base{color:var(--ink-2);font-weight:700}
+.fchip[disabled]{opacity:.38;cursor:default}
+.fchip[disabled]:hover{border-color:var(--line-2);color:var(--ink-2);background:var(--card)}
 .mf-g{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
 .mf-l{font-size:11.5px;font-weight:800;letter-spacing:.04em;color:var(--ink-3);
   min-width:74px;padding-top:7px}
@@ -1469,7 +1472,7 @@ button.ttl-b{cursor:pointer}
         성취기준 611개 전부. <a href="https://ncic.re.kr" target="_blank" rel="noopener">국가교육과정정보센터</a></dd>
       <dt>목표 문장과 세 단계</dt>
       <dd>한국교육과정평가원의 성취기준별 성취수준(3수준 A·B·C)을 학생이 읽을 수 있는 말로 다듬어
-        +3 +2 +1로 놓았습니다. 학교 평가계획이 다룬 목표에는 「우리 학교 평가」 표시를 붙였습니다.</dd>
+        +3 +2 +1로 놓았습니다.</dd>
       <dt>속성 · 등급 · 아이템</dt>
       <dd>이 사이트가 정한 장치입니다. 교육과정이나 실제 평가 결과와는 관계가 없습니다.</dd>
     </dl>
@@ -1518,7 +1521,7 @@ var G = window.GOALS || [];
    teacher: {pin, roster:{키=이름|학년: 학생기록}}                     */
 var S = {role:null, me:{name:"", grade:null}, my:[], view:"role",
          seals:0, mine:[], badge:"", klass:null, peek:null,
-         mapQ:"", mapSub:"", mapFilter:"all", mapOpen:{}, mapTerm:0, mapMy:false,
+         mapQ:"", mapSub:"", mapFilter:"all", mapOpen:{},
          filtOpen:false, zeroOpen:false,
          bFilter:"all", bSort:"todo", bView:"card", last:"", bagElem:"", bagSeen:0,
          ttlOpen:false,
@@ -1821,7 +1824,7 @@ function demoStuOff(toStart){
   S.last =(d&&d.last)  || "";
   S.bagSeen=(d&&d.bagSeen)||0;
   S.roster=(d&&d.roster)||{};
-  S.mapQ="";S.mapSub="";S.mapFilter="all";S.mapOpen={};S.mapTerm=0;S.mapMy=false;S.filterElem="";
+  S.mapQ="";S.mapSub="";S.mapFilter="all";S.mapOpen={};S.filterElem="";
   S.bFilter="all";S.bSort="todo";S.bView="card";
   if(!toStart){ return; }
   S.role="student";
@@ -2029,7 +2032,7 @@ $("#demoStu").addEventListener("click",function(){
   S.badge="body"; S.bagElem="";
   S.last=(S.my[S.my.length-3]||{}).gid||"";
   S.bFilter="all"; S.bSort="todo"; S.bView="card";
-  S.mapQ="";S.mapSub="";S.mapFilter="all";S.mapOpen={};S.mapTerm=0;S.mapMy=false;S.filterElem="";
+  S.mapQ="";S.mapSub="";S.mapFilter="all";S.mapOpen={};S.filterElem="";
   STU_DEMO=true;
   $("#sName").value=S.me.name;renderGrades();chkStart();
   show("board");toast("샘플입니다. 위의 띠에서 언제든 나갈 수 있어요");});
@@ -2099,7 +2102,6 @@ function mineOnly(){var b=bandOf(S.me.grade);
   return S.mine.filter(function(x){return bandOf(x.grade)===b;});}
 function filtered(){
   return pool().filter(function(x){
-    if(S.term&&x.term!==S.term)return false;
     if(S.subject&&x.subject!==S.subject)return false;
     if(S.filterElem&&elemOf(x).id!==S.filterElem)return false;
     if(S.filterKeys.length&&!x.keys.some(function(k){return S.filterKeys.indexOf(k)>=0;}))return false;
@@ -2310,8 +2312,6 @@ function mapHit(x,q){
 function mapPick(){
   var q=norm(S.mapQ);
   return pool().filter(function(x){
-    if(S.mapTerm && x.term!==S.mapTerm) return false;
-    if(S.mapMy && x.pgrade!==S.me.grade) return false;
     if(S.mapSub && x.subject!==S.mapSub) return false;
     if(S.filterElem && elemOf(x).id!==S.filterElem) return false;
     var st=stOf(x.id);
@@ -2321,12 +2321,9 @@ function mapPick(){
     return mapHit(x,q);});
 }
 function renderMap(){
-  var pAll=pool(), q=norm(S.mapQ), b=bandOf(S.me.grade);
-  /* 학기·학년을 고르면 그 범위가 곧 지도 전체가 된다 */
-  var p=pAll.filter(function(x){
-    if(S.mapTerm && x.term!==S.mapTerm) return false;
-    if(S.mapMy && x.pgrade!==S.me.grade) return false;
-    return true;});
+  /* 학기·학년은 학교 평가계획이 정하는 것이라 학교마다 달라진다.
+     그래서 지도는 성취기준 611개만을 기준으로 삼는다. */
+  var p=pool(), q=norm(S.mapQ), b=bandOf(S.me.grade);
   var subs={}; p.forEach(function(x){subs[x.subject]=(subs[x.subject]||0)+1;});
   $("#mapTitle").textContent=bandName(b);
   $("#mapSub").textContent="교과 "+Object.keys(subs).length+"개 · 목표 "+p.length+"개";
@@ -2353,10 +2350,13 @@ function renderMap(){
   renderInside(p, q);
 }
 
-/* ── 거르기 패널 ── */
+/* ── 좁혀 보기 패널 ──
+   ①② 칩의 숫자는 「조건을 걸기 전」을 센다. 걸린 조건으로 다시 세면
+   「전체 18 / 2학기 18」처럼 두 숫자가 같아져, 조건을 풀어도 그만큼뿐인 것처럼 보였다.
+   기준은 교과 안에 들어가 있으면 그 교과, 아니면 학년군 전체다. */
 function renderMapFilt(p){
   var n=0;
-  if(S.mapFilter!=="all")n++; if(S.filterElem)n++; if(S.mapTerm)n++; if(S.mapMy)n++;
+  if(S.mapFilter!=="all")n++; if(S.filterElem)n++;
   $("#mapFiltN").textContent=n?n:"";
   $("#mapFiltN").dataset.on=n?"1":"0";
   $("#mapFilt").setAttribute("aria-expanded",S.filtOpen?"true":"false");
@@ -2364,38 +2364,33 @@ function renderMapFilt(p){
   box.classList.toggle("hidden",!S.filtOpen);
   if(!S.filtOpen){ box.innerHTML=""; return; }
 
-  var ec={}; p.forEach(function(x){ec[elemOf(x).id]=1;});
-  var planned=p.filter(function(x){return x.term;});
-  var t1=planned.filter(function(x){return x.term===1;}).length;
-  var t2=planned.filter(function(x){return x.term===2;}).length;
-  var mg=planned.filter(function(x){return x.pgrade===S.me.grade;}).length;
+  /* ② 세는 기준 — 교과 안이면 그 교과, 밖이면 학년군 전체 */
+  var base=S.mapSub?p.filter(function(x){return x.subject===S.mapSub;}):p;
+  var cnt={all:base.length,have:0,done:0,none:0}, ec={};
+  base.forEach(function(x){
+    var m=myOf(x.id);
+    if(m){cnt.have++; if(m.st==="bloom")cnt.done++;} else cnt.none++;
+    var e=elemOf(x).id; ec[e]=(ec[e]||0)+1;
+  });
+  function chipN(v){ return '<span class="n">'+v+'</span>'; }
 
-  box.innerHTML='<p class="mf-t">보고 싶은 것만 남깁니다.</p>'
+  box.innerHTML='<p class="mf-t">보고 싶은 것만 남깁니다. '
+    +'<span class="mf-base">'+(S.mapSub?esc(S.mapSub)+' ':'')+'목표 '+base.length+'개 기준</span></p>'
     +'<div class="mf-g"><span class="mf-l">상태</span><div class="mf-c">'
-    +[["all","전체"],["have","담은 것"],["done","인증"],["none","안 담은 것"]].map(function(f){
-      return '<button class="fchip" data-mf="'+f[0]+'" data-on="'+(S.mapFilter===f[0]?"1":"0")+'">'
-        +f[1]+'</button>';}).join("")+'</div></div>'
+    +[["all","전체",cnt.all],["have","담은 것",cnt.have],
+      ["done","인증",cnt.done],["none","안 담은 것",cnt.none]].map(function(f){
+      return '<button class="fchip" data-mf="'+f[0]+'" data-on="'+(S.mapFilter===f[0]?"1":"0")+'"'
+        +(f[2]?'':' disabled')+'>'+f[1]+chipN(f[2])+'</button>';}).join("")+'</div></div>'
     +'<div class="mf-g"><span class="mf-l">속성</span><div class="mf-c">'
     +ELEM.filter(function(e){return ec[e.id];}).map(function(e){
       return '<button class="fchip" data-me2="'+e.id+'" data-on="'+(S.filterElem===e.id?"1":"0")+'"'
-        +' style="--ef:'+e.fg+'">'+e.icon+' '+e.name+'</button>';}).join("")+'</div></div>'
-    +(planned.length?'<div class="mf-g"><span class="mf-l">학교 평가계획</span><div class="mf-c">'
-      +[[0,"학기 전체",planned.length],[1,"1학기",t1],[2,"2학기",t2]].map(function(f){
-        return '<button class="fchip" data-tm="'+f[0]+'" data-on="'+(S.mapTerm===f[0]?"1":"0")+'">'
-          +f[1]+'<span class="n">'+f[2]+'</span></button>';}).join("")
-      +(mg?'<button class="fchip" data-my="1" data-on="'+(S.mapMy?"1":"0")+'">'
-        +S.me.grade+'학년만<span class="n">'+mg+'</span></button>':'')
-      +'</div><p class="mf-n">학기와 학년은 <b>학교 평가계획</b>이 정한 것이라, '
-      +'계획에 없는 목표는 빠집니다.</p></div>':'');
+        +' style="--ef:'+e.fg+'">'+e.icon+' '+e.name+chipN(ec[e.id])+'</button>';}).join("")
+    +'</div></div>';
 
   $$("#mapFiltBox [data-mf]").forEach(function(b2){b2.addEventListener("click",function(){
     S.mapFilter=b2.dataset.mf;renderMap();touch();});});
   $$("#mapFiltBox [data-me2]").forEach(function(b2){b2.addEventListener("click",function(){
     S.filterElem=(S.filterElem===b2.dataset.me2)?"":b2.dataset.me2;renderMap();touch();});});
-  $$("#mapFiltBox [data-tm]").forEach(function(b2){b2.addEventListener("click",function(){
-    S.mapTerm=+b2.dataset.tm;renderMap();touch();});});
-  $$("#mapFiltBox [data-my]").forEach(function(b2){b2.addEventListener("click",function(){
-    S.mapMy=!S.mapMy;renderMap();touch();});});
 }
 /* ── 지금 걸려 있는 조건 ── */
 function renderMapOn(){
@@ -2405,8 +2400,7 @@ function renderMapOn(){
   if(S.mapFilter!=="all") on.push(["mf",
     {have:"담은 것",done:"인증",none:"안 담은 것"}[S.mapFilter]]);
   if(S.filterElem) on.push(["el", elemById(S.filterElem).icon+" "+elemById(S.filterElem).name]);
-  if(S.mapTerm) on.push(["tm", S.mapTerm+"학기"]);
-  if(S.mapMy)   on.push(["my", S.me.grade+"학년만"]);
+
   var box=$("#mapOn");
   box.innerHTML=on.length
     ? on.map(function(o){return '<button class="onchip" data-off="'+o[0]+'">'
@@ -2419,22 +2413,23 @@ function renderMapOn(){
     if(k==="q"||k==="all")   S.mapQ="";
     if(k==="mf"||k==="all")  S.mapFilter="all";
     if(k==="el"||k==="all")  S.filterElem="";
-    if(k==="tm"||k==="all")  S.mapTerm=0;
-    if(k==="my"||k==="all")  S.mapMy=false;
     renderMap();touch();});});
 }
 /* ── ② 처음 오는 아이에게 시작점을 준다 ── */
 function startPicks(p){
-  var plan=p.filter(function(x){return x.plan && x.pgrade===S.me.grade;});
-  if(plan.length<3) plan=p.filter(function(x){return x.plan;});
-  if(plan.length<3) plan=p.slice();
-  var out=[], seen={};
-  /* 교과가 겹치지 않게 세 개 */
-  plan.forEach(function(x){
-    if(out.length>=3 || seen[x.subject]) return;
-    seen[x.subject]=1; out.push(x);});
-  for(var i=0;out.length<3 && i<plan.length;i++)
-    if(out.indexOf(plan[i])<0) out.push(plan[i]);
+  /* 학교 평가계획과 무관하게 성취기준 전체에서 고른다.
+     교과도 속성도 겹치지 않게 세 개 — 첫 화면이 교과 1번 목표만 늘어놓지 않게. */
+  var out=[], sSeen={}, eSeen={};
+  function take(strict){
+    p.forEach(function(x){
+      if(out.length>=3 || sSeen[x.subject]) return;
+      var e=elemOf(x).id;
+      if(strict && eSeen[e]) return;
+      sSeen[x.subject]=1; eSeen[e]=1; out.push(x);});
+  }
+  take(true); take(false);
+  for(var i=0;out.length<3 && i<p.length;i++)
+    if(out.indexOf(p[i])<0) out.push(p[i]);
   return out.slice(0,3);
 }
 function renderStart(p){
@@ -2451,7 +2446,7 @@ function renderStart(p){
           +e.icon+'</span>'
         +'<span class="mst-n">'+esc(x.alt||x.title)+'</span>'
         +'<span class="mst-m">'+esc(x.subject)
-        +(x.plan?' · <b>우리 학교 평가</b>':'')+'</span></button>';}).join("")+'</div></div>';
+        +'</span></button>';}).join("")+'</div></div>';
   $$("#mapStart [data-dg]").forEach(function(b){
     b.addEventListener("click",function(){openGoal(b.dataset.dg);});});
 }
@@ -2470,7 +2465,7 @@ function renderIsles(p, subs){
     return '<button class="isc" data-isle="'+esc(o.sn)+'">'
       +jarSvg(o.got,o.dn,o.it.length,o.sn)
       +'<span class="isc-n">'+esc(o.sn)+'</span>'
-      +'<span class="isc-c"><b>'+o.got+'</b> / '+o.it.length
+      +'<span class="isc-c">목표 '+o.it.length+'개 중 <b>'+o.got+'개</b> 담음'
       +(o.dn?' · 인증 <b class="dn">'+o.dn+'</b>':'')+'</span></button>';
   }
   /* 아직 아무것도 안 담은 아이에게는 처음부터 펼쳐 보여 준다 */
@@ -2598,7 +2593,7 @@ function trailHtml(items){
         +'<span class="tr-b"><span class="tr-n">'+esc(x.alt||x.title)+'</span>'
         +'<span class="tr-m">'
         +'<span class="tl-t" style="color:'+t.fg+';background:'+t.bg+';border-color:'+t.bd+'">'+t.name+'</span>'
-        +(x.plan?'<span class="tl-p">'+(x.term?(x.pgrade+'학년 '+x.term+'학기'):'우리 학교 평가')+'</span>':'')
+
         +(km?'<span class="tl-k">친구 '+km+'</span>':'')
         +'<span class="tr-c">'+esc(x.code)+'</span>'
         +(st?'<b class="s-'+st+'">'+stName(st)+'</b>':'')
@@ -2613,8 +2608,7 @@ function openGoal(gid){
     +'<span class="tier" style="color:'+t.fg+';background:'+t.bg+';border-color:'+t.bd+'">'+t.name+'</span>'
     +'<span class="elem" style="color:'+el.fg+';background:'+el.bg+';border-color:'+el.bd+'">'
       +el.icon+' '+el.name+'</span>'
-    +(g.plan?'<span class="tl-p">우리 학교 평가'
-      +(g.term?' · '+g.pgrade+'학년 '+g.term+'학기':'')+'</span>':'')+'</div>'
+    +'</div>'
     +'<h3>'+esc(g.alt||g.title)+'</h3>'
     +'<div class="muted" style="font-size:13px">'+esc(g.subject)+' · '+esc(g.domain)
       +(g.code?' · '+esc(g.code):'')+'</div>'
