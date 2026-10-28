@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>해냄 도감 — 내가 고른 목표, 어른에게 인증받아 모으는 1년</title>
+<title>해냄 보물상자 — 내가 고른 목표, 어른에게 인증받아 모으는 1년</title>
 <meta name="description" content="2022 개정 교육과정 성취기준을 바탕으로 만든 초등 1~6학년 목표를 학생이 스스로 고르고, 해낸 것을 학부모·교사에게 인증받아 한 해 동안 모으는 도구. 회원가입 없이 이 기기와 파일만으로 씁니다.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23F4F1EA%22%2F%3E%3Cpath%20d%3D%22M16%2021V10.4%22%20stroke%3D%22%232F7D5B%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M16%2012.8c0-3.6%202.9-6.2%206.5-6.2%200%203.6-2.9%206.2-6.5%206.2Z%22%20fill%3D%22%23C9A227%22%2F%3E%3Cpath%20d%3D%22M16%2016.8c0-3.2-2.6-5.7-5.9-5.7%200%203.2%202.6%205.7%205.9%205.7Z%22%20fill%3D%22%23C97C2C%22%2F%3E%3Cpath%20d%3D%22M3.2%2019.9c4.3-2%208.8-1.5%2012.8%201.4%204-2.9%208.5-3.4%2012.8-1.4v6.4c-4.3-1.4-8.8-1-12.8%201.2-4-2.2-8.5-2.6-12.8-1.2Z%22%20fill%3D%22%232F7D5B%22%2F%3E%3Cpath%20d%3D%22M16%2021.6v5.6%22%20stroke%3D%22%23F4F1EA%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23F4F1EA%22%2F%3E%3Cpath%20d%3D%22M4.4%2017.6h23.2v7.5a2.3%202.3%200%200%201-2.3%202.3H6.7a2.3%202.3%200%200%201-2.3-2.3v-7.5Z%22%20fill%3D%22%232F7D5B%22%2F%3E%3Crect%20x%3D%2213.8%22%20y%3D%2217.6%22%20width%3D%224.4%22%20height%3D%229.8%22%20fill%3D%22%23C9A227%22%2F%3E%3Crect%20x%3D%223.8%22%20y%3D%2211.4%22%20width%3D%2224.4%22%20height%3D%224.8%22%20rx%3D%221.8%22%20fill%3D%22%23C97C2C%22%20transform%3D%22rotate%28-12%2016%2013.8%29%22%2F%3E%3Crect%20x%3D%223.8%22%20y%3D%2211.4%22%20width%3D%2224.4%22%20height%3D%221.5%22%20rx%3D%220.75%22%20fill%3D%22%23E0B94A%22%20transform%3D%22rotate%28-12%2016%2013.8%29%22%2F%3E%3Cpath%20d%3D%22M16%202.2%2018.65%205.6%2016%209%2013.35%205.6Z%22%20fill%3D%22%23C9A227%22%2F%3E%3C%2Fsvg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <style>
 :root{
@@ -222,6 +222,10 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .sv-last.sv-never{color:#8E3030;background:#FBECEC;border-color:#E9C9C9}
 .sv-main{min-height:52px;font-size:16px}
 .sv-sub{margin:6px 0 0;font-size:12px;line-height:1.55;color:var(--ink-3);text-align:center}
+/* 셋 중 되돌릴 수 없는 것은 이것 하나뿐이다 — 형광펜을 그어 둔다 */
+.sv-hi{color:var(--ink);font-weight:800;padding:1px 3px;border-radius:3px;
+  background:linear-gradient(transparent 52%,#FBE7A8 52%);
+  -webkit-box-decoration-break:clone;box-decoration-break:clone}
 .sv-more{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
 .sv-more>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;
   font-size:13px;font-weight:700;color:var(--ink-2)}
@@ -959,7 +963,7 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
   .mp-b{padding:2px 13px 14px}
 }
 
-/* 우리 반 도감 */
+/* 우리 반 보물상자 */
 .kl{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--ink-2);
   background:var(--wait-bg);border:1px solid #B9D0EA;border-radius:12px;
   padding:10px 14px;margin:10px 0 2px;line-height:1.55}
@@ -1681,8 +1685,8 @@ button.ttl-b{cursor:pointer}
 
 <div class="topbar"><div class="topbar-in container">
   <div class="brand" id="home" role="button" tabindex="0" aria-label="처음 화면으로" title="처음 화면으로">
-    <svg class="logo" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 21V10.4" stroke="#2F7D5B" stroke-width="2.4" stroke-linecap="round"/><path d="M16 12.8c0-3.6 2.9-6.2 6.5-6.2 0 3.6-2.9 6.2-6.5 6.2Z" fill="#C9A227"/><path d="M16 16.8c0-3.2-2.6-5.7-5.9-5.7 0 3.2 2.6 5.7 5.9 5.7Z" fill="#C97C2C"/><path d="M3.2 19.9c4.3-2 8.8-1.5 12.8 1.4 4-2.9 8.5-3.4 12.8-1.4v6.4c-4.3-1.4-8.8-1-12.8 1.2-4-2.2-8.5-2.6-12.8-1.2Z" fill="#2F7D5B"/><path d="M16 21.6v5.6" stroke="#F4F1EA" stroke-width="1.3" stroke-linecap="round"/></svg>
-    <span class="nm">해냄 도감</span>
+    <svg class="logo" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4.4 17.6h23.2v7.5a2.3 2.3 0 0 1-2.3 2.3H6.7a2.3 2.3 0 0 1-2.3-2.3v-7.5Z" fill="#2F7D5B"/><rect x="13.8" y="17.6" width="4.4" height="9.8" fill="#C9A227"/><rect x="3.8" y="11.4" width="24.4" height="4.8" rx="1.8" fill="#C97C2C" transform="rotate(-12 16 13.8)"/><rect x="3.8" y="11.4" width="24.4" height="1.5" rx="0.75" fill="#E0B94A" transform="rotate(-12 16 13.8)"/><path d="M16 2.2 18.65 5.6 16 9 13.35 5.6Z" fill="#C9A227"/></svg>
+    <span class="nm">해냄 보물상자</span>
   </div>
   <div class="who" id="who"></div>
   <button class="help-b" id="helpBtn" type="button" aria-label="사용법">?</button>
@@ -1883,7 +1887,7 @@ button.ttl-b{cursor:pointer}
   <!-- 학생: 도감(옛) -->
   <section id="vDex" class="hidden">
     <div class="sec">
-      <div class="sec-h"><h2 id="dexTitle">목표 도감</h2><span id="dexSub"></span></div>
+      <div class="sec-h"><h2 id="dexTitle">목표 모음</h2><span id="dexSub"></span></div>
       <div class="dexsum" id="dexSum"></div>
       <div class="dexbar" id="dexBar"></div>
     </div>
@@ -3307,7 +3311,7 @@ function openGoal(gid){
   });
 }
 
-/* ═══════ 우리 반 도감 ═══════
+/* ═══════ 우리 반 보물상자 ═══════
    선생님이 내보낸 '이름 없는 합계' 파일. 누가 몇 개인지는 담기지 않는다. */
 function kNum(gid){
   if(!S.klass || !S.klass.c) return 0;
@@ -3340,9 +3344,9 @@ $("#klFile").addEventListener("change",function(e){
   var r=new FileReader();
   r.onload=function(ev){
     var d=null; try{ d=JSON.parse(ev.target.result); }catch(x){}
-    if(!d || d.app!=="goalboard-class"){ toast("우리 반 도감 파일이 아니에요."); return; }
+    if(!d || d.app!=="goalboard-class"){ toast("우리 반 보물상자 파일이 아니에요."); return; }
     if(d.grade && S.me.grade && d.grade!==S.me.grade){ toast(d.grade+"학년 파일이에요."); return; }
-    S.klass=d; renderDex(); touch(); toast("우리 반 도감을 겹쳐 보여 줄게요");
+    S.klass=d; renderDex(); touch(); toast("우리 반 보물상자을 겹쳐 보여 줄게요");
   };
   r.readAsText(f); e.target.value="";
 });
@@ -3879,7 +3883,7 @@ $("#mapMine").addEventListener("click",function(){openMine();});
 $("#btnBag").addEventListener("click",function(){show("bag");});
 $("#helpBtn").addEventListener("click",function(){openHelp();});
 function openHelp(){
-  modal('<h3>해냄 도감 사용법</h3><div class="hlp">'
+  modal('<h3>해냄 보물상자 사용법</h3><div class="hlp">'
     +'<div class="hflow"><span>① 고른다</span><span>② 해낸다</span>'
       +'<span>③ 확인받는다</span><span>④ 쌓인다</span></div>'
     +'<h4>학생</h4><p>목표 지도에서 하고 싶은 목표를 <b>담고</b>, 해낸 만큼 '
@@ -3948,7 +3952,7 @@ function wipeWhat(){
 function openWipe(){
   var c=wipeCount(), any=c.name||c.my||c.mine||c.roster||c.codes||c.ppin||c.tpin;
   modal('<h3>이 기기 기록 모두 지우기</h3>'
-    +'<div class="muted">이 브라우저에 저장된 <b>해냄 도감 기록 전부</b>가 사라집니다. '
+    +'<div class="muted">이 브라우저에 저장된 <b>해냄 보물상자 기록 전부</b>가 사라집니다. '
       +'서버가 없어 되돌릴 수 없습니다.</div>'
     +'<div class="wipe-l">'+(any
       ? '<b>사라지는 것</b>'
@@ -4071,7 +4075,7 @@ function renderBag(){
 /* ═══════ 도감 ═══════ */
 function renderDex(){
   var p=pool();
-  $("#dexTitle").textContent=S.me.grade+"학년 목표 도감";
+  $("#dexTitle").textContent=S.me.grade+"학년 목표 모음";
   var have=0, done=0, legend=0;
   p.forEach(function(x){
     var m=myOf(x.id);
@@ -4412,8 +4416,8 @@ function siteAddr(){
 }
 function sendNote(){
   var a=siteAddr();
-  return "「해냄 도감」 기록 파일을 보냅니다.\n"
-    +"1. 아래 주소를 엽니다.\n   "+(a?a:"(선생님이 알려 주신 「해냄 도감」 주소)")+"\n"
+  return "「해냄 보물상자」 기록 파일을 보냅니다.\n"
+    +"1. 아래 주소를 엽니다.\n   "+(a?a:"(선생님이 알려 주신 「해냄 보물상자」 주소)")+"\n"
     +"2. 첫 화면에서 ‘학부모’(선생님이면 ‘교사’)를 고릅니다.\n"
     +"3. 받은 .json 파일을 올리면 "+(S.me.name||"아이")+"의 목표와 적어 둔 내용이 보입니다.\n"
     +"4. 확인해 주신 뒤 파일을 다시 내려받아 "+(S.me.name||"아이")+"에게 보내 주세요.";
@@ -4435,13 +4439,14 @@ function openSave(lead){
     +'<div class="acts" style="margin-top:4px">'
       +'<button class="btn btn-p btn-full sv-main" id="exJ">선생님께 낼 파일 받기</button></div>'
     /* ② 이름은 가장 잦은 쓰임으로, 나머지 둘은 바로 밑줄에 — 셋 다 같은 파일이다 */
-    +'<p class="sv-sub">선생님께 낼 때, <b>부모님께 확인받을 때</b>, '
-      +'기기가 바뀌어 <b>되살릴 때</b> 쓰는 파일이에요.</p>'
+    +'<p class="sv-sub">선생님께 낼 때, <b>부모님께 확인받을 때</b>, 그리고 '
+      +'<b class="sv-hi">기기가 바뀌어 되살릴 때</b> 쓰는 파일이에요.<br>'
+      +'<b class="sv-hi">이 파일이 없으면 되살릴 수 없어요.</b></p>'
     /* 종이로 남기는 길은 접어 두지 않는다 — 아이가 가장 갖고 싶어 하는 결과물이다 */
     +'<div class="acts" style="margin-top:12px">'
       +'<button class="btn btn-w btn-full sv-main" id="exH">해냄 증서 뽑기</button></div>'
-    /* ㉠ 증서만이 아니라 보석 도감·목록도 고를 수 있다는 것을 밑줄에 */
-    +'<p class="sv-sub">증서와 <b>보석 도감</b>을 종이나 PDF로. '
+    /* ㉠ 증서만이 아니라 보석 모음·목록도 고를 수 있다는 것을 밑줄에 */
+    +'<p class="sv-sub">증서와 <b>보석 모음</b>을 종이나 PDF로. '
       +'고르면 <b>목록만</b>도 뽑을 수 있어요.</p>'
     +'<details class="sv-more"><summary>엑셀로 받기</summary>'
       +'<div class="acts" style="margin-top:10px">'
@@ -4607,7 +4612,7 @@ function reportHtml(o){
     +'.c-el{margin-top:7mm;font-size:13px;color:#5E6670}'
     +'.c-f{margin-top:auto;padding-top:12mm;font-size:12.5px;color:#5E6670;line-height:1.9}'
     +'.c-f b{font-size:15px;color:#1E2328}'
-    /* ⑤ 보석 도감 */
+    /* ⑤ 보석 모음 */
     +'.gems{display:grid;grid-template-columns:repeat(5,1fr);gap:5mm}'
     +'.gm{text-align:center;break-inside:avoid}'
     +'.gm .nm{font-size:10.5px;line-height:1.4;margin-top:1.5mm;color:#3A4047;'
@@ -4627,7 +4632,7 @@ function reportHtml(o){
   var out="";
   /* ④ 해냄 증서 */
   if(o.cert) out+='<section class="pg"><div class="cert">'
-    +'<div class="c-k">해냄 도감</div>'
+    +'<div class="c-k">해냄 보물상자</div>'
     +'<h1 class="c-t">해 냄 증 서</h1>'
     +'<div class="c-w">'+esc(S.school||"")+(S.school?" ":"")+esc(S.me.grade||"")+'학년'
       +(noOf(S.me)?" "+esc(noOf(S.me))+"번":"")+'</div>'
@@ -4640,15 +4645,15 @@ function reportHtml(o){
     +(Object.keys(ec).length?'<div class="c-el">'
       +Object.keys(ec).map(function(k){return k+" "+ec[k];}).join(" · ")+'</div>':"")
     +'<div class="c-f">'+(span?esc(span)+'<br>':"")
-      +'<b>'+dkor(today())+'</b><br>해냄 도감</div>'
+      +'<b>'+dkor(today())+'</b><br>해냄 보물상자</div>'
     +'</div></section>';
 
-  /* ⑤ 보석 도감 */
+  /* ⑤ 보석 모음 */
   if(o.gems && bl.length){
     var gl=bl.slice().sort(function(a,b){
       var ga=goalById(a.gid), gb=goalById(b.gid);
       return (tierOf(gb).id-tierOf(ga).id) || 0;});
-    out+='<section class="pg"><h2>보석 도감</h2>'
+    out+='<section class="pg"><h2>보석 모음</h2>'
       +'<p class="sub">인증받은 목표 '+bl.length+'개입니다. 색은 등급, 그림은 속성이에요.</p>'
       +'<div class="gems">'+gl.map(function(m){
         var g=goalById(m.gid); if(!g) return "";
@@ -4698,7 +4703,7 @@ function reportHtml(o){
   if(!out) out='<section class="pg"><h2>아직 담긴 내용이 없습니다</h2></section>';
   return '<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">'
     +'<title>'+esc(S.me.name||"")+' 해냄 기록</title><style>'+css+'</style></head><body>'
-    +out+'<div class="ft">해냄 도감 · 만든이 2026 최창훈 · '+today()+'<br>'
+    +out+'<div class="ft">해냄 보물상자 · 만든이 2026 최창훈 · '+today()+'<br>'
     +'목표는 2022 개정 교육과정 성취기준을 바탕으로 만든 참고 자료입니다.</div>'
     +'</body></html>';
 }
@@ -4708,7 +4713,7 @@ function openPrint(){
   var ev=S.my.filter(function(m){return m.ev && String(m.ev).trim();}).length;
   var bl=S.my.filter(function(m){return m.st==="bloom";}).length;
   var items=[["cert","해냄 증서","이름과 인증한 보석 수를 담은 상장 한 장"],
-             ["gems","보석 도감","인증받은 "+bl+"개를 보석 그림으로"],
+             ["gems","보석 모음","인증받은 "+bl+"개를 보석 그림으로"],
              ["list","목표 목록","교과·단계·확인한 사람이 담긴 표"],
              ["notes","내가 적은 글",ev?("스스로 적어 둔 "+ev+"줄"):"아직 적은 글이 없어요"]];
   modal('<h3>해냄 증서 뽑기</h3>'
@@ -4763,7 +4768,7 @@ function exportHtml(){
     +'<div class="sub">'+p.grade+'학년 · 목표 '+p.my.length+'개 중 '+c+'개 인증 · '+today()+'</div>'
     +'<table><tr><th style="width:92px">교과</th><th>목표와 내가 한 일</th>'
     +'<th style="width:54px">단계</th><th style="width:78px">상태</th><th style="width:150px">확인</th></tr>'
-    +rows+'</table><div class="f">해냄 도감 · 만든이 2026 최창훈<br>목표는 2022 개정 교육과정 성취기준과 학교 교과 평가계획을 바탕으로 만든 참고 자료입니다.</div></body></html>';
+    +rows+'</table><div class="f">해냄 보물상자 · 만든이 2026 최창훈<br>목표는 2022 개정 교육과정 성취기준과 학교 교과 평가계획을 바탕으로 만든 참고 자료입니다.</div></body></html>';
   dl(h,fname("html"),"text/html;charset=utf-8");
   toast("인쇄용 파일을 내려받았어요");
 }
@@ -4826,7 +4831,7 @@ function stName(st){return st==="bloom"?"인증 완료":st==="wait"?"확인 중"
 function exportXlsx(){
   if(typeof ExcelJS==="undefined"){toast("엑셀 기능을 불러오지 못했어요. 인터넷을 확인해 주세요.");return;}
   var p=payload(),c=p.my.filter(function(m){return m.st==="bloom";}).length;
-  var wb=new ExcelJS.Workbook();wb.creator="해냄 도감";
+  var wb=new ExcelJS.Workbook();wb.creator="해냄 보물상자";
   sheet(wb,{name:"내 목표",title:esc(p.name)+"의 해냄 기록",
     sub:p.grade+"학년   ·   목표 "+p.my.length+"개 중 "+c+"개 인증   ·   "+today(),
     header:["교과","목표","성취기준","단계","상태","내가 한 일","보호자 확인","선생님 인증"],
@@ -4840,7 +4845,7 @@ function exportXlsx(){
     style:function(cell,r,ci){if(ci===4)stStyle(cell,r[4]);}});
   var wsm=wb.addWorksheet("_data");
   var j=JSON.stringify(p),CH=28000;
-  wsm.getCell(1,1).value="해냄 도감 데이터 — 지우지 마세요";
+  wsm.getCell(1,1).value="해냄 보물상자 데이터 — 지우지 마세요";
   for(var i=0,k=0;i<j.length;i+=CH,k++)wsm.getCell(2+k,1).value=j.substr(i,CH);
   wsm.getColumn(1).width=40;wsm.state="hidden";
   saveWb(wb,fname("xlsx")).then(function(){closeModal();toast("표를 내려받았어요");})
@@ -5228,7 +5233,7 @@ function renderTeacher(){
 }
 /* 가정으로 보내는 안내 — 번호는 학생마다 다르므로 자리만 비워 둔다 */
 function pnNote(){
-  return "[해냄 도감] "+(S.school?S.school+" ":"")+"보호자 확인 번호 안내\n"
+  return "[해냄 보물상자] "+(S.school?S.school+" ":"")+"보호자 확인 번호 안내\n"
     +"아이가 목표를 해내면 보호자께서 확인해 주셔야 보석이 됩니다.\n"
     +"확인할 때 아래 여섯 자리를 넣어 주세요.\n\n"
     +"  보호자 확인 번호 : ______\n\n"
@@ -5239,7 +5244,7 @@ function pnNote(){
 function classNote(){
   var u=location.href.split("#")[0].split("?")[0];
   var ok=/^https?:/i.test(u);
-  return (S.school?"["+S.school+"] ":"")+"「해냄 도감」으로 한 해 목표를 기록합니다.\n"
+  return (S.school?"["+S.school+"] ":"")+"「해냄 보물상자」으로 한 해 목표를 기록합니다.\n"
     +"1. 아래 주소를 엽니다.\n   "+(ok?u:"(여기에 우리 학교가 쓰는 주소를 적어 주세요)")+"\n"
     +"2. 첫 화면에서 ‘학생’을 고르고 이름과 학년을 넣습니다.\n"
     +"3. 목표 지도에서 하고 싶은 목표를 담고, 해낸 만큼 +1 +2 +3을 누릅니다.\n"
@@ -5545,10 +5550,10 @@ function renderClass(){
     /* ⑥ 자주 쓰는 둘 · 가끔 쓰는 셋 · 되돌릴 수 없는 하나를 급으로 나눈다 */
     +'<div class="acts" style="margin-top:18px">'
     +'<button class="btn btn-p" id="tXls">학급 현황 엑셀로 내보내기</button>'
-    +'<button class="btn btn-w" id="tKl">우리 반 도감 파일 주기</button></div>'
+    +'<button class="btn btn-w" id="tKl">우리 반 보물상자 파일 주기</button></div>'
     +'<details class="t-more"><summary>가끔 쓰는 것</summary>'
     +'<div class="acts">'
-    +'<button class="btn" id="tPoster">학급 도감 포스터 인쇄</button>'
+    +'<button class="btn" id="tPoster">학급 보물상자 포스터 인쇄</button>'
     +'<button class="btn" id="tDraw">교실 화면에 목표 뽑기</button>'
     +'<button class="btn" id="tRoster">학급 명단 등록</button></div></details>'
     +'<div class="t-danger"><button id="tClear">모은 기록 비우기</button>'
@@ -6265,7 +6270,7 @@ function reissue(c){
 }
 
 /* A4 인증 쿠폰 */
-/* ═══════ ⑤ 우리 반 도감 파일 — 이름 없이 숫자만 ═══════ */
+/* ═══════ ⑤ 우리 반 보물상자 파일 — 이름 없이 숫자만 ═══════ */
 function klassGrade(){
   var rs=rosterList(); if(!rs.length) return null;
   var c={}, g=null;
@@ -6277,11 +6282,11 @@ function klassGrade(){
 function klassFile(){
   var k=klassGrade();
   if(!k){toast("모은 기록이 없습니다.");return;}
-  dl(JSON.stringify(k),"우리반도감_"+(k.grade||"")+"학년_"+today()+".json","application/json");
+  dl(JSON.stringify(k),"우리반보물상자_"+(k.grade||"")+"학년_"+today()+".json","application/json");
   toast("아이들에게 이 파일 하나를 나눠 주세요");
 }
 
-/* ═══════ ⑫ 학급 도감 포스터 (A3) ═══════ */
+/* ═══════ ⑫ 학급 보물상자 포스터 (A3) ═══════ */
 function dexPoster(){
   var k=klassGrade();
   if(!k){toast("모은 기록이 없습니다.");return;}
@@ -6296,7 +6301,7 @@ function dexPoster(){
       +'<div class="tt">'+esc(x.title)+'</div>'
       +(n?'<div class="n" style="color:'+e.fg+'">'+n+'명</div>':'<div class="n o">아직</div>')
       +'</div>';}).join("");
-  var h='<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><title>학급 도감 포스터</title><style>'
+  var h='<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><title>학급 보물상자 포스터</title><style>'
     +'@page{size:A3 portrait;margin:10mm}'
     +'body{font-family:"맑은 고딕",sans-serif;margin:0;color:#1E2328;background:#fff}'
     +'h1{font-size:24px;margin:0 0 3px}'
@@ -6314,16 +6319,16 @@ function dexPoster(){
     +'.c .n.o{color:#C3BFB4;font-weight:600}'
     +'.f{margin-top:12px;font-size:11px;color:#8D97A1;text-align:center}'
     +'@media print{.no{display:none}}</style></head><body>'
-    +'<h1>우리 반 해냄 도감</h1>'
+    +'<h1>우리 반 해냄 보물상자</h1>'
     +'<div class="sub">'+k.grade+'학년 목표 '+gs.length+'개 가운데 <b>'+got+'개</b>를 담았습니다 · 학생 '
     +k.n+'명 · '+today()+'</div>'
     +'<div class="bar"><i style="width:'+Math.round(got/gs.length*100)+'%"></i></div>'
     +'<div class="g">'+cells+'</div>'
-    +'<div class="f">남은 목표도 채워 볼까요? · 해냄 도감</div>'
+    +'<div class="f">남은 목표도 채워 볼까요? · 해냄 보물상자</div>'
     +'<p class="no" style="text-align:center;color:#8D97A1;font-size:12px">'
     +'이 창에서 바로 인쇄(Ctrl+P / ⌘P)하세요. 용지를 A3로 두면 가장 보기 좋습니다.</p>'
     +'</body></html>';
-  dl(h,"학급도감포스터_"+k.grade+"학년_"+today()+".html","text/html;charset=utf-8");
+  dl(h,"학급보물상자포스터_"+k.grade+"학년_"+today()+".html","text/html;charset=utf-8");
   toast("포스터 파일을 내려받았어요. 열어서 인쇄하세요");
 }
 
@@ -6386,7 +6391,7 @@ function printCoupons(){
       var q=QRC(0,"M"); q.addData(base+"?g="+encodeURIComponent(c.gid)); q.make();
       qr='<div class="cp-q">'+q.createSvgTag({cellSize:2,margin:0,scalable:true})+'</div>';
     }catch(e){}
-    return '<div class="cp"><div class="cp-t">해냄 도감 인증 쿠폰</div>'
+    return '<div class="cp"><div class="cp-t">해냄 보물상자 인증 쿠폰</div>'
       +'<div class="cp-n">'+esc(c.name)+'</div>'
       +'<div class="cp-g">'+esc(c.title)+'</div>'
       +'<div class="cp-c">'+prettyCode(c.code)+'</div>'
@@ -6417,8 +6422,8 @@ function printCoupons(){
 function classXlsx(){
   if(typeof ExcelJS==="undefined"){toast("엑셀 기능을 불러오지 못했습니다.");return;}
   var rs=rosterList();
-  var wb=new ExcelJS.Workbook();wb.creator="해냄 도감";
-  sheet(wb,{name:"학급 현황",title:"해냄 도감 학급 현황",
+  var wb=new ExcelJS.Workbook();wb.creator="해냄 보물상자";
+  sheet(wb,{name:"학급 현황",title:"해냄 보물상자 학급 현황",
     sub:"학생 "+rs.length+"명   ·   "+today(),
     header:["이름","학년","담은 목표","도전 중","확인 중","인증 완료"],
     align:["center","center","center","center","center","center"],
@@ -6440,7 +6445,7 @@ function classXlsx(){
     wrap:[false,false,false,true,false,false,false,true,false,false,false],
     widths:[13,8,11,32,16,8,12,30,17,17,11],rows:det,
     style:function(c,r,ci){if(ci===6)stStyle(c,r[6]);}});
-  saveWb(wb,"해냄도감_학급현황_"+today()+".xlsx").then(function(){toast("엑셀을 내려받았습니다");});
+  saveWb(wb,"해냄보물상자_학급현황_"+today()+".xlsx").then(function(){toast("엑셀을 내려받았습니다");});
 }
 
 
