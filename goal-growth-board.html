@@ -241,12 +241,51 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 /* 학년 */
 .grades{display:grid;grid-template-columns:repeat(6,1fr);gap:9px}
 .gbtn{background:var(--card);border:1px solid var(--line-2);border-radius:12px;
-  padding:15px 4px;text-align:center;transition:.14s}
-.gbtn b{display:block;font-size:22px;font-weight:800;line-height:1.15}
+  padding:11px 4px 10px;text-align:center;transition:.14s}
+.gbtn b{display:block;font-size:21px;font-weight:800;line-height:1.15}
 .gbtn span{font-size:11.5px;color:var(--ink-2)}
-.gbtn:hover{border-color:var(--ink-2)}
+.gbtn:hover{border-color:var(--ink-2);transform:translateY(-1px)}
 .gbtn[data-on="1"]{background:var(--ink);border-color:var(--ink);color:#fff}
 .gbtn[data-on="1"] span{color:#C5CBD2}
+
+/* ── 시작 화면 ── */
+.st-lead{margin:-4px 0 13px;font-size:14px;line-height:1.7;color:var(--ink-2)}
+.st-lead b{color:var(--ink);font-weight:800}
+.okm{font-style:normal;font-size:11.5px;font-weight:800;color:var(--bloom);
+  background:var(--bloom-bg);border:1px solid #BBDCC9;border-radius:99px;
+  padding:1px 7px;margin-left:5px}
+.okm[hidden]{display:none}
+.st-why{margin:7px 0 0;font-size:12.5px;line-height:1.6;color:var(--ink-3)}
+.st-why b{color:var(--ink-2);font-weight:700}
+.st-band{margin:9px 0 0;font-size:13px;line-height:1.65;color:#1D5B40;
+  background:var(--bloom-bg);border:1px solid #BBDCC9;border-radius:10px;padding:9px 12px}
+.st-band b{font-weight:800}
+.st-band span{color:#3C6354}
+.st-band[hidden]{display:none}
+/* ⑧ 주 행동은 넓게 */
+.btn-go{width:100%;margin-top:4px;padding:15px 20px;font-size:16px;border-radius:13px}
+/* ① 아직 못 누를 때 — 꽉 찬 회색 대신, 할 일을 적은 빈 단추 */
+.btn-go[data-wait="1"]{background:var(--card-2);border:1.5px dashed var(--line-2);
+  color:var(--ink-3);opacity:1;cursor:default}
+/* ⑨ 샘플 둘러보기 */
+.st-demo{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;text-align:left;
+  background:var(--card);border:1.5px solid var(--line-2);border-radius:var(--r);
+  padding:14px 16px;transition:.14s}
+.st-demo:hover{border-color:var(--star);transform:translateY(-1px);box-shadow:var(--sh)}
+.sd-ic{font-size:21px;line-height:1;flex-shrink:0}
+.sd-tx{flex:1;min-width:0}
+.sd-tx b{display:block;font-size:14.5px;letter-spacing:-0.02em}
+.sd-tx span{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.55;margin-top:1px}
+.sd-go{font-size:17px;color:var(--ink-3);transition:.14s}
+.st-demo:hover .sd-go{transform:translateX(3px);color:var(--ink-2)}
+.st-load{margin:13px 0 0;font-size:12.5px;color:var(--ink-3);text-align:center}
+.st-load button{font:inherit;font-weight:700;color:var(--ink-2);background:none;border:none;
+  text-decoration:underline;text-underline-offset:3px;padding:2px 4px}
+.st-load button:hover{color:var(--ink)}
+/* ⑦ 학년 칸 */
+.gic{display:block;font-size:17px;line-height:1.1;margin-bottom:1px}
+.gbd{font-size:11px;color:var(--ink-3)}
+.gbtn[data-on="1"] .gbd{color:#C5CBD2}
 
 /* 키워드 칩 */
 .chips{display:flex;gap:7px;flex-wrap:wrap}
@@ -1329,23 +1368,35 @@ button.ttl-b{cursor:pointer}
   <!-- 학생: 시작 -->
   <section id="vStart" class="hidden">
     <div class="sec" style="margin-top:26px">
-      <div class="sec-h"><h2>나를 알려 주세요</h2><span>이름은 이 기기에만 저장됩니다</span></div>
+      <div class="sec-h"><h2>나를 알려 주세요</h2></div>
+      <!-- ⑩ 여기가 어디고 다음에 무엇이 오는지 한 줄 -->
+      <p class="st-lead">고른 목표를 한 해 동안 모읍니다.
+        <b>2~3분</b>이면 첫 목표를 담을 수 있어요.</p>
       <div class="card">
-        <div class="fld"><label for="sName">이름</label><input type="text" id="sName" placeholder="김민준" autocomplete="off"></div>
-        <div class="fld"><label>학년</label><div class="grades" id="gradePick"></div></div>
-        <div class="acts" style="margin-top:6px">
-          <div class="sp"></div>
-          <button class="btn btn-p" id="startGo" disabled>목표 고르러 가기</button>
+        <div class="fld">
+          <label for="sName">이름 <i class="okm" id="okName">✓</i></label>
+          <input type="text" id="sName" placeholder="예) 김민준" autocomplete="off"
+            enterkeyhint="go" aria-describedby="nameWhy">
+          <!-- ⑪ 가장 궁금한 자리에 답을 둔다 -->
+          <p class="st-why" id="nameWhy">이름은 <b>이 기기에만</b> 저장됩니다. 어디로도 보내지 않아요.</p>
         </div>
+        <div class="fld">
+          <label>학년 <i class="okm" id="okGrade">✓</i></label>
+          <div class="grades" id="gradePick"></div>
+          <p class="st-band" id="bandNote"></p>
+        </div>
+        <button class="btn btn-p btn-go" id="startGo" disabled>이름을 적어 주세요</button>
       </div>
+      <!-- ⑨ 처음 온 사람이 가장 누르고 싶은 것을 위로 -->
+      <button class="st-demo" id="demoStu">
+        <span class="sd-ic">👀</span>
+        <span class="sd-tx"><b>먼저 둘러보고 싶다면</b>
+          <span>한 해를 보낸 3학년의 샘플 목표판을 열어 봅니다</span></span>
+        <span class="sd-go">→</span>
+      </button>
+      <p class="st-load">이미 쓰던 파일이 있나요?
+        <button type="button" id="loadHere">내 기록 파일 불러오기</button></p>
     </div>
-    <div class="sec"><div class="note">
-      이미 쓰던 파일이 있다면 <b>불러오기</b>로 이어서 할 수 있어요.
-      <div class="acts" style="margin-top:10px">
-        <button class="btn btn-s" id="loadHere">내 기록 파일 불러오기</button>
-        <button class="btn btn-s" id="demoStu">샘플 목표판 둘러보기</button>
-      </div>
-    </div></div>
   </section>
 
   <!-- 학생: 목표 둘러보기 -->
@@ -1812,6 +1863,10 @@ function show(v){
   if(v==="parent")renderParent();
   if(v==="teacher")renderTeacher();
   if(v==="role")renderResume({me:S.me,my:S.my,roster:S.roster,tpin:S.tpin});
+  /* ③ 바로 적을 수 있게 — 좁은 화면은 키보드가 튀어올라 오히려 거슬리므로 넓을 때만 */
+  if(v==="start" && window.innerWidth>820){
+    var ni=$("#sName"); if(ni && !ni.value) setTimeout(function(){try{ni.focus();}catch(e){}},80);
+  }
   if(v!=="role")pushGuard();
   window.scrollTo({top:0,behavior:"smooth"});
   touch();
@@ -1994,12 +2049,32 @@ function renderResume(d){
 
 var PENDING_G=null;   /* QR로 왔는데 아직 이름·학년을 모를 때 */
 /* ───────── 학생: 시작 ───────── */
+/* ⑦ 학년마다 자람 단계를 하나씩 — 숫자만 여섯 개 놓이지 않게 */
+var GR_IC=["🌱","🌿","🪴","🌳","🌸","🍎"];
 function renderGrades(){
   $("#gradePick").innerHTML=[1,2,3,4,5,6].map(function(g){
-    var n=G.filter(function(x){return x.band===bandOf(g);}).length;
-    return '<button class="gbtn" data-g="'+g+'" data-on="'+(S.me.grade===g?"1":"0")+'">'
-      +'<b>'+g+'</b><span>목표 '+n+'</span></button>';}).join("");
+    var b=bandOf(g);
+    return '<button class="gbtn" data-g="'+g+'" data-on="'+(S.me.grade===g?"1":"0")+'"'
+      +' aria-pressed="'+(S.me.grade===g?"true":"false")+'">'
+      +'<span class="gic">'+GR_IC[g-1]+'</span>'
+      +'<b>'+g+'</b><span class="gbd">학년</span></button>';}).join("");
+  /* ⑥ 숫자는 고른 뒤에 한 줄로 — 「목표 231」이 여섯 번 반복되며 부담을 주던 자리 */
+  var note=$("#bandNote"); if(!note) return;
+  if(S.me.grade){
+    var bb=bandOf(S.me.grade),
+        n=G.filter(function(x){return x.band===bb;}).length;
+    note.innerHTML='<b>'+(bb-1)+'~'+bb+'학년</b> 목표 <b>'+n+'개</b> 가운데에서 고릅니다. '
+      +'<span>한 번에 하나씩, 하고 싶은 것만 담으면 돼요.</span>';
+    note.hidden=false;
+  } else note.hidden=true;
 }
+/* ④ 이름 치고 Enter — 학년까지 골랐으면 그대로 넘어간다 */
+$("#sName").addEventListener("keydown",function(e){
+  if(e.key!=="Enter") return;
+  e.preventDefault();
+  if(S.me.name && S.me.grade) $("#startGo").click();
+  else { var f=$('.gbtn[data-on="0"]'); if(f) f.focus(); }
+});
 $("#gradePick").addEventListener("click",function(e){
   var b=e.target.closest("[data-g]");if(!b)return;
   var g=+b.dataset.g;
@@ -2009,7 +2084,17 @@ $("#gradePick").addEventListener("click",function(e){
   S.me.grade=g;renderGrades();chkStart();touch();
 });
 $("#sName").addEventListener("input",function(){S.me.name=this.value.trim();chkStart();touch();});
-function chkStart(){$("#startGo").disabled=!(S.me.name&&S.me.grade);}
+/* ①② 못 누르는 단추를 두는 대신, 무엇이 남았는지 단추가 말한다 */
+function chkStart(){
+  var b=$("#startGo"); if(!b) return;
+  var hasN=!!S.me.name, hasG=!!S.me.grade;
+  b.disabled=!(hasN&&hasG);
+  b.dataset.wait=b.disabled?"1":"0";
+  b.textContent = hasN&&hasG ? "목표 고르러 가기"
+                : (!hasN ? "이름을 적어 주세요" : "학년을 골라 주세요");
+  var on=$("#okName"); if(on) on.hidden=!hasN;
+  var og=$("#okGrade"); if(og) og.hidden=!hasG;
+}
 function flushPending(){
   if(!PENDING_G)return false;
   var g=goalById(PENDING_G), id=PENDING_G; PENDING_G=null;
