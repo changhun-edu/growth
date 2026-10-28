@@ -353,19 +353,58 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .myc[data-st="bloom"] .rung[data-on="1"]{background:var(--bloom);cursor:default}
 .myc[data-st="bloom"] .rung:hover{background:var(--card-2);color:var(--ink-3)}
 .myc[data-st="bloom"] .rung[data-on="1"]:hover{background:var(--bloom);color:#fff}
-/* 세 단계 설명 — 지금 단계만 진하게 */
-.slist{display:flex;flex-direction:column;gap:4px;margin:2px 0 2px}
-.slist div{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.56;
-  color:var(--ink-3)}
-.slist div i{flex-shrink:0;font-style:normal;font-weight:800;font-size:11.5px;
-  min-width:19px;text-align:center;padding:1px 0;border-radius:5px;margin-top:2px;
+/* ①④ 읽으면서 바로 고르는 세 줄 */
+.pk-h{display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;margin:14px 0 7px;
+  font-size:13.5px}
+.pk-h b{font-weight:800;letter-spacing:-0.02em}
+.pk-n{flex-shrink:0;display:inline-grid;place-items:center;width:19px;height:19px;
+  border-radius:50%;background:var(--ink);color:#fff;font-size:11px;font-weight:800;
+  align-self:center}
+.pk-s{font-size:12px;color:var(--ink-3);font-weight:400}
+.pk-go{font-size:12px;font-weight:800;color:var(--bloom);
+  background:var(--bloom-bg);border:1px solid #BBDCC9;border-radius:99px;padding:2px 9px}
+.pick{display:flex;flex-direction:column;gap:6px}
+.pk{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;
+  background:var(--card);border:1.5px solid var(--line);border-radius:12px;
+  padding:11px 13px;transition:.14s;min-height:46px}
+.pk:hover{border-color:var(--grow);background:#FFFCF7}
+.pk-b{flex-shrink:0;font-size:12px;font-weight:800;line-height:1.5;min-width:26px;
+  text-align:center;padding:2px 0;border-radius:7px;color:var(--ink-3);
   background:var(--card-2);border:1px solid var(--line)}
-.slist div[data-now="1"]{color:var(--ink);font-weight:600}
-.slist div[data-now="1"] i{background:var(--grow-bg);border-color:var(--grow);color:#854F0B}
-.myc[data-st="bloom"] .slist div[data-now="1"] i{background:var(--bloom-bg);
-  border-color:var(--bloom);color:#1D5B40}
+.pk-t{flex:1;min-width:0;font-size:13px;line-height:1.58;color:var(--ink-2)}
+.pk-c{flex-shrink:0;width:21px;height:21px;border-radius:50%;margin-top:1px;
+  border:1.5px solid var(--line-2);background:var(--card);position:relative}
+.pk[data-on="1"]{border-color:var(--grow);background:var(--grow-bg)}
+.pk[data-on="1"] .pk-b{background:var(--grow);border-color:var(--grow);color:#fff}
+.pk[data-on="1"] .pk-t{color:var(--ink)}
+.pk[data-on="1"] .pk-c{border-color:var(--grow);background:var(--grow)}
+.pk[data-on="1"] .pk-c::after{content:"";position:absolute;left:6px;top:2.5px;
+  width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
+.pk[data-now="1"]{box-shadow:0 0 0 3px var(--grow-bg)}
+.myc[data-st="wait"] .pk[data-on="1"]{border-color:var(--wait);background:var(--wait-bg)}
+.myc[data-st="wait"] .pk[data-on="1"] .pk-b,
+.myc[data-st="wait"] .pk[data-on="1"] .pk-c{background:var(--wait);border-color:var(--wait)}
+.myc[data-st="wait"] .pk[data-now="1"]{box-shadow:0 0 0 3px var(--wait-bg)}
+.myc[data-st="bloom"] .pk{cursor:default}
+.myc[data-st="bloom"] .pk:hover{border-color:var(--line);background:var(--card)}
+.myc[data-st="bloom"] .pk[data-on="1"]{border-color:var(--bloom);background:var(--bloom-bg)}
+.myc[data-st="bloom"] .pk[data-on="1"] .pk-b,
+.myc[data-st="bloom"] .pk[data-on="1"] .pk-c{background:var(--bloom);border-color:var(--bloom)}
+.myc[data-st="bloom"] .pk[data-now="1"]{box-shadow:none}
+.pk-u{margin:7px 0 0;font-size:11.5px;color:var(--ink-3)}
+
+/* ⑥ 두 길을 나란히, 각자 언제 쓰는지와 함께 */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:4px}
+.two-c{display:flex;flex-direction:column;gap:5px}
+.two-c .btn{min-height:46px}
+.two-c>span{font-size:11.5px;line-height:1.5;color:var(--ink-3);text-align:center}
+.two-c>span b{color:var(--ink-2);font-weight:700}
+/* ② 못 누를 때 — 꽉 찬 회색 대신 할 일을 적은 빈 단추 */
+.btn-wait,.btn-wait[disabled]{background:var(--card-2);border:1.5px dashed var(--line-2);
+  color:var(--ink-3);opacity:1;cursor:default;font-size:13.5px}
+@media (max-width:560px){ .two{grid-template-columns:1fr} }
 /* 적은 글 */
-.ev-add{font-size:13px;font-weight:700;color:var(--ink-2);padding:7px 0;
+.ev-add{font-size:13px;font-weight:700;color:var(--ink-2);padding:7px 0;text-align:left;
   text-decoration:underline;text-underline-offset:3px;background:none}
 .ev-add:hover{color:var(--ink)}
 .ev-ro{margin-top:11px;font-size:14px;line-height:1.66;color:var(--ink-2);
@@ -3118,25 +3157,38 @@ var openMore = {}, evOpen = {};
 var RUNG_TXT = ["+1","+2","+3"];   /* 뜻은 바로 아래 성취수준 줄이 말해 준다 */
 function full(m,i){ return !!openMore[i]; }
 
-function ladderHtml(g,m,i){
-  if(!full(m,i)) return "";
-  return '<div class="ladder">'+g.steps.map(function(s,k){
-    return '<button class="rung" data-rung="'+(k+1)+'" data-on="'+(m.rung>=k+1?"1":"0")+'"'
-      +' title="'+esc(s)+'" aria-label="'+(k+1)+'단계 — '+esc(s)+'"'
-      +(m.st==="bloom"?' aria-disabled="true"':"")+'>'+RUNG_TXT[k]+'</button>';}).join("")+'</div>';
-}
+/* ①④ 고르는 곳과 읽는 곳을 하나로 —
+   예전에는 +1 +2 +3 띠와 성취수준 목록이 따로 있어서,
+   설명이 있는 쪽(목록)은 눌리지 않고 눌리는 쪽(띠)은 숫자뿐이었다. */
+function ladderHtml(g,m,i){ return ""; }
 function stepList(g,m,i){
-  return '<div class="slist">'+g.steps.map(function(s,k){
-    var now = (m.rung?m.rung:1)===k+1;
-    return '<div data-now="'+(now?"1":"0")+'"><i>+'+(k+1)+'</i><span>'+esc(s)+'</span></div>';
-  }).join("")+'</div>';
+  var done=(m.st==="bloom"), r=m.rung||0;
+  var head = done
+    ? '<p class="pk-h"><b>해낸 단계</b></p>'
+    : '<p class="pk-h"><span class="pk-n">1</span><b>어디까지 했는지 골라 주세요</b>'
+      +'<span class="pk-s">+1만 골라도 확인받을 수 있어요</span></p>';
+  var rows = g.steps.map(function(t,k){
+    var on=r>=k+1, now=r===k+1;
+    return '<button class="pk" data-rung="'+(k+1)+'" data-on="'+(on?"1":"0")
+      +'" data-now="'+(now?"1":"0")+'"'+(done?' aria-disabled="true"':"")
+      +' aria-pressed="'+(on?"true":"false")+'">'
+      +'<span class="pk-b">+'+(k+1)+'</span>'
+      +'<span class="pk-t">'+esc(t)+'</span>'
+      +'<span class="pk-c" aria-hidden="true"></span></button>';}).join("");
+  return head+'<div class="pick">'+rows+'</div>'
+    +(done||!r?'':'<p class="pk-u">잘못 골랐다면 그 칸을 한 번 더 누르면 꺼집니다.</p>');
 }
 function evHtml(m,i){
   if(m.st==="bloom")
     return m.ev ? '<div class="ev-ro"><b>내가 적은 것</b>'+esc(m.ev)+'</div>' : "";
+  /* ④ 번호가 1 → 3으로 건너뛰지 않게, 접혀 있어도 ②는 자리를 지킨다 */
+  var head='<p class="pk-h"><span class="pk-n">2</span><b>무엇을 했는지 적어 두기</b>'
+    +'<span class="pk-s">없어도 괜찮아요</span></p>';
   if(m.ev || evOpen[i])
-    return '<div class="ev"><textarea data-ev="'+i+'" placeholder="무엇을 했는지 한두 줄 적어 두면 확인받기 쉬워요">'+esc(m.ev)+'</textarea></div>';
-  return '<button class="ev-add" data-evopen="'+i+'">+ 한 줄 적어 두기</button>';
+    return head
+      +'<div class="ev"><textarea data-ev="'+i+'" placeholder="예) 설명하는 글을 쓰고 친구에게 읽어 주었어요">'
+      +esc(m.ev)+'</textarea></div>';
+  return head+'<button class="ev-add" data-evopen="'+i+'">+ 한 줄 적어 두기</button>';
 }
 function actsHtml(m,i){
   if(!openMore[i]){
@@ -3157,12 +3209,20 @@ function actsHtml(m,i){
       +'<button class="myc-more" data-more="'+i+'" style="margin:0">접기</button>'
       +'<div class="sp"></div>'
       +'<button class="btn btn-q btn-s" data-del="'+i+'">빼기</button></div>';
-  return (S.my.length<=3
-      ?'<p class="myc-tip">옆에 어른이 계시면 <b>확인 요청하기</b>, '
-       +'선생님께 코드를 받았으면 <b>인증 코드 입력</b>을 누르세요.</p>':'')
-    +'<div class="acts" style="margin-top:12px">'
-    +'<button class="btn btn-s '+(m.rung?"btn-w":"")+'" data-ask="'+i+'"'+(m.rung?"":" disabled")+'>확인 요청하기</button>'
-    +'<button class="btn btn-s" data-code="'+i+'">인증 코드 입력</button>'
+  /* ②⑤⑥⑩ 왜 못 누르는지 말하고, 두 길의 쓰임을 각 단추 밑에 적는다 */
+  var ok=!!m.rung;
+  return '<p class="pk-h"><span class="pk-n">3</span><b>어른에게 확인받기</b>'
+      +(ok?'<span class="pk-go">이제 확인을 요청할 수 있어요</span>':'')+'</p>'
+    +(S.my.length<=3
+      ?'<p class="myc-tip"><b>먼저 위에서 해낸 만큼 고른 다음</b>, 옆에 어른이 계시면 '
+       +'<b>확인 요청하기</b>, 선생님께 코드를 받았으면 <b>인증 코드 입력</b>을 누르세요.</p>':'')
+    +'<div class="two">'
+    +'<div class="two-c"><button class="btn '+(ok?"btn-p":"btn-wait")+' btn-full" data-ask="'+i+'"'
+      +(ok?"":" disabled")+'>'+(ok?"확인 요청하기":"어디까지 했는지 먼저 골라 주세요")+'</button>'
+      +'<span>부모님·선생님이 <b>옆에 계실 때</b></span></div>'
+    +'<div class="two-c"><button class="btn btn-full" data-code="'+i+'">인증 코드 입력</button>'
+      +'<span>선생님이 <b>코드를 주셨을 때</b></span></div></div>'
+    +'<div class="acts" style="margin-top:10px">'
     +'<div class="sp"></div>'
     +'<button class="myc-more" data-more="'+i+'" style="margin:0 4px 0 0">접기</button>'
     +'<button class="btn btn-q btn-s" data-del="'+i+'">빼기</button></div>';
@@ -3377,7 +3437,9 @@ $("#myList").addEventListener("click",function(e){
   if(b.dataset.rung!==undefined){
     if(m.st==="bloom"){toast("인증이 끝난 목표예요.");return;}
     var r=+b.dataset.rung;
-    m.rung=(m.rung===r)?0:r;
+    /* 체크 줄로 바뀐 뒤로는 '그 줄만 끈다'가 자연스럽다 —
+       켜진 맨 윗줄을 다시 누르면 한 칸 내려가고, 전부 지워지지 않는다. */
+    m.rung=(m.rung===r)?r-1:r;
     m.st=m.rung?(m.st==="wait"?"wait":"grow"):"seed";
     S.last=m.gid;
     if(m.rung>(m.sl||0)){                       /* 처음 올라간 칸만큼 도장 */
