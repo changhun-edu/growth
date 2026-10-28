@@ -1223,12 +1223,59 @@ button.ttl-b{cursor:pointer}
 .t-wait b{font-weight:800}
 .t-wait span{display:block;margin-top:3px;font-size:12.5px;color:#3C6354}
 
-/* ⑥ 코드 발급 머리말 */
+/* ③④ 접을 수 있는 세 걸음 설명 */
 .c-how{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r);
-  padding:14px 16px;margin-bottom:14px;font-size:13px;line-height:1.75;color:var(--ink-2)}
-.c-how b{color:var(--ink)}
-.c-how .c-h{display:block;font-size:14px;font-weight:800;color:var(--ink);margin-bottom:4px;
-  letter-spacing:-0.02em}
+  padding:13px 16px;margin-bottom:14px}
+.c-how>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:8px;
+  font-size:14px;font-weight:800;letter-spacing:-0.02em}
+.c-how>summary::-webkit-details-marker{display:none}
+.c-how>summary::after{content:"▾";margin-left:auto;color:var(--ink-3);font-weight:400}
+.c-how[open]>summary::after{content:"▴"}
+.c-steps{list-style:none;counter-reset:cs;margin:11px 0 0;padding:0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:720px){.c-steps{grid-template-columns:1fr;gap:9px}}
+.c-steps li{counter-increment:cs;display:flex;flex-direction:column;gap:1px;
+  padding-left:30px;position:relative}
+.c-steps li::before{content:counter(cs);position:absolute;left:0;top:0;
+  width:21px;height:21px;border-radius:50%;background:var(--ink);color:#fff;
+  font-size:11.5px;font-weight:800;display:grid;place-items:center}
+.c-steps li b{font-size:13.5px;letter-spacing:-0.02em}
+.c-steps li span{font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+.c-note{margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--line);
+  font-size:12.5px;line-height:1.65;color:var(--ink-3)}
+.c-note b{color:var(--ink-2);font-weight:700}
+
+/* ⑤⑥ 차례와 다 한 칸 */
+.cstep{border-radius:12px;padding:10px 12px;margin:0 -12px 6px;transition:.14s}
+.cstep[data-need="1"]{background:var(--wait-bg);box-shadow:inset 0 0 0 1.5px #B9D0EA}
+.cstep[data-ok="1"] .c-num{background:var(--bloom)}
+.c-num{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;
+  background:var(--ink-3);color:#fff;font-size:11px;font-weight:800;font-style:normal;
+  margin-right:6px;vertical-align:-3px}
+.c-ok{font-style:normal;font-size:11.5px;font-weight:800;color:var(--bloom);
+  background:var(--bloom-bg);border:1px solid #BBDCC9;border-radius:99px;
+  padding:1px 7px;margin-left:6px}
+.c-ok[hidden]{display:none}
+/* ⑦ 한 번 고른 담임 학년 */
+.c-one{display:flex;align-items:center;gap:10px}
+.c-one b{font-size:15px;letter-spacing:-0.02em}
+/* .fld(세로)와 .srch(align-items:center)가 겹쳐 라벨이 가운데로 가던 자리 */
+.fld.srch{align-items:stretch;padding:10px 12px}
+.fld.srch>label{text-align:left}
+/* ⑧ 설명이 붙은 스위치 */
+.c-sw{display:flex;align-items:flex-start;gap:9px;margin-top:12px;padding-top:12px;
+  border-top:1px solid var(--line);font-size:12.5px;line-height:1.6;color:var(--ink-3);
+  cursor:pointer}
+.c-sw input{margin-top:2px;width:17px;height:17px;flex-shrink:0;accent-color:var(--ink)}
+.c-sw b{color:var(--ink-2);font-weight:700}
+/* ⑩ 빈 화면에서 지금 어디인지 */
+.te-step{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;
+  margin-bottom:14px}
+.te-step span{font-size:11.5px;font-weight:700;color:var(--ink-3);
+  background:var(--card-2);border:1px solid var(--line);border-radius:99px;padding:4px 11px}
+.te-step span[data-on="1"]{color:var(--bloom);background:var(--bloom-bg);border-color:#BBDCC9}
+.te-step span[data-on="1"]::before{content:"✓ "}
+.te-step span[data-now="1"]{color:#fff;background:var(--ink);border-color:var(--ink)}
 
 /* ⑦ 빈 현황에서 나갈 길 */
 .t-empty{text-align:center;padding:30px 20px;background:var(--card);
@@ -1746,6 +1793,7 @@ button.ttl-b{cursor:pointer}
         <button class="tab" data-tt="class">우리 반 현황<i class="tb-c" id="tbC1"></i></button>
         <button class="tab" data-tt="code">코드 발급<i class="tb-c" id="tbC2"></i></button>
       </div>
+      <div id="tCollect">
       <!-- ③ 둘러보기는 PIN 잠금 밖에 둔다 — 처음 온 교사가 먼저 하고 싶은 일 -->
       <button class="t-peek" id="tPeek">
         <span class="tp-ic">👀</span>
@@ -1754,7 +1802,6 @@ button.ttl-b{cursor:pointer}
         <span class="tp-go">→</span>
       </button>
       <div id="tBanner"></div>
-      <div id="tCollect">
       <!-- ① 교사가 자기 자리를 그림에서 찾게 — 이것을 모르면 PIN의 뜻을 알 수 없다 -->
       <div class="tflow">
         <p class="tf-h">한 바퀴가 이렇게 돕니다</p>
@@ -1891,7 +1938,7 @@ var S = {role:null, me:{name:"", grade:null}, my:[], view:"role",
          filtOpen:false, zeroOpen:false,
          bFilter:"all", bSort:"todo", bView:"card", last:"", bagElem:"", bagSeen:0,
          ttlOpen:false,
-         filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect", tsent:false, pby:"",
+         filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect", tsent:false, pby:"", cHow:false,
          tgrade:null, tnames:[], codes:[], numCode:false, tFilter:"wait", tSort:"wait"};
 
 /* 2022 개정 교육과정의 성취기준은 학년이 아니라 학년군 단위다 */
@@ -2073,7 +2120,7 @@ function touch(){if(!Store.ok)return;clearTimeout(tm);
       seals:S.seals,mine:S.mine,badge:S.badge,klass:S.klass,peek:S.peek,last:S.last,
       bagSeen:S.bagSeen,
       tpin:S.tpin,ppin:S.ppin,roster:keep,tgrade:S.tgrade,tnames:S.tnames,
-      codes:S.codes.slice(-60),numCode:S.numCode,tsent:!!S.tsent,pby:S.pby||"",
+      codes:S.codes.slice(-60),numCode:S.numCode,tsent:!!S.tsent,pby:S.pby||"",cHow:!!S.cHow,
       at:new Date().toISOString()});},400);}
 
 /* ⑤ 소개 페이지에서 들어왔으면 그 주소를 기억해 둔다 — 머리글에 「소개」가 생긴다 */
@@ -4686,6 +4733,11 @@ function renderClass(){
   var rs=rosterList(), miss=missingNames();
   if(!rs.length && !miss.length){
     $("#tClass").innerHTML='<div class="t-empty">'
+      /* ⑩ 비어 있는 것이 '고장'이 아니라 '기다리는 중'으로 읽히게 */
+      +'<div class="te-step">'
+      +'<span data-on="'+(S.tpin?"1":"0")+'">PIN 정하기</span>'
+      +'<span data-on="'+(S.tsent?"1":"0")+'">안내 보내기</span>'
+      +'<span data-now="1">파일 기다리는 중</span></div>'
       +'<b>아직 모은 기록이 없습니다</b>'
       +'<p>학생이 「기록 내보내기」로 만든 파일을 올리면 여기에 우리 반이 한눈에 보입니다.</p>'
       +'<div class="acts"><button class="btn btn-p" id="teGo">기록 모으기로 가기</button>'
@@ -5012,17 +5064,24 @@ function bigCode(code,name,title){
   el.querySelector("#bcX").addEventListener("click",function(){el.remove();});
   el.addEventListener("click",function(e){if(e.target===el)el.remove();});
 }
+var CNAME="";   /* 학년을 다시 고르면 폼을 다시 그리는데, 적어 둔 이름은 지키게 */
+function cN(n){ return '<i class="c-num">'+n+'</i>'; }
+function cOk(on){ return '<i class="c-ok"'+(on?'':' hidden')+'>✓</i>'; }
 function renderCode(){
   var gr = S.tgrade;
   var sel = {gid:null, title:"", subject:""};
   var nRs=Object.keys(S.roster||{}).length;
   $("#tCode").innerHTML=
-    /* ⑥ 코드를 왜·언제 만드는지 모른 채 칸부터 만나던 자리 */
-    '<div class="c-how"><b class="c-h">인증 코드는 언제 만드나요?</b>'
-      +'학생이 목표를 다 해내고 <b>확인 기다리는 중</b>으로 요청하면, 여기서 그 학생과 목표를 골라 '
-      +'코드를 만들어 알려 줍니다. 학생이 자기 화면에서 <b>인증 코드 입력</b>에 그 코드를 넣으면 '
-      +'인증이 끝나고 보석이 됩니다. 코드는 <b>학생 이름 · 학년 · 목표 · 선생님 PIN</b>이 모두 맞아야 통과합니다.'
-    +'</div>'
+    /* ③④ 한 번 읽으면 그만인 글이 매번 104픽셀을 차지하던 자리 — 접고, 세 걸음으로 */
+    '<details class="c-how"'+(S.cHow?"":" open")+' id="cHow">'
+      +'<summary>인증 코드는 언제 만드나요?</summary>'
+      +'<ol class="c-steps">'
+      +'<li><b>학생이 요청합니다</b><span>목표를 다 해내고 <b>확인 기다리는 중</b>으로 바꿉니다.</span></li>'
+      +'<li><b>선생님이 코드를 만듭니다</b><span>아래에서 그 학생과 목표를 골라 코드를 만들어 알려 줍니다.</span></li>'
+      +'<li><b>학생이 코드를 넣습니다</b><span>학생 화면의 <b>인증 코드 입력</b>에 넣으면 인증이 끝나고 보석이 됩니다.</span></li>'
+      +'</ol>'
+      +'<p class="c-note">코드는 <b>학생 이름 · 학년 · 목표 · 선생님 PIN</b>이 모두 맞아야 통과합니다.</p>'
+    +'</details>'
     +(S.tpin?"":'<div class="note note-w" style="margin-bottom:14px">'
       +'아직 <b>교사 서명 PIN</b>을 정하지 않았습니다. 「기록 모으기」 탭에서 먼저 정해 주세요.</div>')
     +(nRs?"":'<div class="note" style="margin-bottom:14px">'
@@ -5031,34 +5090,50 @@ function renderCode(){
       +'필요하면 아래에서 바로 만들어도 됩니다. '
       +'<button type="button" class="t-link" id="cGoCollect">기록 모으기로 가기</button></div>')
     +'<div class="card" style="margin-bottom:16px">'
-    +'<div class="acts" style="margin-bottom:14px">'
-      +'<span style="font-size:13.5px;font-weight:700;color:var(--ink-2)">담임 학년</span>'
-      +[1,2,3,4,5,6].map(function(g){
-         return '<button class="fchip" data-cg="'+g+'" data-on="'+(gr===g?"1":"0")+'">'+g+'학년</button>';}).join("")
-      +'<div class="sp"></div>'
-      +'<label class="toggle"><input type="checkbox" id="cNum"'+(S.numCode?" checked":"")+'>숫자 코드</label>'
+    /* ⑤⑦ 한 해 동안 안 바뀌는 값이 매번 여섯 칸을 차지하던 자리 */
+    +'<div class="fld cstep" data-k="g">'
+      +'<label>'+cN(1)+'담임 학년'+cOk(!!gr)+'</label>'
+      +(gr?'<div class="c-one"><b>'+gr+'학년</b>'
+          +'<button type="button" class="t-link" id="cgEdit">바꾸기</button></div>'
+         :'<div class="chips" id="cgPick">'+[1,2,3,4,5,6].map(function(g){
+            return '<button class="fchip" data-cg="'+g+'">'+g+'학년</button>';}).join("")+'</div>')
     +'</div>'
-    +'<div class="fld"><label for="cName">학생 이름</label>'
-      +'<input type="text" id="cName" placeholder="김민준" autocomplete="off"></div>'
-    +'<div class="fld srch"><label for="cGoal">목표 <span class="hint">낱말을 넣으면 걸러집니다</span></label>'
-      +'<input type="text" id="cGoal" placeholder="예: 읽기, 발표, 관찰" autocomplete="off">'
+    +'<div class="fld cstep" data-k="n"><label for="cName">'+cN(2)+'학생 이름'+cOk(!!CNAME)+'</label>'
+      +'<input type="text" id="cName" placeholder="예) 김민준" autocomplete="off"'
+      +' value="'+esc(CNAME)+'"></div>'
+    /* ⑨ 가운데 정렬 안내가 라벨인지 모호하던 자리 — 칸 안으로 내린다 */
+    +'<div class="fld srch cstep" data-k="s"><label for="cGoal">'+cN(3)+'목표 고르기'+cOk(false)+'</label>'
+      +'<input type="text" id="cGoal" placeholder="낱말을 넣으면 걸러집니다 — 예) 읽기, 발표, 관찰" autocomplete="off">'
       +'<div class="srch-l hidden" id="cList"></div></div>'
     +'<div id="cSel"></div>'
     +'<button class="btn btn-p btn-full btn-go" id="cMake" disabled data-wait="1"'
-      +' style="margin-top:4px">학생 이름을 적어 주세요</button>'
+      +' style="margin-top:4px">담임 학년을 골라 주세요</button>'
+    /* ⑧ 설명 없는 네이티브 체크박스 하나뿐이던 자리 */
+    +'<label class="c-sw"><input type="checkbox" id="cNum"'+(S.numCode?" checked":"")+'>'
+      +'<span><b>숫자만 쓰기</b> — 1·2학년이 입력하기 쉬워요</span></label>'
     +'</div>'
     +'<div id="cHist"></div>';
 
   function upd(){
-    /* ⑩ 못 누르는 회색 단추 대신, 무엇이 남았는지 단추가 말한다 */
+    /* 못 누르는 회색 단추 대신, 무엇이 남았는지 단추가 말한다 */
     var hasN=!!$("#cName").value.trim(), hasG=!!gr, hasS=!!sel.gid;
     var b=$("#cMake");
     b.disabled=!(hasN&&hasG&&hasS);
     b.dataset.wait=b.disabled?"1":"0";
+    var need = !hasG ? "g" : (!hasN ? "n" : (!hasS ? "s" : ""));
     b.textContent = !hasG ? "담임 학년을 골라 주세요"
                   : !hasN ? "학생 이름을 적어 주세요"
                   : !hasS ? "목표를 골라 주세요"
                   : "인증 코드 만들기";
+    /* ⑤⑥ 다 한 칸에는 ✓, 지금 해야 할 칸은 테두리로 가리킨다 */
+    var ok={g:hasG,n:hasN,s:hasS};
+    $$("#tCode .cstep").forEach(function(f){
+      var k=f.dataset.k;
+      f.dataset.need = (k===need) ? "1" : "0";
+      f.dataset.ok   = ok[k] ? "1" : "0";
+      var c=f.querySelector(".c-ok");
+      if(c) c.hidden = !ok[k];
+    });
   }
   function setSel(g){
     sel={gid:g?g.id:null,title:g?g.title:"",subject:g?g.subject:""};
@@ -5074,9 +5149,15 @@ function renderCode(){
     window.scrollTo({top:0,behavior:"smooth"});});
   $$("#tCode [data-cg]").forEach(function(b){
     b.addEventListener("click",function(){
+      CNAME=($("#cName")||{}).value||"";
       gr=+b.dataset.cg; S.tgrade=gr;
-      $$("#tCode [data-cg]").forEach(function(x){x.dataset.on=x===b?"1":"0";});
-      setSel(null); $("#cGoal").value=""; hideList(); touch(); upd();});});
+      setSel(null); touch(); renderCode();});});
+  var ge=$("#cgEdit");
+  if(ge) ge.addEventListener("click",function(){
+    CNAME=($("#cName")||{}).value||"";
+    gr=null; S.tgrade=null; touch(); renderCode();});
+  var ch=$("#cHow");
+  if(ch) ch.addEventListener("toggle",function(){ S.cHow=!ch.open; touch(); });
   $("#cNum").addEventListener("change",function(){
     S.numCode=this.checked; touch();
     toast(S.numCode?"숫자 6자리 코드로 바꿉니다(저학년용)":"영문·숫자 코드로 바꿉니다");});
@@ -5111,7 +5192,7 @@ function renderCode(){
   $("#cMake").addEventListener("click",function(){
     var nm=$("#cName").value.trim();
     addCode(nm,gr,sel.gid,sel.title,sel.subject);
-    $("#cName").value=""; $("#cGoal").value=""; setSel(null);
+    $("#cName").value=""; CNAME=""; $("#cGoal").value=""; setSel(null);
     renderHist(); upd(); $("#cName").focus();
     toast(nm+" 학생의 코드를 만들었습니다");});
 
@@ -5411,7 +5492,7 @@ window.addEventListener("popstate",function(){
       if(!goalById(m.gid) || seen[m.gid]) return false;
       seen[m.gid]=1; return true;});
     S.tpin=d.tpin||"";S.ppin=d.ppin||"";S.roster=d.roster||{};
-    S.tgrade=d.tgrade||null;S.tnames=d.tnames||[];S.tsent=!!d.tsent;S.pby=d.pby||"";
+    S.tgrade=d.tgrade||null;S.tnames=d.tnames||[];S.tsent=!!d.tsent;S.pby=d.pby||"";S.cHow=!!d.cHow;
     S.codes=d.codes||[];S.numCode=!!d.numCode;
     $("#sName").value=S.me.name||"";renderGrades();chkStart();
   }
