@@ -1022,8 +1022,33 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .titles.hidden{display:none}
 
 /* ── ⑤ 접힌 카드 ── */
+/* ① 접힌 카드는 통째로 눌린다 */
+.myc-tap{cursor:pointer;transition:.14s;-webkit-tap-highlight-color:transparent}
+.myc-tap:hover{border-color:var(--ink-3);transform:translateY(-1px);
+  box-shadow:0 1px 2px rgba(42,38,30,.05),0 8px 20px -10px rgba(42,38,30,.3)}
+.myc-tap:active{transform:translateY(0)}
+.myc-tap:focus-visible{outline:2px solid var(--wait);outline-offset:3px}
 .myc-fold{display:flex;align-items:center;gap:10px;margin-top:9px;flex-wrap:wrap}
 .mf-code{font-size:11.5px;color:var(--ink-3)}
+/* ③ 펼쳐진다는 신호 — 44px 자리를 지킨다 */
+.mf-go{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 2px 0 10px;
+  font-size:13px;font-weight:700;color:var(--ink-2);white-space:nowrap}
+.mf-ch{width:26px;height:26px;border-radius:50%;background:var(--card-2);
+  border:1px solid var(--line-2);display:inline-grid;place-items:center;
+  font-style:normal;transition:.16s;flex-shrink:0}
+.mf-ch::before{content:"";width:7px;height:7px;margin-top:-3px;
+  border:solid var(--ink-2);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.myc-tap:hover .mf-ch{background:var(--ink);border-color:var(--ink)}
+.myc-tap:hover .mf-ch::before{border-color:#fff}
+/* ⑥ 다음 한 걸음 */
+.mf-nx{margin-top:7px;padding-top:8px;border-top:1px dashed var(--line);
+  font-size:12.5px;line-height:1.55;color:var(--ink-3)}
+.myc[data-st="wait"] .mf-nx{color:#1B5085}
+.myc[data-st="grow"] .mf-nx{color:#854F0B}
+@media (max-width:560px){
+  .mf-go{padding-left:0;font-size:12.5px}
+  .mf-code{display:none}
+}
 .mrung{display:flex;gap:3px;flex-shrink:0}
 .mrung i{width:17px;height:5px;border-radius:3px;background:var(--line);display:block}
 .mrung.s-grow i.on{background:var(--grow)}
@@ -3190,19 +3215,32 @@ function evHtml(m,i){
       +esc(m.ev)+'</textarea></div>';
   return head+'<button class="ev-add" data-evopen="'+i+'">+ 한 줄 적어 두기</button>';
 }
+/* ⑥ 접힌 카드에 다음 한 걸음을 한 줄로 — 열지 않고도 무엇을 할 차례인지 알게 */
+function nextLine(m){
+  var r=m.rung||0;
+  if(m.st==="bloom") return "";
+  if(m.st==="wait")  return m.pv
+    ? "부모님 확인을 받았어요 · 선생님 인증을 기다리는 중"
+    : "어른의 확인을 기다리는 중이에요";
+  if(!r)      return "아직 시작 전 · 해낸 만큼 골라 보세요";
+  if(r<3)     return "+"+r+"까지 했어요 · 다음 +"+(r+1)+"에 도전하거나 지금 확인받아도 돼요";
+  return "+3까지 다 했어요 · 이제 확인을 요청할 수 있어요";
+}
 function actsHtml(m,i){
   if(!openMore[i]){
     var dots=(m.st==="bloom")?'<span class="mrung done">'
         +'<i class="on"></i><i class="on"></i><i class="on"></i></span>'
       :'<span class="mrung s-'+m.st+'">'+[1,2,3].map(function(k){
          return '<i'+(m.rung>=k?' class="on"':'')+'></i>';}).join("")+'</span>';
-    var g0=goalById(m.gid)||{};
+    var g0=goalById(m.gid)||{}, nx=nextLine(m);
+    /* ①③ 카드 전체가 과녁이므로 안쪽은 단추를 두지 않는다(단추 속 단추 금지) */
     return '<div class="myc-fold">'+dots
       +'<span class="mf-s">'+(m.st==="bloom"?"인증 완료"
         :(m.rung?"+"+m.rung+"까지":"시작 전"))+'</span>'
       +'<span class="mf-code">'+esc(g0.subject||"")+(g0.code?' · '+esc(g0.code):"")+'</span>'
       +'<span class="sp"></span>'
-      +'<button class="myc-more" data-more="'+i+'">열어 보기</button></div>';
+      +'<span class="mf-go">열어 보기<i class="mf-ch" aria-hidden="true"></i></span></div>'
+      +(nx?'<div class="mf-nx">'+esc(nx)+'</div>':'');
   }
   if(m.st==="bloom")
     return '<div class="acts" style="margin-top:12px">'
@@ -3354,13 +3392,28 @@ function renderBBar(){
       .map(function(o){return '<option value="'+o[0]+'"'+(S.bSort===o[0]?" selected":"")+'>'
         +o[1]+'</option>';}).join("")+'</select>'
     +'<button class="fchip" id="bView" data-on="'+(S.bView==="list"?"1":"0")+'">'
-    +(S.bView==="list"?"목록":"카드")+'</button>';
+    +(S.bView==="list"?"목록":"카드")+'</button>'
+    /* ⑦ 카드가 많아지면 하나씩 여는 것이 번거롭다 */
+    +(S.bView==="list"?'':'<button class="fchip" id="bAll">'
+      +(allOpen()?"모두 접기":"모두 펼치기")+'</button>');
   $$("#bBar [data-bf]").forEach(function(b){b.addEventListener("click",function(){
     S.bFilter=b.dataset.bf;renderBoard();touch();});});
   $("#bSort").addEventListener("change",function(){S.bSort=this.value;renderBoard();touch();});
   $("#bView").addEventListener("click",function(){
     S.bView=(S.bView==="list")?"card":"list";renderBoard();touch();});
   var l=$("#bLast"); if(l) l.addEventListener("click",function(){ jumpTo(S.last); });
+  var ba=$("#bAll"); if(ba) ba.addEventListener("click",function(){
+    var open=!allOpen();
+    openMore={};
+    if(open) S.my.forEach(function(m,i){ openMore[i]=true; });
+    renderBoard();
+  });
+}
+/* 지금 보이는 카드가 모두 펼쳐져 있는가 */
+function allOpen(){
+  if(!S.my.length) return false;
+  for(var i=0;i<S.my.length;i++) if(!openMore[i]) return false;
+  return true;
 }
 /* 한 줄짜리 목록 */
 function renderList(rows){
@@ -3406,7 +3459,13 @@ function cardHtml(g,m,i){
     if(m.tv)stamps+='<span class="stamp"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M6.6 11.4L3.2 8l1.2-1.2 2.2 2.2 5-5L12.8 5z"/></svg>'
       +esc(m.tv.by||"선생님")+' 인증 '+dshort(m.tv.at)+'</span>';
     var t=tierOf(g), el=elemOf(g);
-    return '<article class="myc" data-st="'+m.st+'" data-i="'+i+'">'
+    /* ①⑧ 접혀 있을 때는 카드 전체가 하나의 큰 단추 —
+       예전에는 49×31 글씨 하나(카드 면적의 1.2%)만 눌렸다. */
+    var fold=!full(m,i);
+    return '<article class="myc'+(fold?' myc-tap':'')+'" data-st="'+m.st+'" data-i="'+i+'"'
+      +(fold?' data-more="'+i+'" role="button" tabindex="0" aria-expanded="false"'
+             +' aria-label="'+esc(g.alt||g.title)+' — 열어 보기"'
+            :' aria-expanded="true"')+'>'
       +'<div class="goal-top" style="margin-bottom:9px">'
         +'<span class="tier" style="color:'+t.fg+';background:'+t.bg+';border-color:'+t.bd+'">'+t.name+'</span>'
         +'<span class="elem" style="color:'+el.fg+';background:'+el.bg+';border-color:'+el.bd+'">'
@@ -3423,6 +3482,13 @@ function cardHtml(g,m,i){
       +actsHtml(m,i)+'</article>';
   }
 }
+/* ⑧ Enter·Space로도 펼쳐지게 */
+$("#myList").addEventListener("keydown",function(e){
+  if(e.key!=="Enter" && e.key!==" " && e.key!=="Spacebar") return;
+  var a=e.target.closest(".myc-tap[data-more]");
+  if(!a) return;
+  e.preventDefault(); a.click();
+});
 $("#myList").addEventListener("click",function(e){
   var me=e.target.closest("[data-med]");
   if(me){openMine(me.dataset.med);return;}
