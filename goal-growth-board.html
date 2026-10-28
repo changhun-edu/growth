@@ -222,6 +222,17 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
   border:1px solid var(--line);border-radius:99px;padding:5px 11px}
 .hlp .hnote{margin-top:16px;font-size:12.5px;line-height:1.7;color:#8A5A1E;
   background:#FDF6E6;border:1px solid #EBD9AE;border-radius:11px;padding:11px 13px}
+/* 사용법 창 맨 아래 — 되돌릴 수 없는 일은 떼어 놓는다 */
+.hwipe{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.hwipe button{font:inherit;font-size:13px;font-weight:700;color:#A3492F;background:none;
+  border:none;text-decoration:underline;text-underline-offset:3px;padding:3px 2px}
+.hwipe button:hover{color:#7E3421}
+.hwipe p{margin:5px 0 0;font-size:11.5px;line-height:1.6;color:var(--ink-3)}
+.wipe-l{display:flex;flex-direction:column;gap:3px;margin-top:13px;
+  background:var(--card-2);border:1px solid var(--line);border-radius:11px;padding:12px 14px}
+.wipe-l b{font-size:13px;margin-bottom:3px}
+.wipe-l span{font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+.wipe-l span::before{content:"· "}
 
 /* 첫 화면 — 흐름 띠 */
 .flow{display:flex;align-items:stretch;gap:2px}
@@ -414,10 +425,27 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .drop{border:2px dashed var(--line-2);border-radius:var(--r);background:var(--card-2);
   padding:30px 18px;text-align:center;transition:.14s}
 .drop.on{border-color:var(--wait);background:var(--wait-bg)}
-.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto}
-.tab{padding:11px 15px;font-weight:700;color:var(--ink-2);border-bottom:2px solid transparent;
-  margin-bottom:-1px;white-space:nowrap;font-size:15px;min-height:46px}
-.tab[data-on="1"]{color:var(--ink);border-bottom-color:var(--ink)}
+/* ① 아래 탭 바(.foot .tab)가 나중에 선언되어 이 규칙을 통째로 덮던 문제 —
+   한정자를 올려 떼어 놓는다. overflow-x만 주면 세로축도 auto가 되어
+   1px 넘침에 유령 스크롤바가 생기므로 가로만 넘치게 못 박는다. */
+.tabs{display:flex;gap:4px;box-shadow:inset 0 -1px 0 var(--line);margin-bottom:18px;
+  overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs .tab{display:inline-flex;align-items:center;gap:7px;flex-direction:row;
+  padding:11px 15px;font-weight:700;color:var(--ink-2);background:none;border:0;
+  border-bottom:2px solid transparent;border-radius:0;
+  white-space:nowrap;font-size:15px;min-height:46px}
+.tabs .tab:hover{color:var(--ink)}
+.tabs .tab[data-on="1"]{color:var(--ink);background:none;border-bottom-color:var(--ink)}
+.tabs .tab[data-on="1"]:hover{background:none}
+/* ② 어디에 일이 쌓였는지 탭만 봐도 알게 */
+.tb-c{font-style:normal;font-size:11.5px;font-weight:800;line-height:1;
+  min-width:19px;height:19px;padding:0 5px;border-radius:99px;
+  display:none;align-items:center;justify-content:center;
+  background:var(--wait);color:#fff}
+.tb-c[data-on="1"]{display:inline-flex}
+.tb-c[data-k="bad"]{background:#B4452E}
+.tabs .tab[data-on="0"] .tb-c{background:var(--line-2);color:var(--ink-2)}
 
 /* 하단 바 */
 /* ── 아래 탭 바 — 본문 위에 떠 있고, 지금 있는 칸이 켜진다 ── */
@@ -1086,6 +1114,104 @@ button.ttl-b{cursor:pointer}
   border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin:0 0 10px;
   font-size:12.5px;line-height:1.7;color:var(--ink-2);
   font-family:inherit;max-height:168px;overflow:auto}
+/* ④ 복사해 쓸 글은 상자 안에서 또 굴리지 않게 전부 펼친다 */
+.st3 pre.pre-all{max-height:none;overflow:visible}
+
+/* ① 한 바퀴 띠 */
+.tflow{margin:-2px 0 14px}
+.tf-h{margin:0 0 9px;font-size:14.5px;font-weight:800;letter-spacing:-0.02em}
+.tf-g{display:flex;align-items:stretch;gap:0}
+.tf-s{position:relative;flex:1;background:var(--bg);border:1px solid var(--c);
+  border-color:color-mix(in srgb,var(--c) 30%,#fff);border-radius:var(--r);
+  padding:12px 13px 11px;text-align:center}
+.tf-s b{display:inline-grid;place-items:center;width:23px;height:23px;border-radius:50%;
+  background:var(--c);color:#fff;font-size:12.5px;font-weight:800;margin-bottom:6px}
+.tf-s span{display:block;font-size:12.5px;line-height:1.55;color:var(--ink-2)}
+.tf-s span b{display:inline;width:auto;height:auto;background:none;color:var(--c);
+  font-size:12.5px;margin:0;border-radius:0}
+.tf-me{border-width:1.5px;border-color:var(--c);box-shadow:var(--sh)}
+.tf-me em{position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+  font-style:normal;font-size:10.5px;font-weight:800;color:#fff;background:var(--c);
+  border-radius:99px;padding:2px 9px;white-space:nowrap}
+.tf-a{align-self:center;flex:0 0 20px;text-align:center;font-size:20px;
+  color:var(--ink-3);opacity:.5;font-style:normal}
+.tf-n{margin:10px 0 0;font-size:12.5px;color:var(--ink-3)}
+.tf-n b{color:var(--ink-2);font-weight:700}
+@media (max-width:720px){
+  .tf-g{flex-direction:column;gap:0}
+  .tf-s{display:flex;align-items:flex-start;gap:11px;text-align:left;padding:11px 13px}
+  .tf-s b{flex-shrink:0;margin:0}
+  .tf-me em{position:static;transform:none;margin-left:auto;align-self:center}
+  .tf-a{flex:0 0 auto;align-self:flex-start;margin-left:28px;height:11px;
+    font-size:14px;transform:rotate(90deg);line-height:.6}
+}
+
+/* ② 절대 알려 주면 안 되는 것 */
+.st3-no{margin:0 0 11px!important;font-size:12.5px;line-height:1.65;color:#8E3030;
+  background:#FBECEC;border:1px solid #E9C9C9;border-radius:10px;padding:9px 12px}
+.st3-no b{color:#7A2020;font-weight:800}
+/* ③ 사라지는 토스트 대신 남는 안내 */
+.st3-e{margin:9px 0 0!important;font-size:12.5px;color:#8E3030;font-weight:700}
+.st3-e:empty{display:none}
+/* ⑤ 안내를 보낸 뒤 */
+.t-wait{margin-top:13px;background:var(--bloom-bg);border:1px solid #BBDCC9;
+  border-radius:11px;padding:12px 14px;font-size:13px;line-height:1.7;color:#1D5B40}
+.t-wait b{font-weight:800}
+.t-wait span{display:block;margin-top:3px;font-size:12.5px;color:#3C6354}
+
+/* ⑥ 코드 발급 머리말 */
+.c-how{background:var(--card-2);border:1px solid var(--line);border-radius:var(--r);
+  padding:14px 16px;margin-bottom:14px;font-size:13px;line-height:1.75;color:var(--ink-2)}
+.c-how b{color:var(--ink)}
+.c-how .c-h{display:block;font-size:14px;font-weight:800;color:var(--ink);margin-bottom:4px;
+  letter-spacing:-0.02em}
+
+/* ⑦ 빈 현황에서 나갈 길 */
+.t-empty{text-align:center;padding:30px 20px;background:var(--card);
+  border:1px dashed var(--line-2);border-radius:var(--r)}
+.t-empty b{display:block;font-size:15.5px;letter-spacing:-0.02em;margin-bottom:5px}
+.t-empty p{margin:0 0 15px;font-size:13px;line-height:1.65;color:var(--ink-3)}
+.t-empty .acts{justify-content:center}
+
+/* ③ 잠금 밖의 둘러보기 */
+.t-peek{display:flex;align-items:center;gap:12px;width:100%;margin:-4px 0 16px;text-align:left;
+  background:var(--card);border:1.5px solid var(--line-2);border-radius:var(--r);
+  padding:13px 16px;transition:.14s}
+.t-peek:hover{border-color:var(--star);transform:translateY(-1px);box-shadow:var(--sh)}
+.tp-ic{font-size:20px;line-height:1;flex-shrink:0}
+.tp-tx{flex:1;min-width:0}
+.tp-tx b{display:block;font-size:14.5px;letter-spacing:-0.02em}
+.tp-tx span{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.55;margin-top:1px}
+.tp-go{font-size:17px;color:var(--ink-3);transition:.14s}
+.t-peek:hover .tp-go{transform:translateX(3px);color:var(--ink-2)}
+
+/* ⑦ 진행 막대 범례 */
+.bk-lg{display:flex;gap:14px;flex-wrap:wrap;margin:0 2px 10px;font-size:12px;color:var(--ink-3)}
+.bk-lg span{display:inline-flex;align-items:center;gap:5px}
+.bk-lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* ⑧ 더 급한 일이 더 약해 보이던 자리 */
+.btn-bad{background:#B4452E;border-color:#B4452E;color:#fff}
+.btn-bad:hover{background:#95361F;border-color:#95361F}
+
+/* ⑥ 가끔 쓰는 것과 위험한 것을 떼어 놓는다 */
+.t-more{margin-top:10px}
+.t-more>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:700;color:var(--ink-2);background:var(--card);
+  border:1px solid var(--line-2);border-radius:99px;padding:8px 15px}
+.t-more>summary::-webkit-details-marker{display:none}
+.t-more>summary::after{content:"▾"}
+.t-more[open]>summary::after{content:"▴"}
+.t-more>summary:hover{border-color:var(--ink-3)}
+.t-more .acts{margin-top:10px}
+.t-danger{margin-top:20px;padding-top:14px;border-top:1px solid var(--line)}
+.t-danger button{font:inherit;font-size:12.5px;font-weight:700;color:#A3492F;background:none;
+  border:none;text-decoration:underline;text-underline-offset:3px;padding:3px 2px}
+.t-danger button:hover{color:#7E3421}
+.t-danger p{margin:4px 0 0;font-size:11.5px;line-height:1.7;color:var(--ink-3)}
+.t-danger .t-link{font-size:11.5px;font-weight:700;padding:0}
+.t-link{font:inherit;font-weight:700;color:var(--wait);background:none;border:none;
+  text-decoration:underline;text-underline-offset:3px;padding:2px 3px;cursor:pointer}
+.t-link:hover{color:var(--ink)}
 .sendn{margin-top:14px;padding-top:13px;border-top:1px solid var(--line);
   font-size:13px;line-height:1.6;color:var(--ink-3)}
 .sendn>b{display:block;color:var(--ink-2);margin-bottom:9px}
@@ -1504,25 +1630,56 @@ button.ttl-b{cursor:pointer}
   <section id="vTeacher" class="hidden">
     <div class="sec" style="margin-top:22px">
       <div class="tabs">
-        <button class="tab" data-tt="collect" data-on="1">기록 모으기</button>
-        <button class="tab" data-tt="class">우리 반 현황</button>
-        <button class="tab" data-tt="code">코드 발급</button>
+        <button class="tab" data-tt="collect" data-on="1">기록 모으기<i class="tb-c" id="tbC0"></i></button>
+        <button class="tab" data-tt="class">우리 반 현황<i class="tb-c" id="tbC1"></i></button>
+        <button class="tab" data-tt="code">코드 발급<i class="tb-c" id="tbC2"></i></button>
       </div>
+      <!-- ③ 둘러보기는 PIN 잠금 밖에 둔다 — 처음 온 교사가 먼저 하고 싶은 일 -->
+      <button class="t-peek" id="tPeek">
+        <span class="tp-ic">👀</span>
+        <span class="tp-tx"><b>먼저 둘러보고 싶다면</b>
+          <span>가상 학급 6명으로 현황·코드 발급을 열어 봅니다</span></span>
+        <span class="tp-go">→</span>
+      </button>
       <div id="tBanner"></div>
       <div id="tCollect">
+      <!-- ① 교사가 자기 자리를 그림에서 찾게 — 이것을 모르면 PIN의 뜻을 알 수 없다 -->
+      <div class="tflow">
+        <p class="tf-h">한 바퀴가 이렇게 돕니다</p>
+        <div class="tf-g">
+          <div class="tf-s" style="--c:#8A8F98;--bg:#F1EFEA"><b>1</b>
+            <span>학생이 목표를 담고<br>+1 +2 +3으로 해냅니다</span></div>
+          <i class="tf-a">›</i>
+          <div class="tf-s" style="--c:#2F6DAA;--bg:#E7EFF8"><b>2</b>
+            <span>다 해내면 학생이<br><b>확인을 요청</b>합니다</span></div>
+          <i class="tf-a">›</i>
+          <div class="tf-s tf-me" style="--c:#C97C2C;--bg:#FBF0E2"><b>3</b>
+            <span><b>선생님이 인증 코드</b>를<br>만들어 알려 줍니다</span>
+            <em>선생님 차례</em></div>
+          <i class="tf-a">›</i>
+          <div class="tf-s" style="--c:#2F7D5B;--bg:#E6F2EB"><b>4</b>
+            <span>학생이 코드를 넣으면<br>인증이 끝납니다</span></div>
+        </div>
+        <p class="tf-n">아래 세 가지는 <b>학기 초에 한 번</b> 해 두는 준비입니다.</p>
+      </div>
         <ol class="steps3">
           <li class="st3" id="st3a" data-done="0">
             <span class="st3-n">1</span>
             <div class="st3-b">
               <b>교사 서명 PIN 정하기</b>
-              <p>인증할 때 이 PIN으로 서명이 만들어지고, 학생 기기에서 위조 여부를 확인합니다.
-                한 학급에서 같은 PIN을 계속 쓰세요. 이 기기에만 저장되고 파일에는 담기지 않습니다.</p>
+              <p>위 <b>3번</b>의 인증 코드를 이 PIN으로 만듭니다. 학생 기기는 그 코드가
+                선생님이 만든 것인지 이 PIN으로 대조합니다. 이 기기에만 저장되고
+                파일에는 담기지 않습니다.</p>
+              <p class="st3-no"><b>학생에게 알려 주지 마세요.</b>
+                알면 학생이 스스로 인증 코드를 만들 수 있게 됩니다.
+                한 해 동안 바꾸지 말고 그대로 쓰세요.</p>
               <div class="acts">
-                <input type="text" id="tPin" inputmode="numeric" maxlength="4" placeholder="4자리"
-                  style="width:112px;text-align:center;letter-spacing:.3em;font-weight:800">
+                <input type="text" id="tPin" inputmode="numeric" maxlength="4" placeholder="숫자 4자리"
+                  style="width:124px;text-align:center;letter-spacing:.3em;font-weight:800">
                 <button class="btn btn-s btn-p" id="tPinSave">저장</button>
                 <span class="muted" id="tPinSt"></span>
               </div>
+              <p class="st3-e" id="tPinErr"></p>
               <p class="st3-w" id="tPinWarn"></p>
             </div>
           </li>
@@ -1532,20 +1689,23 @@ button.ttl-b{cursor:pointer}
               <b>우리 반에 안내 보내기</b>
               <p>학생들이 같은 주소를 열고 <b>학생</b>을 골라 시작합니다. 아래 글을 그대로 복사해
                 학급 알림장이나 가정통신문에 붙여 넣으세요.</p>
-              <pre id="tNote"></pre>
-              <div class="acts"><button class="btn btn-s" id="tNoteCopy">안내문 복사</button></div>
+              <p class="st3-w" id="tNoteWarn"></p>
+              <pre id="tNote" class="pre-all"></pre>
+              <div class="acts"><button class="btn btn-s btn-p" id="tNoteCopy">안내문 복사</button>
+                <button class="btn btn-s" id="tNoteSkip">이미 안내했어요</button></div>
+              <div id="tWait"></div>
             </div>
           </li>
           <li class="st3" id="st3c" data-done="0">
             <span class="st3-n">3</span>
             <div class="st3-b">
               <b>학생 기록 파일 받기</b>
-              <p>학생이 보낸 파일을 올리면 우리 반 현황과 코드 발급이 열립니다.</p>
+              <p>학생이 카톡·이메일·학교 플랫폼 등 <b>어떤 방법으로 보내든</b>, 받은 파일을
+                그대로 올리면 됩니다. 우리 반 현황과 코드 발급이 열립니다.</p>
               <div class="drop" id="tDrop">
                 <div class="muted" style="margin-bottom:12px">
                   여기에 끌어다 놓거나 — .json · .xlsx, 여러 개를 한꺼번에 올려도 됩니다</div>
                 <button class="btn" id="tPick">파일 선택</button>
-                <button class="btn" id="tDemo">샘플 학급으로 둘러보기</button>
                 <input type="file" id="tFile" accept=".json,.xlsx,.xls" multiple class="hidden">
               </div>
               <div id="tMsg"></div>
@@ -1619,7 +1779,7 @@ var S = {role:null, me:{name:"", grade:null}, my:[], view:"role",
          filtOpen:false, zeroOpen:false,
          bFilter:"all", bSort:"todo", bView:"card", last:"", bagElem:"", bagSeen:0,
          ttlOpen:false,
-         filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect",
+         filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect", tsent:false,
          tgrade:null, tnames:[], codes:[], numCode:false, tFilter:"wait", tSort:"wait"};
 
 /* 2022 개정 교육과정의 성취기준은 학년이 아니라 학년군 단위다 */
@@ -1801,7 +1961,7 @@ function touch(){if(!Store.ok)return;clearTimeout(tm);
       seals:S.seals,mine:S.mine,badge:S.badge,klass:S.klass,peek:S.peek,last:S.last,
       bagSeen:S.bagSeen,
       tpin:S.tpin,ppin:S.ppin,roster:keep,tgrade:S.tgrade,tnames:S.tnames,
-      codes:S.codes.slice(-60),numCode:S.numCode,
+      codes:S.codes.slice(-60),numCode:S.numCode,tsent:!!S.tsent,
       at:new Date().toISOString()});},400);}
 
 /* ⑤ 소개 페이지에서 들어왔으면 그 주소를 기억해 둔다 — 머리글에 「소개」가 생긴다 */
@@ -3278,8 +3438,85 @@ function openHelp(){
       +'브라우저 저장소를 지우거나 기기를 바꾸면 사라집니다. '
       +'<b>기록 내보내기</b>로 받은 파일을 꼭 보관해 주세요.</div>'
     +'</div>'
+    +'<div class="hwipe"><button type="button" id="hWipe">이 기기 기록 모두 지우기</button>'
+    +'<p>'+wipeWhat()+'</p></div>'
     +'<div class="acts" style="margin-top:16px">'
-    +'<button class="btn btn-q btn-full" onclick="closeModal()">닫기</button></div>');
+    +'<button class="btn btn-q btn-full" onclick="closeModal()">닫기</button></div>',
+  function(){ $("#hWipe").addEventListener("click",openWipe); });
+}
+
+/* ── 이 기기 기록 모두 지우기 ──
+   서버가 없어 기록이 브라우저에만 남는다. 공용 기기를 넘기거나 처음부터
+   다시 시작할 때 쓴다. 되돌릴 수 없으므로 무엇이 사라지는지 먼저 세어 보인다. */
+function wipeCount(){
+  var d=null;
+  try{ d=Store.load(); }catch(e){}
+  d=d||{};
+  var my=d.my||[];
+  return {
+    name:(d.me&&d.me.name)||"",
+    grade:(d.me&&d.me.grade)||0,
+    my:my.length,
+    bloom:my.filter(function(m){return m.st==="bloom";}).length,
+    mine:(d.mine||[]).length,
+    roster:Object.keys(d.roster||{}).length,
+    codes:(d.codes||[]).length,
+    ppin:!!d.ppin, tpin:!!d.tpin
+  };
+}
+function wipeWhat(){
+  var c=wipeCount(), p=[];
+  if(c.name)   p.push(esc(c.name)+(c.grade?" "+c.grade+"학년":""));
+  if(c.my)     p.push("담은 목표 "+c.my+"개"+(c.bloom?"(인증 "+c.bloom+")":""));
+  if(c.mine)   p.push("나만의 목표 "+c.mine+"개");
+  if(c.roster) p.push("모은 학생 기록 "+c.roster+"명분");
+  if(c.codes)  p.push("발급한 코드 "+c.codes+"개");
+  if(c.ppin||c.tpin) p.push("PIN");
+  return p.length ? "지금 이 기기에 남아 있는 것: "+p.join(" · ")
+                  : "지금 이 기기에 저장된 기록이 없습니다.";
+}
+function openWipe(){
+  var c=wipeCount(), any=c.name||c.my||c.mine||c.roster||c.codes||c.ppin||c.tpin;
+  modal('<h3>이 기기 기록 모두 지우기</h3>'
+    +'<div class="muted">이 브라우저에 저장된 <b>해냄 도감 기록 전부</b>가 사라집니다. '
+      +'서버가 없어 되돌릴 수 없습니다.</div>'
+    +'<div class="wipe-l">'+(any
+      ? '<b>사라지는 것</b>'
+        +(c.name?'<span>이름 · 학년 — '+esc(c.name)+(c.grade?" "+c.grade+"학년":"")+'</span>':'')
+        +(c.my?'<span>담은 목표 '+c.my+'개 (인증 '+c.bloom+'개)</span>':'')
+        +(c.mine?'<span>나만의 목표 '+c.mine+'개</span>':'')
+        +(c.roster?'<span>모아 둔 학생 기록 '+c.roster+'명분</span>':'')
+        +(c.codes?'<span>발급한 인증 코드 '+c.codes+'개</span>':'')
+        +(c.ppin?'<span>보호자 PIN</span>':'')
+        +(c.tpin?'<span>교사 서명 PIN</span>':'')
+      : '<b>지울 기록이 없습니다</b><span>이 기기에는 아직 저장된 것이 없어요.</span>')
+    +'</div>'
+    +(any?'<div class="note note-w" style="margin-top:12px;font-size:12.5px;line-height:1.7">'
+      +'먼저 <b>기록 내보내기</b>로 파일을 받아 두면 나중에 <b>불러오기</b>로 되살릴 수 있습니다.</div>':'')
+    +(any?'<div class="fld" style="margin-top:14px">'
+      +'<label for="wR">확인을 위해 <b>모두 지우기</b>라고 적어 주세요</label>'
+      +'<input type="text" id="wR" placeholder="모두 지우기" autocomplete="off"></div>'
+      +'<div id="wMsg"></div>'
+      +'<div class="acts" style="margin-top:12px">'
+      +'<button class="btn btn-bad btn-full" id="wOk">모두 지우기</button></div>':'')
+    +'<div class="acts" style="margin-top:9px">'
+    +'<button class="btn btn-full" onclick="closeModal()">'+(any?"그만두기":"닫기")+'</button></div>',
+  function(){
+    if(!any) return;
+    $("#wR").focus();
+    $("#wOk").addEventListener("click",function(){
+      if($("#wR").value.trim()!=="모두 지우기"){
+        $("#wMsg").innerHTML=warn("‘모두 지우기’라고 정확히 적어 주세요."); return; }
+      wipeAll();
+    });
+  });
+}
+function wipeAll(){
+  clearTimeout(tm);                      /* 지운 뒤에 다시 저장되지 않게 */
+  try{ Store.clear(); }catch(e){}
+  try{ localStorage.removeItem(SNAP_K); }catch(e){}
+  closeModal();
+  location.replace(location.pathname);   /* 깨끗한 상태로 다시 연다 */
 }
 $("#btnSave").addEventListener("click",function(){openSave();});
 
@@ -4037,18 +4274,47 @@ function renderTeacher(){
   $("#tCode").classList.toggle("hidden",S.tabT!=="code");
   $("#tPin").value=S.tpin;
   $("#tPinSt").textContent=S.tpin?"저장됨":"아직 정하지 않았습니다";
+  /* ② 탭 배지 — 확인 기다림과 코드 불일치가 어디에 쌓였는지 */
+  var rsA=Object.keys(S.roster||{}), wait=0, bdn=0;
+  rsA.forEach(function(k){
+    (S.roster[k].my||[]).forEach(function(m){if(m.st==="wait")wait++;});
+    if(typeof badOf==="function" && badOf(S.roster[k])) bdn++;
+  });
+  function badge(el,v,kind){
+    if(!el) return;
+    el.textContent=v>99?"99+":v;
+    el.dataset.on=v?"1":"0";
+    el.dataset.k=kind||"";
+  }
+  badge($("#tbC0"), rsA.length, "");
+  badge($("#tbC1"), wait, bdn?"bad":"");
+  badge($("#tbC2"), 0, "");
+  /* ③ 둘러보기는 체험 중이 아닐 때만, 잠금과 무관하게 */
+  var pk=$("#tPeek"); if(pk) pk.classList.toggle("hidden", !!DEMO_ON || rsA.length>0);
   /* 한 걸음씩 — PIN 전에는 뒤 단계를 흐리게 */
   var nStu=Object.keys(S.roster||{}).length;
   $("#st3a").dataset.done=S.tpin?"1":"0";
-  $("#st3b").dataset.done="0";
+  $("#st3b").dataset.done=S.tsent?"1":"0";
   $("#st3b").dataset.off=S.tpin?"0":"1";
   $("#st3c").dataset.done=nStu?"1":"0";
-  $("#st3c").dataset.off=S.tpin?"0":"1";
+  /* ④ 실제 순서는 안내 배포 → 며칠 → 파일 수신이다. 셋을 한꺼번에 열면 순서가 사라진다. */
+  $("#st3c").dataset.off=(S.tpin&&(S.tsent||nStu))?"0":"1";
+  /* ⑤ 안내를 보내고 나면 할 일이 없다는 것을 알려 준다 */
+  var tw=$("#tWait");
+  if(tw) tw.innerHTML=(S.tsent&&!nStu)
+    ? '<div class="t-wait"><b>여기까지가 학기 초 준비입니다.</b>'
+      +'<span>이제 학생들이 기록을 보내올 때까지 하실 일이 없습니다. '
+      +'파일이 오면 아래 <b>3단계</b>에 올려 주세요. 이 주소를 즐겨찾기에 두시면 편합니다.</span></div>'
+    : "";
   $("#tPinWarn").innerHTML=S.tpin
     ? "PIN을 바꾸면 전에 발급한 코드는 더 이상 맞지 않습니다. 한 해 동안 그대로 두세요. "
       +"잊으셨다면 새 PIN을 정한 뒤 학생들에게 코드를 다시 발급해 주세요."
     : "";
   $("#tNote").textContent=classNote();
+  /* ④ 주소 자리표시자가 그대로 복사되는 일을 막는다 */
+  var nw=$("#tNoteWarn");
+  if(nw) nw.innerHTML = /^https?:/i.test(location.href.split("#")[0].split("?")[0])
+    ? "" : "주소가 아직 비어 있습니다. 배포한 주소를 안내문에 직접 적어 주세요.";
   if(S.tabT==="class")renderClass();
   if(S.tabT==="code")renderCode();
 }
@@ -4062,10 +4328,21 @@ function classNote(){
     +"4. 다 해내면 ‘기록 내보내기’로 파일을 만들어 선생님께 보냅니다.\n"
     +"※ 기록은 각자 기기에 저장됩니다. 내보낸 파일을 꼭 보관해 주세요.";
 }
-$("#tNoteCopy").addEventListener("click",function(){copyTxt(classNote(),"안내문을 복사했어요");});
+$("#tNoteCopy").addEventListener("click",function(){
+  /* 복사가 막히더라도 단계는 넘어가야 한다 */
+  S.tsent=true; touch(); renderTeacher();
+  try{ copyTxt(classNote(),"안내문을 복사했어요"); }catch(e){}
+});
+$("#tNoteSkip").addEventListener("click",function(){
+  S.tsent=true; touch(); renderTeacher(); toast("3단계를 열었습니다");});
 $("#tPinSave").addEventListener("click",function(){
   var v=$("#tPin").value.replace(/\D/g,"").slice(0,4);
-  if(v.length!==4){toast("숫자 4자리를 넣어 주세요.");return;}
+  /* ③ 토스트는 2초 뒤 사라져 놓치기 쉽다 — 칸 옆에 남겨 둔다 */
+  if(v.length!==4){
+    $("#tPinErr").textContent = $("#tPin").value.trim()
+      ? "숫자 4자리로 적어 주세요." : "숫자 4자리를 넣어 주세요.";
+    $("#tPin").focus(); return; }
+  $("#tPinErr").textContent="";
   S.tpin=v;$("#tPin").value=v;touch();renderTeacher();toast("PIN을 저장했습니다");});
 var td=$("#tDrop");
 ["dragenter","dragover"].forEach(function(n){td.addEventListener(n,function(e){e.preventDefault();td.classList.add("on");});});
@@ -4073,10 +4350,12 @@ var td=$("#tDrop");
 td.addEventListener("drop",function(e){tFiles(e.dataTransfer.files);});
 $("#tPick").addEventListener("click",function(){$("#tFile").click();});
 $("#tFile").addEventListener("change",function(){tFiles(this.files);this.value="";});
-$("#tDemo").addEventListener("click",function(){
+$("#tPeek").addEventListener("click",function(){
   DEMO_ON=true;
+  /* PIN을 먼저 세워야 가상 학급의 서명이 맞는다 —
+     나중에 세우면 여섯 명 모두 「코드 불일치」로 나왔다. */
+  if(!S.tpin){ S.tpin="1234"; DEMO_PIN=true; }
   S.roster=demoClass(3,6);
-  if(!S.tpin)S.tpin="1234";
   S.tabT="class";renderTeacher();
   toast("가상 학급 6명을 불러왔습니다");});
 function tFiles(fl){
@@ -4145,7 +4424,15 @@ function waitTotal(){
 function renderClass(){
   var rs=rosterList(), miss=missingNames();
   if(!rs.length && !miss.length){
-    $("#tClass").innerHTML='<div class="note">아직 모은 기록이 없습니다. 「기록 모으기」에서 학생 파일을 올리거나 샘플로 둘러보세요.</div>';
+    $("#tClass").innerHTML='<div class="t-empty">'
+      +'<b>아직 모은 기록이 없습니다</b>'
+      +'<p>학생이 「기록 내보내기」로 만든 파일을 올리면 여기에 우리 반이 한눈에 보입니다.</p>'
+      +'<div class="acts"><button class="btn btn-p" id="teGo">기록 모으기로 가기</button>'
+      +'<button class="btn" id="tePeek">샘플로 둘러보기</button></div></div>';
+    var g1=$("#teGo"); if(g1) g1.addEventListener("click",function(){
+      S.tabT="collect"; renderTeacher(); touch();
+      window.scrollTo({top:0,behavior:"smooth"});});
+    var g2=$("#tePeek"); if(g2) g2.addEventListener("click",function(){ $("#tPeek").click(); });
     return;}
   var w=waitTotal(), bl=0, tot=0;
   rs.forEach(function(d){var c=stuOf(d);bl+=c.bloom;tot+=c.total;});
@@ -4165,7 +4452,7 @@ function renderClass(){
   if(bd.goals) todo += '<div class="todo bad"><span class="big">!</span>'
     +'<span class="lab" style="flex:1 1 180px"><b>코드가 맞지 않는 인증</b>이 '+bd.goals+'건 있습니다.<br>'
     +'학생 '+bd.students+'명의 기록에 선생님이 발급하지 않은 코드가 적혀 있어요.</span>'
-    +'<button class="btn btn-q" id="tBad">확인하기</button></div>';
+    +'<button class="btn btn-bad" id="tBad">확인하기</button></div>';
   else if(!S.tpin && rs.length) todo += '<div class="note note-w" style="margin-top:10px">'
     +'<b>교사 서명 PIN</b>을 정하지 않아 인증 코드를 대조할 수 없습니다. '
     +'「기록 모으기」 탭에서 먼저 정해 주세요.</div>';
@@ -4219,19 +4506,30 @@ function renderClass(){
           +'<div class="stu-none">아직 기록을 내지 않았습니다</div></div>';}).join("")
     : "";
 
+  /* ⑦ 네 토막 막대가 무엇인지 한 번만 말해 준다 */
+  var lg='<div class="bk-lg">'
+    +'<span><i style="background:var(--bloom)"></i>인증</span>'
+    +'<span><i style="background:var(--wait)"></i>확인 기다림</span>'
+    +'<span><i style="background:var(--grow)"></i>도전 중</span>'
+    +'<span><i style="background:var(--line-2)"></i>담기만 함</span></div>';
   var body=(cards+missCards)
-    ? '<div class="stuwrap">'+cards+missCards+'</div>'
+    ? lg+'<div class="stuwrap">'+cards+missCards+'</div>'
     : '<div class="note">이 조건에 해당하는 학생이 없습니다.</div>';
 
   $("#tClass").innerHTML=todo+bar+body
+    /* ⑥ 자주 쓰는 둘 · 가끔 쓰는 셋 · 되돌릴 수 없는 하나를 급으로 나눈다 */
     +'<div class="acts" style="margin-top:18px">'
     +'<button class="btn btn-p" id="tXls">학급 현황 엑셀로 내보내기</button>'
-    +'<button class="btn btn-w" id="tKl">우리 반 도감 파일 주기</button>'
+    +'<button class="btn btn-w" id="tKl">우리 반 도감 파일 주기</button></div>'
+    +'<details class="t-more"><summary>가끔 쓰는 것</summary>'
+    +'<div class="acts">'
     +'<button class="btn" id="tPoster">학급 도감 포스터 인쇄</button>'
     +'<button class="btn" id="tDraw">교실 화면에 목표 뽑기</button>'
-    +'<button class="btn" id="tRoster">학급 명단 등록</button>'
-    +'<div class="sp"></div>'
-    +'<button class="btn btn-q" id="tClear">모은 기록 비우기</button></div>';
+    +'<button class="btn" id="tRoster">학급 명단 등록</button></div></details>'
+    +'<div class="t-danger"><button id="tClear">모은 기록 비우기</button>'
+    +'<p>모아 둔 학생 기록이 모두 지워집니다. 되돌릴 수 없어요. '
+    +'PIN까지 포함해 이 기기의 기록을 전부 지우려면 '
+    +'<button id="tWipe" class="t-link">이 기기 기록 모두 지우기</button></p></div>';
 
   $$("#tClass [data-stu]").forEach(function(b){
     b.addEventListener("click",function(){openStudent(b.dataset.stu);});});
@@ -4245,9 +4543,11 @@ function renderClass(){
   $("#tPoster").addEventListener("click",dexPoster);
   $("#tDraw").addEventListener("click",function(){openDraw();});
   $("#tRoster").addEventListener("click",openRoster);
+  var tw=$("#tWipe"); if(tw) tw.addEventListener("click",openWipe);
   $("#tClear").addEventListener("click",function(){
-    if(!confirm("모아 둔 학생 기록을 모두 지울까요? 학급 명단은 남습니다."))return;
-    S.roster={};renderClass();touch();});
+    var n=Object.keys(S.roster||{}).length;
+    if(!confirm("모아 둔 학생 기록 "+n+"명분을 모두 지웁니다.\n되돌릴 수 없습니다. 계속할까요?\n(학급 명단은 남습니다)"))return;
+    S.roster={};renderClass();renderTeacher();touch();toast("모은 기록을 비웠습니다");});
 }
 
 /* ── 학급 명단 등록 ── */
@@ -4454,9 +4754,21 @@ function bigCode(code,name,title){
 function renderCode(){
   var gr = S.tgrade;
   var sel = {gid:null, title:"", subject:""};
+  var nRs=Object.keys(S.roster||{}).length;
   $("#tCode").innerHTML=
-    (S.tpin?"":'<div class="note note-w" style="margin-bottom:14px">'
+    /* ⑥ 코드를 왜·언제 만드는지 모른 채 칸부터 만나던 자리 */
+    '<div class="c-how"><b class="c-h">인증 코드는 언제 만드나요?</b>'
+      +'학생이 목표를 다 해내고 <b>확인 기다리는 중</b>으로 요청하면, 여기서 그 학생과 목표를 골라 '
+      +'코드를 만들어 알려 줍니다. 학생이 자기 화면에서 <b>인증 코드 입력</b>에 그 코드를 넣으면 '
+      +'인증이 끝나고 보석이 됩니다. 코드는 <b>학생 이름 · 학년 · 목표 · 선생님 PIN</b>이 모두 맞아야 통과합니다.'
+    +'</div>'
+    +(S.tpin?"":'<div class="note note-w" style="margin-bottom:14px">'
       +'아직 <b>교사 서명 PIN</b>을 정하지 않았습니다. 「기록 모으기」 탭에서 먼저 정해 주세요.</div>')
+    +(nRs?"":'<div class="note" style="margin-bottom:14px">'
+      +'<b>아직 모은 학생 기록이 없습니다.</b> 보통은 학생 파일을 받아 '
+      +'「우리 반 현황」에서 누가 기다리는지 확인한 뒤에 만듭니다. '
+      +'필요하면 아래에서 바로 만들어도 됩니다. '
+      +'<button type="button" class="t-link" id="cGoCollect">기록 모으기로 가기</button></div>')
     +'<div class="card" style="margin-bottom:16px">'
     +'<div class="acts" style="margin-bottom:14px">'
       +'<span style="font-size:13.5px;font-weight:700;color:var(--ink-2)">담임 학년</span>'
@@ -4471,12 +4783,21 @@ function renderCode(){
       +'<input type="text" id="cGoal" placeholder="예: 읽기, 발표, 관찰" autocomplete="off">'
       +'<div class="srch-l hidden" id="cList"></div></div>'
     +'<div id="cSel"></div>'
-    +'<button class="btn btn-p btn-full" id="cMake" disabled style="margin-top:4px">인증 코드 만들기</button>'
+    +'<button class="btn btn-p btn-full btn-go" id="cMake" disabled data-wait="1"'
+      +' style="margin-top:4px">학생 이름을 적어 주세요</button>'
     +'</div>'
     +'<div id="cHist"></div>';
 
   function upd(){
-    $("#cMake").disabled=!($("#cName").value.trim() && gr && sel.gid);
+    /* ⑩ 못 누르는 회색 단추 대신, 무엇이 남았는지 단추가 말한다 */
+    var hasN=!!$("#cName").value.trim(), hasG=!!gr, hasS=!!sel.gid;
+    var b=$("#cMake");
+    b.disabled=!(hasN&&hasG&&hasS);
+    b.dataset.wait=b.disabled?"1":"0";
+    b.textContent = !hasG ? "담임 학년을 골라 주세요"
+                  : !hasN ? "학생 이름을 적어 주세요"
+                  : !hasS ? "목표를 골라 주세요"
+                  : "인증 코드 만들기";
   }
   function setSel(g){
     sel={gid:g?g.id:null,title:g?g.title:"",subject:g?g.subject:""};
@@ -4486,6 +4807,10 @@ function renderCode(){
       : "";
     upd();
   }
+  var gc=$("#cGoCollect");
+  if(gc) gc.addEventListener("click",function(){
+    S.tabT="collect"; renderTeacher(); touch();
+    window.scrollTo({top:0,behavior:"smooth"});});
   $$("#tCode [data-cg]").forEach(function(b){
     b.addEventListener("click",function(){
       gr=+b.dataset.cg; S.tgrade=gr;
@@ -4530,6 +4855,7 @@ function renderCode(){
     toast(nm+" 학생의 코드를 만들었습니다");});
 
   renderHist();
+  upd();            /* ⑩ 처음 그릴 때부터 단추가 남은 일을 말하게 */
 }
 function renderHist(){
   var box=$("#cHist"); if(!box)return;
@@ -4824,7 +5150,7 @@ window.addEventListener("popstate",function(){
       if(!goalById(m.gid) || seen[m.gid]) return false;
       seen[m.gid]=1; return true;});
     S.tpin=d.tpin||"";S.ppin=d.ppin||"";S.roster=d.roster||{};
-    S.tgrade=d.tgrade||null;S.tnames=d.tnames||[];
+    S.tgrade=d.tgrade||null;S.tnames=d.tnames||[];S.tsent=!!d.tsent;
     S.codes=d.codes||[];S.numCode=!!d.numCode;
     $("#sName").value=S.me.name||"";renderGrades();chkStart();
   }
