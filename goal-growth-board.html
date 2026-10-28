@@ -1237,6 +1237,53 @@ button.ttl-b{cursor:pointer}
 .t-empty p{margin:0 0 15px;font-size:13px;line-height:1.65;color:var(--ink-3)}
 .t-empty .acts{justify-content:center}
 
+/* ── 학부모 화면 ── */
+/* ⑥ 올린 뒤에는 접어 둔다 */
+.p-re{margin-bottom:16px}
+.p-re>summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;font-weight:700;color:var(--ink-2);background:var(--card);
+  border:1px solid var(--line-2);border-radius:99px;padding:8px 15px}
+.p-re>summary::-webkit-details-marker{display:none}
+.p-re>summary::after{content:"▾"}
+.p-re[open]>summary::after{content:"▴"}
+.p-re>summary:hover{border-color:var(--ink-3)}
+.p-re .drop{margin-top:11px}
+/* ② 이미 확인한 것은 접어 둔다 */
+.p-old{margin-top:16px}
+.p-old>summary{cursor:pointer;list-style:none;display:block;text-align:center;
+  font-size:13px;font-weight:700;color:var(--ink-3);background:var(--card-2);
+  border:1px dashed var(--line-2);border-radius:13px;padding:11px}
+.p-old>summary::-webkit-details-marker{display:none}
+.p-old>summary::after{content:" ▾"}
+.p-old[open]>summary::after{content:" ▴"}
+.p-old>summary:hover{color:var(--ink-2);border-color:var(--ink-3)}
+.p-old .my{margin-top:10px;opacity:.85}
+/* ⑨ 내가 할 일이 없다는 것을 말해 준다 */
+.p-wait{margin:9px 0 0;font-size:12.5px;line-height:1.6;color:#1B5085}
+/* ⑩ 끝맺음 */
+.p-done{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;
+  background:var(--bloom-bg);border:1px solid #BBDCC9;border-radius:var(--r);padding:16px 18px}
+.p-done b{font-size:15.5px;letter-spacing:-0.02em;color:#1D5B40}
+.p-done span{flex:1 1 200px;font-size:13px;color:#3C6354}
+#vParent{padding-bottom:var(--pbarh,0px)}
+/* ④ 아래에 떠서 따라다니는 마무리 띠 */
+.pbar{position:fixed;left:0;right:0;z-index:47;
+  bottom:calc(10px + env(safe-area-inset-bottom));padding:0 12px;
+  display:flex;justify-content:center;pointer-events:none}
+.pbar.hidden{display:none}
+.pbar-in{pointer-events:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  width:100%;max-width:620px;background:var(--card);border:1px solid var(--line-2);
+  border-radius:17px;padding:11px 14px;
+  box-shadow:0 1px 2px rgba(42,38,30,.05),0 10px 28px -8px rgba(42,38,30,.28)}
+.pb-t{flex:1 1 150px;font-size:13px;line-height:1.5;color:var(--ink-2)}
+.pb-t b{font-weight:800;color:var(--ink)}
+@media (max-width:480px){
+  .pbar-in{gap:8px;padding:10px 12px}
+  .pb-t{flex:1 1 100%;text-align:center}
+  .pbar-in .btn{width:100%}
+}
+@media print{.pbar{display:none}}
+
 /* ③ 잠금 밖의 둘러보기 */
 .t-peek{display:flex;align-items:center;gap:12px;width:100%;margin:-4px 0 16px;text-align:left;
   background:var(--card);border:1.5px solid var(--line-2);border-radius:var(--r);
@@ -1688,6 +1735,7 @@ button.ttl-b{cursor:pointer}
       <div class="sec-h"><h2>아이의 성취 확인</h2></div>
       <div id="parentBody"></div>
     </div>
+    <div class="pbar hidden" id="pBar"></div>
   </section>
 
   <!-- 교사 -->
@@ -1843,7 +1891,7 @@ var S = {role:null, me:{name:"", grade:null}, my:[], view:"role",
          filtOpen:false, zeroOpen:false,
          bFilter:"all", bSort:"todo", bView:"card", last:"", bagElem:"", bagSeen:0,
          ttlOpen:false,
-         filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect", tsent:false,
+         filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect", tsent:false, pby:"",
          tgrade:null, tnames:[], codes:[], numCode:false, tFilter:"wait", tSort:"wait"};
 
 /* 2022 개정 교육과정의 성취기준은 학년이 아니라 학년군 단위다 */
@@ -2025,7 +2073,7 @@ function touch(){if(!Store.ok)return;clearTimeout(tm);
       seals:S.seals,mine:S.mine,badge:S.badge,klass:S.klass,peek:S.peek,last:S.last,
       bagSeen:S.bagSeen,
       tpin:S.tpin,ppin:S.ppin,roster:keep,tgrade:S.tgrade,tnames:S.tnames,
-      codes:S.codes.slice(-60),numCode:S.numCode,tsent:!!S.tsent,
+      codes:S.codes.slice(-60),numCode:S.numCode,tsent:!!S.tsent,pby:S.pby||"",
       at:new Date().toISOString()});},400);}
 
 /* ⑤ 소개 페이지에서 들어왔으면 그 주소를 기억해 둔다 — 머리글에 「소개」가 생긴다 */
@@ -4302,14 +4350,21 @@ function demoOff(){
 
 /* ───────── 학부모 ───────── */
 function renderParent(){
-  $("#parentBody").innerHTML=
-    (DEMO_ON ? demoBanner("가상의 3학년 학생 기록입니다. 실제로는 아이가 보낸 파일을 올려서 봅니다.","pDemoOff") : "")
-    +'<div class="note" style="margin-bottom:16px">아이가 보낸 <b>기록 파일</b>을 올리면 목표와 아이가 적은 내용을 보고 확인해 줄 수 있어요. 확인한 뒤에는 파일을 다시 내려받아 아이에게 보내 주세요.</div>'
-    +'<div class="drop" id="pDrop"><h3 style="font-size:16px;margin-bottom:6px">아이 기록 파일을 올려 주세요</h3>'
-    +'<div class="muted" style="margin-bottom:14px">.json — 아이가 내보낸 파일</div>'
+  var got=!!PD;   /* ⑥ 이미 올린 뒤에는 올리는 자리가 화면을 차지하지 않게 */
+  var zone='<div class="drop" id="pDrop">'
+    +'<h3 style="font-size:16px;margin-bottom:6px">아이 기록 파일을 올려 주세요</h3>'
+    /* ⑦ 끌어다 놓기가 되는데 말하지 않던 자리 · 파일이 어디서 오는지도 */
+    +'<div class="muted" style="margin-bottom:14px">여기에 <b>끌어다 놓거나</b> 아래에서 고르세요<br>'
+    +'카톡·이메일·학교 플랫폼으로 받은 <b>.json</b> 파일입니다</div>'
     +'<button class="btn btn-p" id="pPick">파일 고르기</button>'
     +(DEMO_ON?'':' <button class="btn" id="pDemo">샘플로 둘러보기</button>')
-    +'<input type="file" id="pFile" accept=".json" class="hidden"></div>'
+    +'<input type="file" id="pFile" accept=".json" class="hidden"></div>';
+  $("#parentBody").innerHTML=
+    (DEMO_ON ? demoBanner("가상의 3학년 학생 기록입니다. 실제로는 아이가 보낸 파일을 올려서 봅니다.","pDemoOff") : "")
+    +(got?'':'<div class="note" style="margin-bottom:16px">아이가 보낸 <b>기록 파일</b>을 올리면 '
+      +'목표와 아이가 적은 내용을 보고 확인해 줄 수 있어요. '
+      +'확인한 뒤에는 파일을 다시 내려받아 아이에게 보내 주세요.</div>')
+    +(got?'<details class="p-re"><summary>다른 파일 올리기</summary>'+zone+'</details>':zone)
     +'<div id="pBody"></div>';
   var off=$("#pDemoOff");
   if(off)off.addEventListener("click",demoOff);
@@ -4334,40 +4389,118 @@ function pLoad(f){
     PD=d;pRender();};
   r.readAsText(f);
 }
+function pCard(m,full){
+  var g=goalById(m.gid)||{title:m.title,subject:m.subject,steps:[]};
+  var idx=PD.my.indexOf(m);
+  return '<article class="myc" data-st="'+m.st+'">'
+    +'<div class="myc-h"><h3>'+esc(g.title)+'</h3><span class="'+(ST[m.st]||ST.seed)[1]+'">'
+      +(ST[m.st]||ST.seed)[0]+'</span></div>'
+    +'<div class="muted" style="font-size:13px">'+esc(g.subject||"")+'</div>'
+    +(full?'<div class="note" style="margin-top:11px">'
+        +esc((g.steps&&g.steps[Math.max(0,m.rung-1)])||"")+'</div>':"")
+    +(full&&m.ev?'<div class="note" style="margin-top:9px"><b>아이가 적은 내용</b><br>'
+        +esc(m.ev)+'</div>':"")
+    +(m.pv?'<div class="stamps"><span class="stamp stamp-p">'+esc(m.pv.by)+' 확인 '
+        +dshort(m.pv.at)+'</span></div>'
+        /* ⑨ 배지는 '기다린다'는데 할 일이 없어 멈칫하던 자리 */
+        +(!m.tv?'<p class="p-wait">선생님 인증을 기다리는 중이에요. 보호자가 하실 일은 없습니다.</p>':"")
+      :'<div class="acts" style="margin-top:12px">'
+        +'<button class="btn btn-g" data-pok="'+idx+'">확인했습니다</button></div>')
+    +'</article>';
+}
 function pRender(){
   var list=PD.my.filter(function(m){return m.st!=="seed";});
-  $("#pBody").innerHTML='<div class="sec"><div class="sec-h"><h2>'+esc(PD.name)+' 학생</h2>'
-    +'<span>'+PD.grade+'학년 · 도전 중인 목표 '+list.length+'개</span></div>'
-    +(list.length?'<div class="my">'+list.map(function(m,i){
-      var g=goalById(m.gid)||{title:m.title,subject:m.subject,steps:[]};
-      var idx=PD.my.indexOf(m);
-      return '<article class="myc" data-st="'+m.st+'">'
-        +'<div class="myc-h"><h3>'+esc(g.title)+'</h3><span class="'+(ST[m.st]||ST.seed)[1]+'">'+(ST[m.st]||ST.seed)[0]+'</span></div>'
-        +'<div class="muted" style="font-size:13px">'+esc(g.subject||"")+'</div>'
-        +'<div class="note" style="margin-top:11px">'+esc((g.steps&&g.steps[Math.max(0,m.rung-1)])||"")+'</div>'
-        +(m.ev?'<div class="note" style="margin-top:9px"><b>아이가 적은 내용</b><br>'+esc(m.ev)+'</div>':"")
-        +(m.pv?'<div class="stamps"><span class="stamp stamp-p">'+esc(m.pv.by)+' 확인 '+dshort(m.pv.at)+'</span></div>'
-          :'<div class="acts" style="margin-top:12px"><button class="btn btn-g btn-s" data-pok="'+idx+'">확인했습니다</button></div>')
-        +'</article>';}).join("")+'</div>'
-      :'<div class="note">아직 도전 중인 목표가 없어요.</div>')
-    +'<div class="acts" style="margin-top:18px">'
-    +'<button class="btn btn-p" id="pSave">확인한 파일 내려받기</button>'
-    +'<span class="muted">아이에게 이 파일을 보내 주세요</span></div></div>';
+  var todo=list.filter(function(m){return !m.pv;});
+  var rest=list.filter(function(m){return !!m.pv;});
+  var bl=list.filter(function(m){return m.st==="bloom";}).length;
+  var n=todo.length;
+  $("#pBody").innerHTML='<div class="sec">'
+    +'<div class="sec-h"><h2>'+esc(PD.name)+' 학생</h2>'
+      /* ⑧ 「도전 중인 목표 5개」가 실은 인증 완료까지 센 숫자였다 */
+      +'<span>'+PD.grade+'학년 · 확인해 주실 것 <b>'+n+'개</b> · 인증 완료 '+bl+'개</span></div>'
+    /* ①⑩ 맨 위에서 할 일을 세어 주고, 다 하면 끝맺게 한다 */
+    +(n?'<div class="todo"><span class="big">'+n+'</span>'
+        +'<span class="lab" style="flex:1 1 200px"><b>확인해 주실 목표</b>가 '+n+'개 있습니다.<br>'
+        +'아이가 적은 내용을 보고 확인해 주세요.</span>'
+        +(n>1?'<button class="btn btn-g" id="pAll">'+n+'개 한 번에 확인</button>':'')+'</div>'
+      :(list.length?'<div class="p-done"><b>확인해 주실 것을 모두 마쳤어요.</b>'
+        +'<span>이제 파일을 내려받아 아이에게 보내 주세요.</span>'
+        +'<button class="btn btn-p" id="pSave2">확인한 파일 내려받기</button></div>':''))
+    +(todo.length?'<div class="my">'+todo.map(function(m){return pCard(m,true);}).join("")+'</div>':'')
+    /* ② 읽을 필요 없는 카드는 접어 둔다 — 다섯 장이 모두 펼쳐져 할 일이 묻히던 자리 */
+    +(rest.length?'<details class="p-old"><summary>이미 확인한 목표 '+rest.length+'개</summary>'
+        +'<div class="my">'+rest.map(function(m){return pCard(m,false);}).join("")+'</div></details>':'')
+    +(list.length?'':'<div class="note">아직 확인할 목표가 없어요. 아이가 목표를 해내면 여기에 나타납니다.</div>')
+    +'</div>';
+  /* ④ 마지막 할 일이 5,000픽셀 아래에 있던 자리 — 아래에 띄워 따라다니게 */
+  var bar=$("#pBar");
+  if(bar) bar.innerHTML=list.length
+    ? '<div class="pbar-in container"><span class="pb-t">'
+      +(n?'<b>'+n+'개</b> 더 확인해 주세요':'<b>확인 끝</b> · 아이에게 파일을 보내 주세요')+'</span>'
+      +'<button class="btn '+(n?'':'btn-p')+'" id="pSave">확인한 파일 내려받기</button></div>'
+    : "";
+  if(bar){
+    bar.classList.toggle("hidden",!list.length);
+    /* 떠 있는 띠가 마지막 카드를 가리지 않게 자리를 비워 둔다 */
+    document.documentElement.style.setProperty("--pbarh",
+      (list.length ? bar.offsetHeight + 22 : 0)+"px");
+  }
+
   $$("#pBody [data-pok]").forEach(function(b){
-    b.addEventListener("click",function(){
-      guardPin(function(){
-        var by=prompt("확인하는 분은 누구신가요?","어머니");
-        if(by===null)return;
-        PD.my[+b.dataset.pok].pv={by:by.trim()||"보호자",at:today()};
-        var m=PD.my[+b.dataset.pok];m.st=m.tv?"bloom":"wait";
-        pRender();toast("확인했어요");});});
+    b.addEventListener("click",function(){ pConfirm([+b.dataset.pok]); });
   });
-  $("#pSave").addEventListener("click",function(){
-    PD.at=new Date().toISOString();
-    dl(JSON.stringify(PD,null,1),
-      ((PD.grade?PD.grade+"학년_":"")+PD.name+"_해냄기록_확인_"+today()+".json").replace(/[\\/:*?"<>|]/g,""),
-      "application/json");
-    toast("파일을 내려받았어요");});
+  var pa=$("#pAll");
+  if(pa) pa.addEventListener("click",function(){
+    pConfirm(todo.map(function(m){return PD.my.indexOf(m);}));
+  });
+  var s2=$("#pSave2"); if(s2) s2.addEventListener("click",pSaveFile);
+  var s1=$("#pSave"); if(s1) s1.addEventListener("click",pSaveFile);
+}
+function pSaveFile(){
+  PD.at=new Date().toISOString();
+  dl(JSON.stringify(PD,null,1),
+    ((PD.grade?PD.grade+"학년_":"")+PD.name+"_해냄기록_확인_"+today()+".json").replace(/[\\/:*?"<>|]/g,""),
+    "application/json");
+  toast("파일을 내려받았어요. 아이에게 보내 주세요");
+}
+/* ⑤ 창이 두 번 뜨고 카드마다 이름을 다시 묻던 자리 —
+   PIN은 한 번, 이름도 한 번만 묻고 기억한다. 브라우저 prompt()도 걷어낸다. */
+function pConfirm(idxs){
+  if(!idxs || !idxs.length) return;
+  guardPin(function(){
+    if(S.pby){ pApply(idxs, S.pby); return; }
+    var who=["어머니","아버지","보호자"];
+    modal('<h3>확인하시는 분</h3>'
+      +'<div class="muted">아이 기록에 <b>누가 확인했는지</b> 함께 남깁니다. '
+        +'한 번만 정하면 다음부터는 묻지 않아요.</div>'
+      +'<div class="chips" style="margin:14px 0 10px">'
+      +who.map(function(w){return '<button class="chip" data-who="'+w+'">'+w+'</button>';}).join("")
+      +'</div>'
+      +'<div class="fld"><label for="pWho">직접 적기</label>'
+      +'<input type="text" id="pWho" placeholder="예) 할머니" autocomplete="off"></div>'
+      +'<div class="acts" style="margin-top:12px">'
+      +'<button class="btn btn-g btn-full" id="pWhoOk">확인했습니다</button></div>'
+      +'<div class="acts" style="margin-top:9px">'
+      +'<button class="btn btn-full" onclick="closeModal()">그만두기</button></div>',
+    function(){
+      $$("#mdl [data-who]").forEach(function(b){b.addEventListener("click",function(){
+        $("#pWho").value=b.dataset.who;
+        $$("#mdl [data-who]").forEach(function(x){x.dataset.on=x===b?"1":"0";});});});
+      $("#pWho").focus();
+      $("#pWhoOk").addEventListener("click",function(){
+        var by=($("#pWho").value||"").trim()||"보호자";
+        S.pby=by; touch(); closeModal(); pApply(idxs, by);});
+    });
+  });
+}
+function pApply(idxs, by){
+  idxs.forEach(function(k){
+    var m=PD.my[k]; if(!m || m.pv) return;
+    m.pv={by:by,at:today()};
+    m.st=m.tv?"bloom":"wait";
+  });
+  pRender();
+  toast(idxs.length>1 ? idxs.length+"개를 확인했어요" : "확인했어요");
 }
 
 /* ───────── 이름 아바타(교사 화면용) ───────── */
@@ -5278,7 +5411,7 @@ window.addEventListener("popstate",function(){
       if(!goalById(m.gid) || seen[m.gid]) return false;
       seen[m.gid]=1; return true;});
     S.tpin=d.tpin||"";S.ppin=d.ppin||"";S.roster=d.roster||{};
-    S.tgrade=d.tgrade||null;S.tnames=d.tnames||[];S.tsent=!!d.tsent;
+    S.tgrade=d.tgrade||null;S.tnames=d.tnames||[];S.tsent=!!d.tsent;S.pby=d.pby||"";
     S.codes=d.codes||[];S.numCode=!!d.numCode;
     $("#sName").value=S.me.name||"";renderGrades();chkStart();
   }
