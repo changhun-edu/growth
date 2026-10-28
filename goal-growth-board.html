@@ -1256,6 +1256,33 @@ button.ttl-b{cursor:pointer}
   background:var(--bloom-bg);border:1px solid #BBDCC9;border-radius:99px;
   padding:1px 7px;margin-left:6px}
 .c-ok[hidden]{display:none}
+/* ①② 이름 고르기 */
+.cnames{gap:6px}
+.cnames .fchip{display:inline-flex;align-items:center;gap:5px}
+.cn-f{font-style:normal;font-size:8px;color:var(--bloom);line-height:1}
+.cnames .fchip[data-on="1"] .cn-f{color:#9BE3C2}
+.cn-else{display:inline-block;margin-top:9px;font-size:12.5px}
+.cn-w{margin:8px 0 0;font-size:12.5px;line-height:1.6;color:#8A5A1E;
+  background:#FDF6E6;border:1px solid #EBD9AE;border-radius:9px;padding:8px 11px}
+.cn-w:empty{display:none}
+.cn-w b{color:#6B460F;font-weight:800}
+/* ⑥ 오타가 날 수 없는 길 */
+.c-safe{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;
+  background:var(--grow-bg);border:1px solid #E8CBA6;border-radius:var(--r);padding:14px 16px}
+.c-safe b{font-size:14.5px;letter-spacing:-0.02em;color:#854F0B}
+.c-safe span{flex:1 1 220px;font-size:12.5px;line-height:1.6;color:#8A5A1E}
+.c-safe span b{font-size:12.5px}
+/* ④ 발급한 코드의 대조 상태 */
+.cs{font-style:normal;font-size:10.5px;font-weight:800;border-radius:99px;
+  padding:1px 7px;margin-left:6px;white-space:nowrap}
+.cs-ok{color:#1D5B40;background:var(--bloom-bg);border:1px solid #BBDCC9}
+.cs-bad{color:#8E3030;background:#FBECEC;border:1px solid #E9C9C9}
+.cs-wait{color:var(--ink-3);background:var(--card-2);border:1px solid var(--line)}
+/* ⑤ 학생 쪽 안내 */
+.cin-w{margin:10px 0 0;font-size:12.5px;line-height:1.6;color:#8A5A1E;
+  background:#FDF6E6;border:1px solid #EBD9AE;border-radius:9px;padding:9px 12px}
+.cin-w b{color:#6B460F;font-weight:800}
+
 /* ⑦ 한 번 고른 담임 학년 */
 .c-one{display:flex;align-items:center;gap:10px}
 .c-one b{font-size:15px;letter-spacing:-0.02em}
@@ -4050,6 +4077,9 @@ function openCode(i){
   var m=S.my[i],g=goalById(m.gid);
   modal('<h3>인증 코드 입력</h3>'
     +'<div class="muted">선생님께 받은 6자리 코드를 넣으면 인증이 끝나요.<br>「'+esc(g.alt||g.title)+'」</div>'
+    /* ⑤ 이름이 어긋나면 지금은 통과해도 나중에 「코드 불일치」로 찍힌다 */
+    +'<p class="cin-w">선생님이 적은 이름·학년과 <b>내 이름('+esc(S.me.name||"?")+') · '
+      +esc(S.me.grade||"?")+'학년</b>이 같아야 해요. 다르면 선생님께 말씀드리세요.</p>'
     +'<input type="text" id="cIn" class="pin" maxlength="6" placeholder="------" autocomplete="off" autocapitalize="characters">'
     +'<div id="cMsg"></div>'
     +'<div class="acts" style="margin-top:14px"><button class="btn btn-g btn-full" id="cOk">확인</button></div>'
@@ -5064,7 +5094,38 @@ function bigCode(code,name,title){
   el.querySelector("#bcX").addEventListener("click",function(){el.remove();});
   el.addEventListener("click",function(e){if(e.target===el)el.remove();});
 }
-var CNAME="";   /* 학년을 다시 고르면 폼을 다시 그리는데, 적어 둔 이름은 지키게 */
+var CNAME="", CFREE=false;   /* 학년을 다시 고르면 폼을 다시 그리는데, 적어 둔 이름은 지키게 */
+/* 코드는 [이름·학년·목표·PIN]으로 만든다. 학생 기기에 적힌 이름과 한 글자라도
+   다르면, 학생이 정직하게 코드를 넣어도 몇 달 뒤 「코드 불일치」로 찍힌다.
+   그래서 아는 이름은 적게 하지 않고 고르게 한다. */
+function knownNames(gr){
+  var out=[], seen={};
+  Object.keys(S.roster||{}).forEach(function(k){
+    var d=S.roster[k];
+    if(!d || !d.name) return;
+    if(gr && +d.grade !== +gr) return;          /* 학년이 다르면 코드가 안 맞는다 */
+    if(seen[d.name]) return;
+    seen[d.name]=1; out.push({name:d.name, src:"file"});
+  });
+  (S.tnames||[]).forEach(function(n){
+    if(!n || seen[n]) return;
+    seen[n]=1; out.push({name:n, src:"roll"});
+  });
+  return out;
+}
+function nameKnown(nm, gr){
+  nm=String(nm||"").trim();
+  return !!nm && knownNames(gr).some(function(x){return x.name===nm;});
+}
+/* ④ 발급한 코드가 실제 학생 기록과 맞춰졌는지 */
+function codeState(c){
+  var d=S.roster[c.name+"|"+c.grade];
+  if(!d) return "wait";                          /* 아직 그 학생 파일이 없다 */
+  var m=(d.my||[]).filter(function(x){return x.gid===c.gid;})[0];
+  if(!m || !m.tv) return "wait";
+  var r=sigCheck(d,m);
+  return r==="ok" ? "ok" : (r==="bad" ? "bad" : "wait");
+}
 function cN(n){ return '<i class="c-num">'+n+'</i>'; }
 function cOk(on){ return '<i class="c-ok"'+(on?'':' hidden')+'>✓</i>'; }
 function renderCode(){
@@ -5080,10 +5141,22 @@ function renderCode(){
       +'<li><b>선생님이 코드를 만듭니다</b><span>아래에서 그 학생과 목표를 골라 코드를 만들어 알려 줍니다.</span></li>'
       +'<li><b>학생이 코드를 넣습니다</b><span>학생 화면의 <b>인증 코드 입력</b>에 넣으면 인증이 끝나고 보석이 됩니다.</span></li>'
       +'</ol>'
-      +'<p class="c-note">코드는 <b>학생 이름 · 학년 · 목표 · 선생님 PIN</b>이 모두 맞아야 통과합니다.</p>'
+      +'<p class="c-note">코드는 <b>학생 이름 · 학년 · 목표 · 선생님 PIN</b> 네 가지로 만듭니다. '
+      +'그래서 <b>학생이 자기 기기에 적은 이름·학년과 한 글자도 다르면 안 됩니다.</b> '
+      +'다르면 지금은 통과해도, 나중에 기록을 모을 때 「코드가 맞지 않는 인증」으로 나옵니다.</p>'
     +'</details>'
     +(S.tpin?"":'<div class="note note-w" style="margin-bottom:14px">'
       +'아직 <b>교사 서명 PIN</b>을 정하지 않았습니다. 「기록 모으기」 탭에서 먼저 정해 주세요.</div>')
+    /* ⑥ 오타가 날 수 없는 길이 이미 있다 — 그쪽으로 보낸다 */
+    +(function(){
+      var w=0; Object.keys(S.roster||{}).forEach(function(k){
+        (S.roster[k].my||[]).forEach(function(m){if(m.st==="wait")w++;});});
+      if(!w) return "";
+      return '<div class="c-safe"><b>확인을 기다리는 학생이 있습니다 — '+w+'건</b>'
+        +'<span>「우리 반 현황」에서 학생을 눌러 발급하면 <b>이름이 자동으로 맞습니다.</b> '
+        +'오타 걱정이 없어요.</span>'
+        +'<button type="button" class="btn btn-w" id="cGoClass">우리 반 현황에서 발급하기</button></div>';
+    })()
     +(nRs?"":'<div class="note" style="margin-bottom:14px">'
       +'<b>아직 모은 학생 기록이 없습니다.</b> 보통은 학생 파일을 받아 '
       +'「우리 반 현황」에서 누가 기다리는지 확인한 뒤에 만듭니다. '
@@ -5098,9 +5171,21 @@ function renderCode(){
          :'<div class="chips" id="cgPick">'+[1,2,3,4,5,6].map(function(g){
             return '<button class="fchip" data-cg="'+g+'">'+g+'학년</button>';}).join("")+'</div>')
     +'</div>'
-    +'<div class="fld cstep" data-k="n"><label for="cName">'+cN(2)+'학생 이름'+cOk(!!CNAME)+'</label>'
-      +'<input type="text" id="cName" placeholder="예) 김민준" autocomplete="off"'
-      +' value="'+esc(CNAME)+'"></div>'
+    +(function(){
+      var ks=gr?knownNames(gr):[];
+      var free=!ks.length || CFREE;
+      return '<div class="fld cstep" data-k="n"><label for="cName">'+cN(2)+'학생 이름'+cOk(!!CNAME)+'</label>'
+        /* ① 적게 하지 않고 고르게 한다 — 오타가 원천적으로 생기지 않는다 */
+        +(ks.length?'<div class="chips cnames">'+ks.map(function(x){
+            return '<button class="fchip" data-cnm="'+esc(x.name)+'" data-on="'
+              +(CNAME===x.name?"1":"0")+'">'+esc(x.name)
+              +(x.src==="file"?'<i class="cn-f" title="기록을 받은 학생">●</i>':'')+'</button>';}).join("")
+          +'</div>':'')
+        +(free?'<input type="text" id="cName" placeholder="예) 김민준" autocomplete="off"'
+            +' value="'+esc(CNAME)+'"'+(ks.length?' style="margin-top:9px"':'')+'>'
+          :'<button type="button" class="t-link cn-else" id="cFree">명단에 없는 학생에게 발급</button>')
+        +'<p class="cn-w" id="cNameW"></p></div>';
+    })()
     /* ⑨ 가운데 정렬 안내가 라벨인지 모호하던 자리 — 칸 안으로 내린다 */
     +'<div class="fld srch cstep" data-k="s"><label for="cGoal">'+cN(3)+'목표 고르기'+cOk(false)+'</label>'
       +'<input type="text" id="cGoal" placeholder="낱말을 넣으면 걸러집니다 — 예) 읽기, 발표, 관찰" autocomplete="off">'
@@ -5116,7 +5201,8 @@ function renderCode(){
 
   function upd(){
     /* 못 누르는 회색 단추 대신, 무엇이 남았는지 단추가 말한다 */
-    var hasN=!!$("#cName").value.trim(), hasG=!!gr, hasS=!!sel.gid;
+    var nmNow=($("#cName") ? $("#cName").value : CNAME) || "";
+    var hasN=!!nmNow.trim(), hasG=!!gr, hasS=!!sel.gid;
     var b=$("#cMake");
     b.disabled=!(hasN&&hasG&&hasS);
     b.dataset.wait=b.disabled?"1":"0";
@@ -5134,6 +5220,15 @@ function renderCode(){
       var c=f.querySelector(".c-ok");
       if(c) c.hidden = !ok[k];
     });
+    /* ② 명단에 없는 이름이면 왜 위험한지 그 자리에서 말한다 */
+    var w=$("#cNameW");
+    if(w){
+      var nm=nmNow.trim();
+      w.innerHTML = (nm && hasG && !nameKnown(nm,gr))
+        ? '이 이름은 우리 반 명단에도, 모은 기록에도 없습니다. '
+          +'<b>학생 기기에 적힌 이름과 한 글자도 다르면</b> 나중에 「코드 불일치」로 나옵니다.'
+        : "";
+    }
   }
   function setSel(g){
     sel={gid:g?g.id:null,title:g?g.title:"",subject:g?g.subject:""};
@@ -5147,6 +5242,15 @@ function renderCode(){
   if(gc) gc.addEventListener("click",function(){
     S.tabT="collect"; renderTeacher(); touch();
     window.scrollTo({top:0,behavior:"smooth"});});
+  var gk=$("#cGoClass");
+  if(gk) gk.addEventListener("click",function(){
+    S.tabT="class"; S.tFilter="wait"; renderTeacher(); touch();
+    window.scrollTo({top:0,behavior:"smooth"});});
+  $$("#tCode [data-cnm]").forEach(function(b){
+    b.addEventListener("click",function(){
+      CNAME=b.dataset.cnm; CFREE=false; renderCode();});});
+  var cf=$("#cFree");
+  if(cf) cf.addEventListener("click",function(){ CFREE=true; CNAME=""; renderCode(); });
   $$("#tCode [data-cg]").forEach(function(b){
     b.addEventListener("click",function(){
       CNAME=($("#cName")||{}).value||"";
@@ -5161,7 +5265,8 @@ function renderCode(){
   $("#cNum").addEventListener("change",function(){
     S.numCode=this.checked; touch();
     toast(S.numCode?"숫자 6자리 코드로 바꿉니다(저학년용)":"영문·숫자 코드로 바꿉니다");});
-  $("#cName").addEventListener("input",upd);
+  var ni=$("#cName");
+  if(ni) ni.addEventListener("input",function(){ CNAME=ni.value; upd(); });
 
   function hideList(){$("#cList").classList.add("hidden");}
   function showList(){
@@ -5190,10 +5295,10 @@ function renderCode(){
   $("#cGoal").addEventListener("blur",function(){setTimeout(hideList,120);});
 
   $("#cMake").addEventListener("click",function(){
-    var nm=$("#cName").value.trim();
+    var nm=(($("#cName") ? $("#cName").value : CNAME)||"").trim();
     addCode(nm,gr,sel.gid,sel.title,sel.subject);
-    $("#cName").value=""; CNAME=""; $("#cGoal").value=""; setSel(null);
-    renderHist(); upd(); $("#cName").focus();
+    CNAME=""; CFREE=false; setSel(null);
+    renderCode();          /* 이름 칩과 ✓ 표시를 처음 상태로 되돌린다 */
     toast(nm+" 학생의 코드를 만들었습니다");});
 
   renderHist();
@@ -5207,11 +5312,18 @@ function renderHist(){
     +'<span>최근 '+l.length+'개</span></div>'
     +'<div class="clog">'+l.map(function(c,i){
       var t=new Date(c.at),p=function(x){return String(x).padStart(2,"0");};
+      /* ④ 발급 시점에는 맞는지 알 수 없다 — 학생 파일을 받아야 드러난다 */
+      var stt=codeState(c);
+      var tag={ok:['cs-ok','✓ 대조됨'],bad:['cs-bad','! 안 맞음'],wait:['cs-wait','아직 대조 전']}[stt];
       return '<div class="clog-r"><span class="clog-c">'+prettyCode(c.code)+'</span>'
-        +'<span class="clog-i"><b>'+esc(c.name)+'</b><span>'+esc(c.title)+'</span></span>'
+        +'<span class="clog-i"><b>'+esc(c.name)+'</b>'
+          +'<i class="cs '+tag[0]+'">'+tag[1]+'</i>'
+          +'<span>'+esc(c.title)+'</span></span>'
         +'<span class="clog-t">'+p(t.getHours())+':'+p(t.getMinutes())+'</span>'
         +'<button class="btn btn-q btn-s" data-cc="'+i+'">복사</button>'
-        +'<button class="btn btn-q btn-s" data-cb="'+i+'">크게</button></div>';}).join("")+'</div>'
+        +'<button class="btn btn-q btn-s" data-cb="'+i+'">크게</button>'
+        /* ⑦ 오타를 나중에 알았을 때 그 자리에서 바로잡게 */
+        +'<button class="btn btn-q btn-s" data-cf="'+i+'">이름 고쳐 다시</button></div>';}).join("")+'</div>'
     +'<div class="acts" style="margin-top:14px">'
     +'<button class="btn btn-p" id="hPrint">인증 쿠폰 인쇄하기</button>'
     +'<div class="sp"></div>'
@@ -5224,11 +5336,42 @@ function renderHist(){
   $$("#cHist [data-cb]").forEach(function(b){
     b.addEventListener("click",function(){
       var c=l[+b.dataset.cb];bigCode(c.code,c.name,c.title);});});
+  $$("#cHist [data-cf]").forEach(function(b){
+    b.addEventListener("click",function(){ reissue(l[+b.dataset.cf]); });});
   $("#hPrint").addEventListener("click",printCoupons);
   $("#hClear").addEventListener("click",function(){
     if(!confirm("발급 이력을 비울까요? 이미 알려 준 코드는 그대로 쓸 수 있습니다."))return;
     S.codes=[];renderHist();touch();});
 }
+/* ⑦ 이름만 고쳐 같은 목표로 다시 발급 */
+function reissue(c){
+  var ks=knownNames(c.grade);
+  modal('<h3>이름 고쳐 다시 발급</h3>'
+    +'<div class="muted">「'+esc(c.title||"")+'」<br>'
+      +'학생 기기에 적힌 이름과 <b>똑같이</b> 적어야 나중에 대조가 맞습니다.</div>'
+    +(ks.length?'<div class="chips" style="margin:13px 0 4px">'+ks.map(function(x){
+        return '<button class="fchip" data-rn="'+esc(x.name)+'">'+esc(x.name)+'</button>';}).join("")
+      +'</div>':'')
+    +'<div class="fld" style="margin-top:12px"><label for="rNm">학생 이름</label>'
+    +'<input type="text" id="rNm" value="'+esc(c.name)+'" autocomplete="off"></div>'
+    +'<div class="acts" style="margin-top:12px">'
+    +'<button class="btn btn-p btn-full" id="rOk">새 코드 만들기</button></div>'
+    +'<div class="acts" style="margin-top:9px">'
+    +'<button class="btn btn-full" onclick="closeModal()">그만두기</button></div>',
+  function(){
+    $$("#mdl [data-rn]").forEach(function(b){b.addEventListener("click",function(){
+      $("#rNm").value=b.dataset.rn;});});
+    $("#rNm").focus();
+    $("#rOk").addEventListener("click",function(){
+      var nm=($("#rNm").value||"").trim();
+      if(!nm){ toast("이름을 적어 주세요"); return; }
+      var code=addCode(nm,c.grade,c.gid,c.title,c.subject);
+      closeModal(); renderCode();
+      bigCode(code,nm,c.title);
+    });
+  });
+}
+
 /* A4 인증 쿠폰 */
 /* ═══════ ⑤ 우리 반 도감 파일 — 이름 없이 숫자만 ═══════ */
 function klassGrade(){
