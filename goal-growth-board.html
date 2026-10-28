@@ -1792,7 +1792,7 @@ button.ttl-b{cursor:pointer}
         <span class="sd-go">→</span>
       </button>
       <p class="st-load">이미 쓰던 파일이 있나요?
-        <button type="button" id="loadHere">내 기록 파일 불러오기</button></p>
+        <button type="button" id="loadHere">전에 받은 파일 열기</button></p>
     </div>
   </section>
 
@@ -2029,7 +2029,7 @@ button.ttl-b{cursor:pointer}
       <path d="M13.4 3.2 18.5 8v3.3"/><path d="M13.4 3.2V8h5.1"/>
       <path d="M12 13.2v6.1"/><path d="m9.2 16.6 2.8 2.9 2.8-2.9"/>
       <path d="M5.5 15.4v3.7a1.7 1.7 0 0 0 1.7 1.7h9.6a1.7 1.7 0 0 0 1.7-1.7v-3.7"/></svg>
-    <span>내 자료</span><i class="tb-d" id="tabSaveD"></i></button>
+    <span>내 기록</span><i class="tb-d" id="tabSaveD"></i></button>
 </nav></div>
 
 <div class="toast" id="toast"></div>
@@ -3622,7 +3622,7 @@ function renderSaveHint(){
   h.innerHTML='<div class="svh"><span class="svh-i">⚠</span>'
     +'<span class="svh-t"><b>아직 한 번도 저장하지 않았어요.</b> '
     +'기록은 <b>이 기기에만</b> 있어서, 브라우저를 지우거나 기기를 바꾸면 사라집니다.</span>'
-    +'<button class="btn btn-p" id="svhGo">내 자료 받아 두기</button></div>';
+    +'<button class="btn btn-p" id="svhGo">내 기록 챙겨 두기</button></div>';
   $("#svhGo").addEventListener("click",function(){ openSave(); });
 }
 /* 샘플일 때만 — 지도가 따로 있다는 걸 알려 준다 */
@@ -3906,7 +3906,7 @@ function openHelp(){
       +'파일에 담겨 선생님께 보입니다.</p>'
     +'<div class="hnote"><b>기록은 이 기기에만 저장됩니다.</b> 서버가 없어 '
       +'브라우저 저장소를 지우거나 기기를 바꾸면 사라집니다. '
-      +'<b>내 자료</b> → <b>내 자료 받기</b>로 받은 파일을 꼭 보관해 주세요.</div>'
+      +'<b>내 기록</b> → <b>선생님께 낼 파일 받기</b>로 받은 파일을 꼭 보관해 주세요.</div>'
     +'</div>'
     +'<div class="hwipe"><button type="button" id="hWipe">이 기기 기록 모두 지우기</button>'
     +'<p>'+wipeWhat()+'</p></div>'
@@ -3962,7 +3962,8 @@ function openWipe(){
       : '<b>지울 기록이 없습니다</b><span>이 기기에는 아직 저장된 것이 없어요.</span>')
     +'</div>'
     +(any?'<div class="note note-w" style="margin-top:12px;font-size:12.5px;line-height:1.7">'
-      +'먼저 <b>내 자료 받기</b>로 파일을 받아 두면 나중에 <b>불러오기</b>로 되살릴 수 있습니다.</div>':'')
+      +'먼저 <b>내 기록</b>에서 파일을 받아 두면 나중에 <b>전에 받은 파일 열기</b>로 '
+      +'되살릴 수 있습니다.</div>':'')
     +(any?'<div class="fld" style="margin-top:14px">'
       +'<label for="wR">확인을 위해 <b>모두 지우기</b>라고 적어 주세요</label>'
       +'<input type="text" id="wR" placeholder="모두 지우기" autocomplete="off"></div>'
@@ -4287,7 +4288,7 @@ function resetPin(){
       ?'<b>다시 확인하려면 선생님께 번호를 다시 받아야 합니다.</b> 기억이 나지 않으시면 '
        +'담임 선생님께 여쭤보세요.<br>'
       :'')
-    +'<b>지운 횟수는 「내 자료」 파일에 적혀 선생님께 보입니다.</b>'
+    +'<b>지운 횟수는 「내 기록」 파일에 적혀 선생님께 보입니다.</b>'
     +(S.pRst?' 지금까지 '+S.pRst+'번 지웠습니다.':'')+'</div>'
     +'<div class="fld" style="margin-top:14px"><label for="pR">확인을 위해 <b>재설정</b>이라고 적어 주세요</label>'
     +'<input type="text" id="pR" placeholder="재설정" autocomplete="off"></div>'
@@ -4426,21 +4427,25 @@ function openSave(lead){
     +dshort(ago.at.toISOString().slice(0,10))
     +' · '+(ago.days===0?"오늘":ago.days+"일 전")
     +(saveNew()?' <b>— 그 뒤로 새 기록이 있어요</b>':'')+'</p>';
-  modal('<h3>내 자료 다운받기</h3><div class="muted">'
+  modal('<h3>내 기록 챙기기</h3><div class="muted">'
     +(lead?esc(lead)+'<br>':'')
     +'파일 하나에 내 목표와 확인 기록이 모두 담겨요.</div>'
     +lastHtml
     /* ⑥⑦ 되살릴 수 있는 파일은 하나뿐인데 셋이 같은 비중이던 자리 */
     +'<div class="acts" style="margin-top:4px">'
-      +'<button class="btn btn-p btn-full sv-main" id="exJ">내 자료 받기</button></div>'
-    +'<p class="sv-sub">다음에 이어서 하거나, 선생님·부모님께 보낼 때 쓰는 파일이에요.</p>'
+      +'<button class="btn btn-p btn-full sv-main" id="exJ">선생님께 낼 파일 받기</button></div>'
+    /* ② 이름은 가장 잦은 쓰임으로, 나머지 둘은 바로 밑줄에 — 셋 다 같은 파일이다 */
+    +'<p class="sv-sub">선생님께 낼 때, <b>부모님께 확인받을 때</b>, '
+      +'기기가 바뀌어 <b>되살릴 때</b> 쓰는 파일이에요.</p>'
     /* 종이로 남기는 길은 접어 두지 않는다 — 아이가 가장 갖고 싶어 하는 결과물이다 */
     +'<div class="acts" style="margin-top:12px">'
-      +'<button class="btn btn-w btn-full sv-main" id="exH">인쇄하기 · PDF로 저장</button></div>'
-    +'<p class="sv-sub">해냄 증서와 보석 도감을 종이나 PDF로 남길 때.</p>'
-    +'<details class="sv-more"><summary>다른 형식으로 받기</summary>'
+      +'<button class="btn btn-w btn-full sv-main" id="exH">해냄 증서 뽑기</button></div>'
+    /* ㉠ 증서만이 아니라 보석 도감·목록도 고를 수 있다는 것을 밑줄에 */
+    +'<p class="sv-sub">증서와 <b>보석 도감</b>을 종이나 PDF로. '
+      +'고르면 <b>목록만</b>도 뽑을 수 있어요.</p>'
+    +'<details class="sv-more"><summary>엑셀로 받기</summary>'
       +'<div class="acts" style="margin-top:10px">'
-        +'<button class="btn btn-full" id="exX">보여 줄 표 받기</button></div>'
+        +'<button class="btn btn-full" id="exX">엑셀 표로 받기</button></div>'
       +'<p class="sv-sub">엑셀로 열어 부모님께 보여 드릴 때 (.xlsx)</p>'
     +'</details>'
     +'<div class="note note-w" style="margin:13px 0 0;font-size:12.5px;line-height:1.7">'
@@ -4454,7 +4459,7 @@ function openSave(lead){
     $("#exJ").addEventListener("click",function(){
       dl(JSON.stringify(payload(),null,1),fname("json"),"application/json");
       markSaved();                      /* ②⑤ 받은 때와 모양을 남긴다 */
-      closeModal();toast("내 자료를 받았어요. 지우지 말고 보관해 주세요");});
+      closeModal();toast("내 기록 파일을 받았어요. 지우지 말고 보관해 주세요");});
     $("#exX").addEventListener("click",function(){exportXlsx();});
     $("#exH").addEventListener("click",function(){closeModal();openPrint();});
     $("#snCopy").addEventListener("click",function(){copyTxt(sendNote(),"안내문을 복사했어요");});
@@ -4476,7 +4481,8 @@ function copyTxt(t,msg){
   }
 }
 function openLoad(){
-  modal('<h3>기록 불러오기</h3><div class="muted">전에 내보낸 <b>.json</b> 파일을 고르면 이어서 할 수 있어요.</div>'
+  modal('<h3>전에 받은 파일 열기</h3><div class="muted">전에 받아 둔 <b>.json</b> 파일을 고르면 '
+    +'그때부터 이어서 할 수 있어요.</div>'
     +'<div class="acts"><button class="btn btn-p btn-full" id="ldPick">파일 고르기</button></div>'
     +'<input type="file" id="ldFile" accept=".json" class="hidden">'
     +'<div id="ldMsg"></div>'
@@ -4705,7 +4711,7 @@ function openPrint(){
              ["gems","보석 도감","인증받은 "+bl+"개를 보석 그림으로"],
              ["list","목표 목록","교과·단계·확인한 사람이 담긴 표"],
              ["notes","내가 적은 글",ev?("스스로 적어 둔 "+ev+"줄"):"아직 적은 글이 없어요"]];
-  modal('<h3>인쇄하기 · PDF로 저장</h3>'
+  modal('<h3>해냄 증서 뽑기</h3>'
     +'<div class="muted">담을 것을 고르고 <b>인쇄 창 열기</b>를 누르세요. '
     +'인쇄 창에서 <b>「PDF로 저장」</b>을 고르면 PDF 파일이 됩니다.</div>'
     +'<div class="prs">'+items.map(function(x){
@@ -5239,7 +5245,7 @@ function classNote(){
     +"3. 목표 지도에서 하고 싶은 목표를 담고, 해낸 만큼 +1 +2 +3을 누릅니다.\n"
     +"4. 보호자께 확인을 받고(보호자 확인), 선생님께 받은 코드를 넣습니다(선생님 인증).\n"
     +"   두 가지가 모두 모이면 보석이 됩니다.\n"
-    +"5. 아래 ‘내 자료’에서 파일을 받아 선생님께 보냅니다.\n"
+    +"5. 아래 ‘내 기록’에서 파일을 받아 선생님께 보냅니다.\n"
     +"※ 기록은 각자 기기에 저장됩니다. 내보낸 파일을 꼭 보관해 주세요.";
 }
 $("#tNoteCopy").addEventListener("click",function(){
@@ -5399,7 +5405,7 @@ function renderClass(){
       +'<span data-on="'+(S.tsent?"1":"0")+'">안내 보내기</span>'
       +'<span data-now="1">파일 기다리는 중</span></div>'
       +'<b>아직 모은 기록이 없습니다</b>'
-      +'<p>학생이 「내 자료」에서 받은 파일을 올리면 여기에 우리 반이 한눈에 보입니다.</p>'
+      +'<p>학생이 「내 기록」에서 받은 파일을 올리면 여기에 우리 반이 한눈에 보입니다.</p>'
       +'<div class="acts"><button class="btn btn-p" id="teGo">기록 모으기로 가기</button>'
       +'<button class="btn" id="tePeek">샘플로 둘러보기</button></div></div>';
     var g1=$("#teGo"); if(g1) g1.addEventListener("click",function(){
