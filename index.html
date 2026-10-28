@@ -1,10 +1,10 @@
 <!doctype html>
 <!--
-  해냄 도감 — 소개 페이지
+  해냄 보물상자 — 소개 페이지
   ───────────────────────────────────────────────────────────
   배포할 때 두 군데만 채우면 됩니다.
    1) 아래 <head> 안 og:url  → 이 소개 페이지의 주소
-   2) 맨 아래 <script>의 var APP → 앱(해냄 도감 본체)의 주소
+   2) 맨 아래 <script>의 var APP → 앱(해냄 보물상자 본체)의 주소
       같은 폴더에 앱을 app.html 이름으로 두면 그대로 동작합니다.
   앱 주소를 http(s)로 적으면 「우리 반에서 써 보기」에 학급 배포용 QR이 자동으로 생깁니다.
   ───────────────────────────────────────────────────────────
@@ -13,15 +13,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>해냄 도감 — 내가 고른 목표, 어른에게 인증받아 모으는 1년</title>
+<title>해냄 보물상자 — 내가 고른 목표, 어른에게 인증받아 모으는 1년</title>
 <meta name="description" content="2022 개정 교육과정 성취기준 611개로 만든 초등 목표 기록 도구. 학생이 스스로 목표를 고르고, 학부모·교사에게 인증받아 한 해 동안 모읍니다. 회원가입도 서버도 없습니다.">
 <!-- ▼ 배포 주소가 정해지면 아래 네 줄의 주소를 채워 주세요 (공유 미리보기용) -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="해냄 도감 — 내가 고른 목표, 어른에게 인증받아 모으는 1년">
+<meta property="og:title" content="해냄 보물상자 — 내가 고른 목표, 어른에게 인증받아 모으는 1년">
 <meta property="og:description" content="2022 개정 교육과정 성취기준 611개. 회원가입도 서버도 없이, 기기와 파일 하나로 한 해의 성장을 기록합니다.">
 <meta property="og:url" content="">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23F4F1EA%22%2F%3E%3Cpath%20d%3D%22M16%2021V10.4%22%20stroke%3D%22%232F7D5B%22%20stroke-width%3D%222.4%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M16%2012.8c0-3.6%202.9-6.2%206.5-6.2%200%203.6-2.9%206.2-6.5%206.2Z%22%20fill%3D%22%23C9A227%22%2F%3E%3Cpath%20d%3D%22M16%2016.8c0-3.2-2.6-5.7-5.9-5.7%200%203.2%202.6%205.7%205.9%205.7Z%22%20fill%3D%22%23C97C2C%22%2F%3E%3Cpath%20d%3D%22M3.2%2019.9c4.3-2%208.8-1.5%2012.8%201.4%204-2.9%208.5-3.4%2012.8-1.4v6.4c-4.3-1.4-8.8-1-12.8%201.2-4-2.2-8.5-2.6-12.8-1.2Z%22%20fill%3D%22%232F7D5B%22%2F%3E%3Cpath%20d%3D%22M16%2021.6v5.6%22%20stroke%3D%22%23F4F1EA%22%20stroke-width%3D%221.3%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%23F4F1EA%22%2F%3E%3Cpath%20d%3D%22M4.4%2017.6h23.2v7.5a2.3%202.3%200%200%201-2.3%202.3H6.7a2.3%202.3%200%200%201-2.3-2.3v-7.5Z%22%20fill%3D%22%232F7D5B%22%2F%3E%3Crect%20x%3D%2213.8%22%20y%3D%2217.6%22%20width%3D%224.4%22%20height%3D%229.8%22%20fill%3D%22%23C9A227%22%2F%3E%3Crect%20x%3D%223.8%22%20y%3D%2211.4%22%20width%3D%2224.4%22%20height%3D%224.8%22%20rx%3D%221.8%22%20fill%3D%22%23C97C2C%22%20transform%3D%22rotate%28-12%2016%2013.8%29%22%2F%3E%3Crect%20x%3D%223.8%22%20y%3D%2211.4%22%20width%3D%2224.4%22%20height%3D%221.5%22%20rx%3D%220.75%22%20fill%3D%22%23E0B94A%22%20transform%3D%22rotate%28-12%2016%2013.8%29%22%2F%3E%3Cpath%20d%3D%22M16%202.2%2018.65%205.6%2016%209%2013.35%205.6Z%22%20fill%3D%22%23C9A227%22%2F%3E%3C%2Fsvg%3E">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <style>
 :root{--paper:#F4F1EA;--card:#fff;--card-2:#FAF8F4;--ink:#1E2328;--ink-2:#5E6670;
@@ -301,7 +301,7 @@ padding:1px 6px;font-size:12.5px}
 </head>
 <body>
 
-<header><div class="ct hd"><svg class="lg" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 21V10.4" stroke="#2F7D5B" stroke-width="2.4" stroke-linecap="round"/><path d="M16 12.8c0-3.6 2.9-6.2 6.5-6.2 0 3.6-2.9 6.2-6.5 6.2Z" fill="#C9A227"/><path d="M16 16.8c0-3.2-2.6-5.7-5.9-5.7 0 3.2 2.6 5.7 5.9 5.7Z" fill="#C97C2C"/><path d="M3.2 19.9c4.3-2 8.8-1.5 12.8 1.4 4-2.9 8.5-3.4 12.8-1.4v6.4c-4.3-1.4-8.8-1-12.8 1.2-4-2.2-8.5-2.6-12.8-1.2Z" fill="#2F7D5B"/><path d="M16 21.6v5.6" stroke="#F4F1EA" stroke-width="1.3" stroke-linecap="round"/></svg><b>해냄 도감</b><span>소개</span>
+<header><div class="ct hd"><svg class="lg" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M4.4 17.6h23.2v7.5a2.3 2.3 0 0 1-2.3 2.3H6.7a2.3 2.3 0 0 1-2.3-2.3v-7.5Z" fill="#2F7D5B"/><rect x="13.8" y="17.6" width="4.4" height="9.8" fill="#C9A227"/><rect x="3.8" y="11.4" width="24.4" height="4.8" rx="1.8" fill="#C97C2C" transform="rotate(-12 16 13.8)"/><rect x="3.8" y="11.4" width="24.4" height="1.5" rx="0.75" fill="#E0B94A" transform="rotate(-12 16 13.8)"/><path d="M16 2.2 18.65 5.6 16 9 13.35 5.6Z" fill="#C9A227"/></svg><b>해냄 보물상자</b><span>소개</span>
   <span class="sp"></span>
   <a class="btn btn-s btn-p" data-app="?r=demo" href="#">샘플로 둘러보기</a>
 </div></header>
@@ -311,7 +311,7 @@ padding:1px 6px;font-size:12.5px}
     <div>
       <h1>내가 고른 목표,<br><em>어른에게 인증받아</em> 모으는 1년</h1>
       <p>2022 개정 교육과정 초등 성취기준 <b>611개 전부</b>에서 아이가 스스로 목표를 고릅니다.
-         해낸 만큼 단계를 올리고, 부모님과 선생님에게 확인을 받으면 보석이 되어 한 해에 쌓입니다.</p>
+         해낸 만큼 단계를 올리고, <b>보호자 확인</b>과 <b>선생님 인증</b>을 모두 받으면 보석이 되어 한 해에 쌓입니다.</p>
       <div class="cta">
         <a class="btn btn-p" data-app="?r=demo" href="#">샘플로 둘러보기</a>
         <a class="btn" data-app="" href="#">바로 시작하기</a>
@@ -332,7 +332,7 @@ padding:1px 6px;font-size:12.5px}
 <section><div class="ct">
   <h2>이렇게 돌아갑니다</h2>
   <p class="lead">회원가입도 서버도 없습니다. 기기와 파일 하나로 네 걸음이 반복됩니다.</p>
-  <div class="flow"><div class="fs" style="--c:#8A8F98;--bg:#F1EFEA"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.1" fill="currentColor"/></svg></span><b>고른다</b><span class="fd">내 학년 목표를 담아요</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#C97C2C;--bg:#FBF0E2"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19.6V6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.9 11.5 12 6.4l5.1 5.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>해낸다</b><span class="fd">+1 +2 +3으로 단계를 올려요</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#2F6DAA;--bg:#E7EFF8"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><path d="M8.1 12.3l2.8 2.8 5.2-5.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>확인받는다</b><span class="fd">부모님 확인 · 선생님 인증</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#2F7D5B;--bg:#E6F2EB"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.6 18.6 8v8L12 19.4 5.4 16V8L12 4.6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 11.6 18.6 8M12 11.6 5.4 8M12 11.6v7.8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><b>쌓인다</b><span class="fd">보석이 되어 한 해에 남아요</span></div></div>
+  <div class="flow"><div class="fs" style="--c:#8A8F98;--bg:#F1EFEA"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.1" fill="currentColor"/></svg></span><b>고른다</b><span class="fd">내 학년 목표를 담아요</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#C97C2C;--bg:#FBF0E2"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19.6V6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.9 11.5 12 6.4l5.1 5.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>해낸다</b><span class="fd">+1 +2 +3으로 단계를 올려요</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#2F6DAA;--bg:#E7EFF8"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><path d="M8.1 12.3l2.8 2.8 5.2-5.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>확인받는다</b><span class="fd">보호자 확인 + 선생님 인증</span></div><span class="fa" aria-hidden="true">›</span><div class="fs" style="--c:#2F7D5B;--bg:#E6F2EB"><span class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.6 18.6 8v8L12 19.4 5.4 16V8L12 4.6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 11.6 18.6 8M12 11.6 5.4 8M12 11.6v7.8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><b>쌓인다</b><span class="fd">보석이 되어 한 해에 남아요</span></div></div>
 </div></section>
 
 <section class="alt"><div class="ct">
@@ -373,7 +373,7 @@ padding:1px 6px;font-size:12.5px}
   <div class="t3"><div class="ts"><i>1단계</i><b>교사 서명 PIN 정하기</b><span>인증 코드가 이 PIN으로 서명됩니다. 학생 기기에서 위조 여부가 대조됩니다.</span></div><div class="ts"><i>2단계</i><b>우리 반에 안내 보내기</b><span>알림장에 붙여 넣을 안내문이 만들어집니다. 복사해서 그대로 쓰시면 됩니다.</span></div><div class="ts"><i>3단계</i><b>학생 기록 파일 받기</b><span>여러 개를 한꺼번에 올리면 우리 반 현황과 코드 발급이 열립니다.</span></div></div>
   <details class="q" style="margin-top:18px">
     <summary>학급에 보낼 안내문 — 그대로 복사해 쓰세요</summary>
-    <pre id="note">「해냄 도감」으로 한 해 목표를 기록합니다.
+    <pre id="note">「해냄 보물상자」으로 한 해 목표를 기록합니다.
 1. 아래 주소를 엽니다.
    (여기에 우리 학교가 쓰는 주소를 적어 주세요)
 2. 첫 화면에서 ‘학생’을 고르고 이름과 학년을 넣습니다.
@@ -390,7 +390,7 @@ padding:1px 6px;font-size:12.5px}
 <section><div class="ct">
   <h2>학교가 묻는 것</h2>
   <p class="lead">도입을 검토하실 때 먼저 확인하시는 것들을 모았습니다.</p>
-  <div class="qa"><details class="q" open><summary>아이 정보가 어디에 저장되나요?</summary><p>서버가 없습니다. 이름과 기록은 <b>그 기기의 브라우저에만</b> 저장되고, 어디로도 전송되지 않습니다. 보호자 PIN과 교사 서명 PIN도 기기에만 남고 파일에는 담기지 않습니다. 다만 서버가 없다는 것은 <b>브라우저 저장소를 지우거나 기기를 바꾸면 사라진다</b>는 뜻이기도 합니다. 그래서 「기록 내보내기」로 받은 파일을 보관하도록 안내합니다.</p></details><details class="q"><summary>성적이나 평가와 관계가 있나요?</summary><p>없습니다. 목표 문장과 세 단계는 교육과정과 성취수준에서 가져왔지만, 여기에서 받는 <b>인증은 학교 평가 결과가 아닙니다.</b> 속성·등급·보석은 아이가 모으는 재미를 위해 이 도구가 자체로 정한 장치입니다.</p></details><details class="q"><summary>등급이 높으면 더 어려운 목표인가요?</summary><p>아닙니다. 등급은 어려움이 아니라 <b>그 교과 안에서 얼마나 드문 종류인가</b>를 나타냅니다. 관찰이나 계산처럼 그 교과에 흔한 활동은 「기본」, 설계·토의·만들기처럼 덜 나오는 활동은 위쪽 등급이 됩니다. 교과마다 <b>기본 35 · 희귀 30 · 영웅 25 · 전설 10%</b>로 똑같이 나누어, 특정 교과만 높은 등급으로 몰리지 않게 했습니다. 아이가 늘 하던 종류만 고르지 않도록 드문 쪽을 눈에 띄게 한 장치일 뿐, 학습의 중요도나 평가와는 관계가 없습니다.</p></details><details class="q"><summary>어떤 내용이 들어 있나요?</summary><p>교육부 고시 제2022-33호 「초·중등학교 교육과정」(2022 개정 교육과정)의 초등학교 교과 <b>성취기준 611개 전부</b>와, 한국교육과정평가원의 <b>성취기준별 성취수준</b>(3수준 A·B·C)을 학생이 읽을 수 있는 말로 다듬어 +1 +2 +3으로 놓았습니다. 학교 평가계획이 다룬 목표에는 「우리 학교 평가」 표시가 붙습니다.</p></details><details class="q"><summary>저작권은 괜찮나요?</summary><p>교육부 고시와 성취수준은 저작권법 제7조에 따라 보호 대상이 아닌 저작물입니다. 화면의 그림·아이콘·문구는 모두 직접 만들었고, 외부 이미지를 쓰지 않습니다. 쓰는 글꼴과 라이브러리는 OFL·Apache-2.0·MIT 등 자유 이용 허락 조건이며, 앱 오른쪽 아래 「오픈소스 라이선스」에서 전문을 볼 수 있습니다.</p></details><details class="q"><summary>어떤 기기에서 쓰나요?</summary><p>크롬·사파리·엣지 같은 최신 브라우저면 됩니다. 휴대폰·태블릿·PC 모두 맞게 보입니다. 설치나 회원가입은 없습니다. 학교 기기를 여러 학생이 돌려 쓰는 경우에는 <b>한 학생이 끝낼 때마다 파일로 내보내도록</b> 안내해 주세요.</p></details><details class="q"><summary>한 해를 어떻게 운영하나요?</summary><p>학기 초에 교사가 PIN을 정하고 학급에 주소를 안내합니다. 학생은 평소에 목표를 담고 단계를 올리며, 어른에게 확인을 받습니다. 학기 말에 학생이 파일을 보내면 교사가 모아 <b>우리 반 현황</b>과 <b>인증 코드</b>를 처리하고, 「우리 반 도감」으로 한 해를 정리합니다.</p></details></div>
+  <div class="qa"><details class="q" open><summary>아이 정보가 어디에 저장되나요?</summary><p>서버가 없습니다. 이름과 기록은 <b>그 기기의 브라우저에만</b> 저장되고, 어디로도 전송되지 않습니다. 보호자 PIN과 교사 서명 PIN도 기기에만 남고 파일에는 담기지 않습니다. 다만 서버가 없다는 것은 <b>브라우저 저장소를 지우거나 기기를 바꾸면 사라진다</b>는 뜻이기도 합니다. 그래서 「기록 내보내기」로 받은 파일을 보관하도록 안내합니다.</p></details><details class="q"><summary>성적이나 평가와 관계가 있나요?</summary><p>없습니다. 목표 문장과 세 단계는 교육과정과 성취수준에서 가져왔지만, 여기에서 받는 <b>인증은 학교 평가 결과가 아닙니다.</b> 속성·등급·보석은 아이가 모으는 재미를 위해 이 도구가 자체로 정한 장치입니다.</p></details><details class="q"><summary>등급이 높으면 더 어려운 목표인가요?</summary><p>아닙니다. 등급은 어려움이 아니라 <b>그 교과 안에서 얼마나 드문 종류인가</b>를 나타냅니다. 관찰이나 계산처럼 그 교과에 흔한 활동은 「기본」, 설계·토의·만들기처럼 덜 나오는 활동은 위쪽 등급이 됩니다. 교과마다 <b>기본 35 · 희귀 30 · 영웅 25 · 전설 10%</b>로 똑같이 나누어, 특정 교과만 높은 등급으로 몰리지 않게 했습니다. 아이가 늘 하던 종류만 고르지 않도록 드문 쪽을 눈에 띄게 한 장치일 뿐, 학습의 중요도나 평가와는 관계가 없습니다.</p></details><details class="q"><summary>어떤 내용이 들어 있나요?</summary><p>교육부 고시 제2022-33호 「초·중등학교 교육과정」(2022 개정 교육과정)의 초등학교 교과 <b>성취기준 611개 전부</b>와, 한국교육과정평가원의 <b>성취기준별 성취수준</b>(3수준 A·B·C)을 학생이 읽을 수 있는 말로 다듬어 +1 +2 +3으로 놓았습니다. 학교 평가계획이 다룬 목표에는 「우리 학교 평가」 표시가 붙습니다.</p></details><details class="q"><summary>저작권은 괜찮나요?</summary><p>교육부 고시와 성취수준은 저작권법 제7조에 따라 보호 대상이 아닌 저작물입니다. 화면의 그림·아이콘·문구는 모두 직접 만들었고, 외부 이미지를 쓰지 않습니다. 쓰는 글꼴과 라이브러리는 OFL·Apache-2.0·MIT 등 자유 이용 허락 조건이며, 앱 오른쪽 아래 「오픈소스 라이선스」에서 전문을 볼 수 있습니다.</p></details><details class="q"><summary>어떤 기기에서 쓰나요?</summary><p>크롬·사파리·엣지 같은 최신 브라우저면 됩니다. 휴대폰·태블릿·PC 모두 맞게 보입니다. 설치나 회원가입은 없습니다. 학교 기기를 여러 학생이 돌려 쓰는 경우에는 <b>한 학생이 끝낼 때마다 파일로 내보내도록</b> 안내해 주세요.</p></details><details class="q"><summary>한 해를 어떻게 운영하나요?</summary><p>학기 초에 교사가 PIN을 정하고 학급에 주소를 안내합니다. 학생은 평소에 목표를 담고 단계를 올리며, 어른에게 확인을 받습니다. 학기 말에 학생이 파일을 보내면 교사가 모아 <b>우리 반 현황</b>과 <b>인증 코드</b>를 처리하고, 「우리 반 보물상자」으로 한 해를 정리합니다.</p></details></div>
 </div></section>
 
 <section class="alt"><div class="ct">
