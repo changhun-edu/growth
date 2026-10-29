@@ -507,6 +507,10 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 /* ① 못 누르는 이유는 단추 밖으로 — 단추는 늘 자기 이름을 지킨다 */
 .cm-n{margin:7px 0 0;font-size:12.5px;text-align:center;color:var(--ink-3)}
 .si-c{font-style:normal;font-weight:700;color:var(--ink-2)}
+.todo-s{font-size:12.5px;color:var(--ink-3)}
+.todo.done .todo-s{color:var(--ink-3)}
+.fchip[data-n0="1"]{opacity:.5}
+.fchip[data-n0="1"][data-on="1"]{opacity:1}
 /* ① 학기 초에 한 번 — 이름 올리기 */
 .jn{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-bottom:12px;
   padding:12px 14px;border-radius:13px;background:#EAF1F8;border:1px solid #C6D9EC}
@@ -5416,7 +5420,8 @@ function tFiles(fl){
           +(ok?'<b>'+ok+'명</b>의 기록을 읽었습니다. ':'')
           +(bad?bad+'개 파일은 읽지 못했습니다.':'')
           +(ok?' 「우리 반 현황」 탭에서 확인하세요.':'')+'</div>';
-        if(ok){S.tabT="class";renderTeacher();}
+        /* ② 방금 올린 학생이 「확인 기다림」에 안 걸려 안 보이던 자리 */
+        if(ok){S.tabT="class"; S.tFilter="all"; TF_AUTO=false; renderTeacher();}
       }};
     if(/\.json$/i.test(f.name))r.readAsText(f);else r.readAsArrayBuffer(f);
   });
@@ -5498,8 +5503,12 @@ function waitTotal(){
     if(k){n+=k;st++;}});
   return {goals:n,students:st};
 }
+/* ① 「확인 기다림」이 늘 기본값이라, 기다리는 학생이 없으면 파일을 올리고도 빈 화면이 나왔다.
+   손으로 칩을 고르기 전까지는 상황을 보고 정한다. */
+var TF_AUTO = true;
 function renderClass(){
   var rs=rosterList(), miss=missingNames();
+  if(TF_AUTO) S.tFilter = waitTotal().students ? "wait" : "all";
   if(!rs.length && !miss.length){
     $("#tClass").innerHTML='<div class="t-empty">'
       /* ⑩ 비어 있는 것이 '고장'이 아니라 '기다리는 중'으로 읽히게 */
@@ -5521,14 +5530,17 @@ function renderClass(){
   rs.forEach(function(d){var c=stuOf(d);bl+=c.bloom;tot+=c.total;});
 
   /* ── 오늘 할 일 ── */
+  /* ⑤ 「몇 명이 들어와 있는지」가 빠져 있어, 파일을 읽고도 읽혔는지 알 수 없었다 */
+  var sum='학생 <b>'+rs.length+'</b>명 · 담은 목표 <b>'+tot+'</b>개 · 인증 완료 <b>'+bl+'</b>개'
+    +(miss.length?' · 미제출 '+miss.length+'명':'');
   var todo = w.goals
     ? '<div class="todo"><span class="big">'+w.goals+'</span>'
-      +'<span class="lab" style="flex:1 1 180px"><b>확인을 기다리는 목표</b>가 '+w.goals+'개 있습니다.<br>'
-      +'학생 '+w.students+'명이 인증 코드를 기다리고 있어요.</span>'
+      +'<span class="lab" style="flex:1 1 180px"><b>확인을 기다리는 목표</b>가 '+w.goals+'개 있습니다. '
+      +'학생 '+w.students+'명이 인증 코드를 기다려요.<br><span class="todo-s">'+sum+'</span></span>'
       +'<button class="btn btn-w" id="tBulk">한 번에 처리하기</button></div>'
     : '<div class="todo done"><span class="big">✓</span>'
-      +'<span class="lab" style="flex:1 1 180px"><b>지금 확인할 목표가 없습니다.</b><br>'
-      +'인증 완료 '+bl+'개 · 담은 목표 '+tot+'개</span></div>';
+      +'<span class="lab" style="flex:1 1 180px"><b>'+sum+'</b><br>'
+      +'<span class="todo-s">지금 확인할 목표는 없습니다.</span></span></div>';
 
   /* ── 코드가 맞지 않는 인증 ── */
   var bd=badTotal();
@@ -5574,7 +5586,9 @@ function renderClass(){
   if(bd.students) fs.splice(1,0,["bad","코드 불일치",bd.students]);
   var bar='<div class="tbar">'
     +fs.map(function(f){
-      return '<button class="fchip" data-f="'+f[0]+'" data-on="'+(S.tFilter===f[0]?"1":"0")+'">'
+      /* ④ 「확인 기다림 0」이 골라진 채로 있는 것이 가장 헷갈렸다 */
+      return '<button class="fchip" data-f="'+f[0]+'" data-on="'+(S.tFilter===f[0]?"1":"0")+'"'
+        +(f[2]?'':' data-n0="1"')+'>'
         +f[1]+'<span class="n">'+f[2]+'</span></button>';}).join("")
     +'<div class="sp"></div>'
     +'<select id="tSort" style="width:auto;min-width:132px;padding:7px 10px">'
@@ -5625,9 +5639,20 @@ function renderClass(){
     +'<span><i style="background:var(--wait)"></i>확인 기다림</span>'
     +'<span><i style="background:var(--grow)"></i>도전 중</span>'
     +'<span><i style="background:var(--line-2)"></i>담기만 함</span></div>';
+  /* ③ 「이 조건」이 무엇인지 말하고, 나갈 길을 같이 준다 */
+  var EMP={wait:["확인을 기다리는 학생이 없습니다","지금은 아무도 인증 코드를 기다리지 않아요."],
+           bad:["코드가 맞지 않는 기록이 없습니다","모두 선생님이 발급한 코드입니다."],
+           stale:["멈춰 있는 학생이 없습니다","모두 최근에 움직였어요."],
+           miss:["아직 기록을 안 낸 학생이 없습니다","학급 명단의 학생이 모두 냈습니다."],
+           all:["아직 모은 기록이 없습니다","학생이 「내 기록」에서 받은 파일을 올려 주세요."]};
+  var em=EMP[S.tFilter]||EMP.all, hv=rs.length+miss.length;
   var body=(cards+missCards)
     ? lg+'<div class="stuwrap">'+cards+missCards+'</div>'
-    : '<div class="note">이 조건에 해당하는 학생이 없습니다.</div>';
+    : '<div class="note" style="line-height:1.8"><b>'+em[0]+'</b> '+em[1]
+      +(hv && S.tFilter!=="all"
+        ? '<div class="acts" style="margin-top:11px">'
+          +'<button class="btn btn-s btn-p" id="tAll">우리 반 '+hv+'명 모두 보기</button></div>'
+        : '')+'</div>';
   /* ④ 담임 학년이 아닌 기록은 따로, 접어서 */
   var og=rosterOther();
   if(og.length) body += '<details class="t-old"><summary>다른 학년 기록 '+og.length+'명 '
@@ -5663,10 +5688,13 @@ function renderClass(){
   $$("#tClass [data-stu]").forEach(function(b){
     b.addEventListener("click",function(){openStudent(b.dataset.stu);});});
   $$("#tClass [data-f]").forEach(function(b){
-    b.addEventListener("click",function(){S.tFilter=b.dataset.f;renderClass();touch();});});
+    b.addEventListener("click",function(){
+      S.tFilter=b.dataset.f; TF_AUTO=false; renderClass(); touch();});});
   $("#tSort").addEventListener("change",function(){S.tSort=this.value;renderClass();touch();});
   var bk=$("#tBulk"); if(bk) bk.addEventListener("click",openBulk);
   var bb=$("#tBad"); if(bb) bb.addEventListener("click",openBad);
+  var ta=$("#tAll"); if(ta) ta.addEventListener("click",function(){
+    S.tFilter="all"; TF_AUTO=false; renderClass(); touch();});
   var pb=$("#tPbad"); if(pb) pb.addEventListener("click",openPbad);
   $("#tXls").addEventListener("click",classXlsx);
   $("#tKl").addEventListener("click",klassFile);
