@@ -2745,7 +2745,7 @@ function openMine(edit){
     +'<div class="acts" style="margin-top:14px">'
     +'<button class="btn btn-p btn-full" id="mOk">'+(g?"고치기":"만들어서 담기")+'</button></div>'
     +'<div class="acts" style="margin-top:9px">'
-    +'<button class="btn btn-q btn-full" onclick="closeModal()">그만두기</button></div>',
+    +'<button class="btn btn-q btn-full" onclick="closeModal()">닫기</button></div>',
   function(){
     var pickEl = g ? elemOf(g).id : "";
     $("#mE").addEventListener("click",function(e){
@@ -3594,7 +3594,7 @@ function actsHtml(m,i){
     return '<div class="acts" style="margin-top:12px">'
       +'<button class="myc-more" data-more="'+i+'" style="margin:0">접기</button>'
       +'<div class="sp"></div>'
-      +'<button class="btn btn-q btn-s" data-del="'+i+'">빼기</button></div>';
+      +'<button class="btn btn-q btn-s" data-del="'+i+'">삭제</button></div>';
   /* ①②③④ 「어른」 하나로 뭉뚱그려 두 길이 겹쳐 보이던 자리 —
      열쇠를 둘로 나누고, 아직 안 받은 쪽의 단추만 남긴다. */
   var ok=!!m.rung, hasP=!!m.pv, hasT=!!m.tv, left=(hasP?0:1)+(hasT?0:1);
@@ -3621,7 +3621,7 @@ function actsHtml(m,i){
     +'<div class="acts" style="margin-top:10px">'
     +'<div class="sp"></div>'
     +'<button class="myc-more" data-more="'+i+'" style="margin:0 4px 0 0">접기</button>'
-    +'<button class="btn btn-q btn-s" data-del="'+i+'">빼기</button></div>';
+    +'<button class="btn btn-q btn-s" data-del="'+i+'">삭제</button></div>';
 }
 
 var ST={seed:["담은 목표","st"],grow:["도전 중","st st-grow"],
@@ -3906,7 +3906,7 @@ $("#myList").addEventListener("click",function(e){
   if(b.dataset.show!==undefined){openShow(i);return;}
   if(b.dataset.del!==undefined){
     var g=goalById(m.gid);
-    if(!confirm('"'+(g?g.title:"이 목표")+'"을(를) 목표판에서 뺄까요?'))return;
+    if(!confirm('"'+(g?g.title:"이 목표")+'"을(를) 목표판에서 삭제할까요?'))return;
     S.my.splice(i,1);renderBoard();touch();}
 });
 $("#myList").addEventListener("input",function(e){
@@ -4290,12 +4290,15 @@ function setPin(ok){
       +'<div class="fld" style="margin-top:10px"><label for="p1">'
         +(six?'선생님께 받은 여섯 자리':'네 자리 숫자')+'</label>'
       +'<input type="password" id="p1" class="pin" inputmode="numeric" maxlength="'+(six?6:4)+'" placeholder="'+(six?"------":"----")+'" autocomplete="off"></div>'
-      +'<div class="fld"><label for="p2">한 번 더</label>'
+      +'<div class="fld"><label for="p2">'+(six?"다시 한 번":"한 번 더")+'</label>'
       +'<input type="password" id="p2" class="pin" inputmode="numeric" maxlength="'+(six?6:4)+'" placeholder="'+(six?"------":"----")+'" autocomplete="off"></div>'
       +'<div id="pMsg"></div>'
       +'<p class="pk-x">아이에게 알려 주지 마세요. 이 기기에만 저장되고 파일에는 담기지 않습니다.</p>'
-      +'<div class="acts" style="margin-top:12px"><button class="btn btn-g btn-full" id="pOk">정하기</button></div>'
-      +'<div class="acts" style="margin-top:9px"><button class="btn btn-q btn-full" onclick="closeModal()">그만두기</button></div>',
+      /* A안 — 「받은 번호를 옮겨 적는 일」과 「직접 정하는 일」은 다른 일이다.
+         「확인하기」는 쓰지 않는다 — 이 앱에서 「확인」은 보호자가 아이를 인정하는 말이다. */
+      +'<div class="acts" style="margin-top:12px"><button class="btn btn-g btn-full" id="pOk">'
+        +(six?"번호 등록하기":"이 번호로 정하기")+'</button></div>'
+      +'<div class="acts" style="margin-top:9px"><button class="btn btn-q btn-full" onclick="closeModal()">닫기</button></div>',
     function(){
       $$("#mdl [data-pk]").forEach(function(b){
         b.addEventListener("click",function(){ kind=b.dataset.pk; draw(); });});
@@ -5233,7 +5236,7 @@ function pConfirm(idxs){
       +'<div class="acts" style="margin-top:12px">'
       +'<button class="btn btn-g btn-full" id="pWhoOk">확인했습니다</button></div>'
       +'<div class="acts" style="margin-top:9px">'
-      +'<button class="btn btn-full" onclick="closeModal()">그만두기</button></div>',
+      +'<button class="btn btn-full" onclick="closeModal()">닫기</button></div>',
     function(){
       $$("#mdl [data-who]").forEach(function(b){b.addEventListener("click",function(){
         $("#pWho").value=b.dataset.who;
@@ -6433,7 +6436,7 @@ function reissue(c){
     +'<div class="acts" style="margin-top:12px">'
     +'<button class="btn btn-p btn-full" id="rOk">새 코드 만들기</button></div>'
     +'<div class="acts" style="margin-top:9px">'
-    +'<button class="btn btn-full" onclick="closeModal()">그만두기</button></div>',
+    +'<button class="btn btn-full" onclick="closeModal()">닫기</button></div>',
   function(){
     $$("#mdl [data-rn]").forEach(function(b){b.addEventListener("click",function(){
       $("#rNm").value=b.dataset.rn; $("#rNo").value=b.dataset.ro||"";});});
