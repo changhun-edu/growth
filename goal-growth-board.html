@@ -911,6 +911,56 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 /* 보물 주머니 */
 .bag-i{font-size:13px;line-height:1.65;color:var(--ink-3);margin:-2px 0 14px}
 .bag-i b{color:var(--ink-2);font-weight:700}
+/* ① 칠각형 */
+.rdr{display:block;width:100%;max-width:400px;margin:2px auto 0;height:auto;overflow:visible}
+.rd-ring{fill:none;stroke:var(--line);stroke-width:1}
+.rd-sp{stroke:var(--line);stroke-width:1}
+.rd-area{fill:var(--bloom);fill-opacity:.13;stroke:var(--bloom);stroke-width:2;
+  stroke-linejoin:round}
+.rd-dot{fill:var(--ec);stroke:var(--card);stroke-width:2}
+.rd-dot.z{fill:var(--line-2);stroke-width:0}
+.rd-l{font-size:12px;font-weight:800;fill:var(--ec);dominant-baseline:middle}
+.rd-l.z{fill:var(--ink-3);font-weight:700;opacity:.6}
+.rd-i{font-size:12px}
+.rd-v{font-size:12.5px;font-weight:900;font-variant-numeric:tabular-nums}
+.rd-cap{margin:2px 0 0;text-align:center;font-size:11.5px;color:var(--ink-3)}
+.rd-cap b{color:var(--ink-2);font-weight:800}
+/* ⑦ 한 줄 요약 */
+.rd-sum{margin:11px 0 0;padding:11px 13px;border-radius:12px;background:var(--card-2);
+  border:1px solid var(--line);font-size:13px;line-height:1.7;color:var(--ink-2);text-align:center}
+.rd-sum b{font-weight:800}
+/* ③ 등급 띠 */
+.tb-h{margin:18px 0 7px;font-size:12.5px;font-weight:800;color:var(--ink-2)}
+.tb-h span{margin-left:6px;font-weight:600;color:var(--ink-3)}
+.tbar{display:flex;gap:4px;align-items:stretch}
+.tb-s{min-width:34px;padding:8px 5px;border:1px solid;border-radius:10px;text-align:center;
+  display:flex;flex-direction:column;gap:1px;overflow:hidden}
+.tb-s b{font-size:14px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.1}
+.tb-s em{font-style:normal;font-size:10.5px;font-weight:700;opacity:.8;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ⑤ 작은 지도 */
+.bmap{margin:0;display:flex;flex-direction:column;gap:4px}
+.bm-r{display:grid;grid-template-columns:38px repeat(7,1fr);gap:4px;align-items:center}
+.bm-h{font-size:12px;text-align:center;line-height:1}
+.bm-t{font-size:10.5px;font-weight:800;text-align:right;letter-spacing:-0.03em}
+.bm-c{height:18px;border-radius:5px;background:var(--line);opacity:.45}
+.bm-c[data-l="x"]{background:none;border:1px dashed var(--line);opacity:.5}
+.bm-c[data-l="1"]{background:var(--ec);opacity:.34}
+.bm-c[data-l="2"]{background:var(--ec);opacity:.66}
+.bm-c[data-l="3"]{background:var(--ec);opacity:1}
+/* ⑤ 자세히 보기 */
+.bagmore{margin:18px 0 0;border-top:1px dashed var(--line);padding-top:12px}
+.bagmore>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:800;color:var(--ink-2)}
+.bagmore>summary::-webkit-details-marker{display:none}
+.bagmore>summary::after{content:"▾";margin-left:auto;color:var(--ink-3);font-weight:400}
+.bagmore[open]>summary::after{content:"▴"}
+.bagmore .bag-i{margin:11px 0 12px}
+@media (max-width:420px){
+  .rd-l,.rd-i{font-size:13px} .rd-v{font-size:13.5px}
+  .bm-r{grid-template-columns:32px repeat(7,1fr);gap:3px}
+  .bm-c{height:20px}
+}
 .baggrid{display:flex;flex-direction:column;gap:6px}
 .bg-r{display:grid;grid-template-columns:92px repeat(4,1fr);gap:6px;align-items:center}
 .bg-hd{margin-bottom:-1px}
@@ -1955,9 +2005,18 @@ button.ttl-b{cursor:pointer}
   <section id="vBag" class="hidden">
     <div class="sec">
       <div class="sec-h"><h2>보물 주머니</h2><span id="bagSub"></span></div>
-      <p class="bag-i">인증을 받은 목표만 아이템이 되어 여기에 담깁니다.
-        빈자리는 아직 얻지 못한 <b>속성 × 등급</b>이에요.</p>
-      <div class="baggrid" id="bagGrid"></div>
+      <!-- ① 28개 숫자쌍에서 가로 합을 일곱 번 암산해야 보이던 「치우침」을 모양으로 -->
+      <div id="bagRadar"></div>
+      <!-- ③ 등급은 순서가 있는 값이라 축이 아니라 한 줄 띠가 맞다 -->
+      <div id="bagTier"></div>
+      <!-- ⑤ 교차표는 없애지 않고, 숫자 없는 작은 지도로 줄인 뒤 접어 둔다 -->
+      <div id="bagMap"></div>
+      <details class="bagmore" id="bagMore">
+        <summary>속성 × 등급 자세히 보기</summary>
+        <p class="bag-i">빈자리는 아직 얻지 못한 <b>속성 × 등급</b>이에요.
+          <b>/ 뒤의 수</b>는 이 학년에 있는 전체 목표 수입니다.</p>
+        <div class="baggrid" id="bagGrid"></div>
+      </details>
     </div>
     <div class="sec">
       <div class="chips" id="bagBar"></div>
@@ -4126,6 +4185,77 @@ function bagOwned(){
     var g=goalById(m.gid); if(g) out.push({g:g,m:m});});
   return out;
 }
+/* ① 칠각형 — 분모로 그리면 성취기준이 적은 속성이 커 보여 거짓말이 된다.
+   그래서 「내가 모은 개수」를 그리고, 바깥 눈금만 내 최고치에 맞춘다. */
+function radarSvg(cnt, mx){
+  var E=ELEM, n=E.length, R=72, cx=150, cy=116, LR=94, TAU=Math.PI*2;
+  var ang=function(i){ return -Math.PI/2 + TAU*i/n; };
+  var pt=function(i,r){ var a=ang(i); return [cx+Math.cos(a)*r, cy+Math.sin(a)*r]; };
+  var poly=function(r){ var o=[]; for(var i=0;i<n;i++){ var q=pt(i,r);
+    o.push(q[0].toFixed(1)+","+q[1].toFixed(1)); } return o.join(" "); };
+  var g="";
+  [1/3,2/3,1].forEach(function(f){ g+='<polygon class="rd-ring" points="'+poly(R*f)+'"/>'; });
+  for(var i=0;i<n;i++){ var q=pt(i,R);
+    g+='<line class="rd-sp" x1="'+cx+'" y1="'+cy+'" x2="'+q[0].toFixed(1)+'" y2="'+q[1].toFixed(1)+'"/>'; }
+  var vs=[], any=false;
+  for(var i=0;i<n;i++){ var v=cnt[E[i].id]||0; if(v) any=true;
+    vs.push(pt(i, R*Math.min(1, v/mx))); }
+  if(any) g+='<polygon class="rd-area" points="'
+    +vs.map(function(q){return q[0].toFixed(1)+","+q[1].toFixed(1);}).join(" ")+'"/>';
+  for(var i=0;i<n;i++){ var v=cnt[E[i].id]||0, q=vs[i];
+    g+='<circle class="rd-dot'+(v?"":" z")+'" cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)
+      +'" r="'+(v?4.6:2.6)+'" style="--ec:'+E[i].fg+'"/>'; }
+  for(var i=0;i<n;i++){
+    var l=pt(i,LR), c=Math.cos(ang(i)), v=cnt[E[i].id]||0;
+    var an = c>0.25 ? "start" : (c<-0.25 ? "end" : "middle");
+    g+='<text class="rd-l'+(v?"":" z")+'" x="'+l[0].toFixed(1)+'" y="'+l[1].toFixed(1)
+      +'" text-anchor="'+an+'" style="--ec:'+E[i].fg+'">'
+      +'<tspan class="rd-i">'+E[i].icon+'</tspan>'
+      +'<tspan dx="3">'+E[i].name+'</tspan>'
+      +'<tspan class="rd-v" dx="4">'+v+'</tspan></text>'; }
+  /* 위아래 빈 곳을 잘라 낸다 — 칠각형이 화면을 다 먹지 않게 */
+  return '<svg class="rdr" viewBox="0 10 300 203" role="img" aria-label="'
+    +E.map(function(e){return e.name+" "+(cnt[e.id]||0)+"개";}).join(", ")+'">'+g+'</svg>';
+}
+/* ⑦ 일곱 번 암산해야 하던 것을 한 줄로 */
+function bagLine(cnt){
+  var E=ELEM, got=E.filter(function(e){return cnt[e.id];});
+  if(!got.length) return "목표를 인증받으면 보석이 쌓이고 칠각형이 자랍니다.";
+  var mx=0; got.forEach(function(e){ if(cnt[e.id]>mx) mx=cnt[e.id]; });
+  var top=got.filter(function(e){return cnt[e.id]===mx;});
+  var zero=E.filter(function(e){return !cnt[e.id];});
+  var tag=function(e){return '<b style="color:'+e.fg+'">'+e.icon+" "+e.name+'</b>';};
+  var out='가장 많이 모은 건 '+top.map(tag).join(" · ")+' <b>'+mx+'개</b>';
+  if(zero.length) out+=' · 아직 손 안 댄 건 '+zero.map(tag).join(", ");
+  return out;
+}
+/* ③ 기본<희귀<영웅<전설은 순서가 있는 값이다 */
+function bagTierBar(own){
+  var c=[0,0,0,0]; own.forEach(function(o){ c[tierOf(o.g).id]++; });
+  if(!own.length) return "";
+  return '<div class="tb-h">등급 <span>얼마나 어려운 것을 해냈나</span></div>'
+    +'<div class="tbar">'+TIER.map(function(t){
+      var n=c[t.id]; if(!n) return "";
+      return '<span class="tb-s" style="flex:'+n+';background:'+t.bg+';color:'+t.fg
+        +';border-color:'+t.bd+'" title="'+t.name+" "+n+'개"><b>'+n+'</b>'
+        +'<em>'+t.name+'</em></span>';}).join("")+'</div>';
+}
+/* ⑤ 28개 숫자쌍을 색만 남긴 작은 지도로 */
+function bagMap(have, tot){
+  var E=ELEM;
+  return '<div class="tb-h">속성 × 등급 <span>색이 진할수록 많이 모았어요</span></div>'
+    +'<div class="bmap"><div class="bm-r bm-hd"><span></span>'
+    +E.map(function(e){ return '<span class="bm-h" style="color:'+e.fg+'" title="'
+      +esc(e.name)+'">'+e.icon+'</span>';}).join("")+'</div>'
+    +TIER.slice().reverse().map(function(t){
+      return '<div class="bm-r"><span class="bm-t" style="color:'+t.fg+'">'+t.name+'</span>'
+        +E.map(function(e){
+          var k=e.id+"|"+t.id, n=have[k]||0, N=tot[k]||0;
+          var lv = !N ? "x" : (!n ? "0" : (n>=N ? "3" : (n>=3 ? "2" : "1")));
+          return '<span class="bm-c" data-l="'+lv+'" style="--ec:'+e.fg+'" title="'
+            +esc(e.name)+" · "+t.name+" "+(N ? (n?n+"개":"아직") : "없음")+'"></span>';}).join("")
+        +'</div>';}).join("")+'</div>';
+}
 function renderBag(){
   var own=bagOwned(), p=pool();
   S.bagSeen=own.length; renderFoot();
@@ -4137,6 +4267,17 @@ function renderBag(){
     var k=elemOf(o.g).id+"|"+tierOf(o.g).id; have[k]=(have[k]||0)+1;});
   p.forEach(function(x){
     var k=elemOf(x).id+"|"+tierOf(x).id; tot[k]=(tot[k]||0)+1;});
+  /* ① 속성별로 모은 개수 */
+  var ec={}; own.forEach(function(o){ var i=elemOf(o.g).id; ec[i]=(ec[i]||0)+1; });
+  var mx=0; ELEM.forEach(function(e){ if((ec[e.id]||0)>mx) mx=ec[e.id]; });
+  mx=Math.max(mx,3);                      /* 14개만 모아도 모양이 생기게 */
+  $("#bagRadar").innerHTML = radarSvg(ec, mx)
+    +'<p class="rd-cap">바깥 칸 = <b>'+mx+'개</b>'
+    +(ec.etc?' · ✨ 그 밖에 <b>'+ec.etc+'개</b>':'')+'</p>'
+    +'<p class="rd-sum">'+bagLine(ec)+'</p>';
+  $("#bagTier").innerHTML = bagTierBar(own);
+  /* 아무것도 없을 때 28칸 회색 격자는 아무 말도 하지 않는다 */
+  $("#bagMap").innerHTML = own.length ? bagMap(have,tot) : "";
   var rows=ELEM.concat([ELEM_ETC]).filter(function(e){
     return TIER.some(function(t){return tot[e.id+"|"+t.id];});});
   $("#bagGrid").innerHTML=
@@ -4157,7 +4298,6 @@ function renderBag(){
         +'</div>';}).join("");
 
   /* 속성 칩 */
-  var ec={}; own.forEach(function(o){var i=elemOf(o.g).id; ec[i]=(ec[i]||0)+1;});
   $("#bagBar").innerHTML='<button class="chip" data-be="" data-on="'+(S.bagElem?"0":"1")+'">전체'
     +'<span class="cnt">'+own.length+'</span></button>'
     +ELEM.concat([ELEM_ETC]).filter(function(e){return ec[e.id];}).map(function(e){
