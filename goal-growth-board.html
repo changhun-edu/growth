@@ -239,15 +239,70 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
   background:var(--card);border:1px solid var(--line-2);color:var(--ink-3);
   font-size:14px;font-weight:800;line-height:1;display:grid;place-items:center}
 .help-b:hover{color:var(--ink);border-color:var(--ink-3)}
-.hlp h4{font-size:13px;margin:16px 0 6px;letter-spacing:-0.01em}
-.hlp h4:first-child{margin-top:0}
-.hlp p{margin:0 0 4px;font-size:13px;line-height:1.7;color:var(--ink-2)}
-.hlp p b{color:var(--ink)}
-.hlp .hflow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:4px}
-.hlp .hflow span{font-size:12px;font-weight:700;color:var(--ink-2);background:var(--card-2);
-  border:1px solid var(--line);border-radius:99px;padding:5px 11px}
+/* 사용법 — 소제목과 본문이 똑같이 13px이라 위계가 없던 자리 */
+.hlp{font-size:13.5px;line-height:1.75;color:var(--ink-2)}
+.hlp b{color:var(--ink);font-weight:800}
+.h-ic{width:21px;height:21px;flex:0 0 auto}
+/* 네 걸음 */
+.h-flow{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:7px;
+  grid-template-columns:repeat(4,1fr)}
+.h-st{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+  padding:12px 11px;border:1px solid var(--line);border-radius:13px;background:var(--card-2)}
+.h-st .h-ic{color:var(--bloom)}
+.h-stn{position:absolute;top:-8px;left:10px;width:19px;height:19px;border-radius:50%;
+  background:var(--ink);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
+.h-st b{font-size:14px;font-weight:800;letter-spacing:-0.02em}
+.h-st span:last-child{font-size:11.5px;line-height:1.55;color:var(--ink-3)}
+/* 열쇠 두 개 = 보석 */
+.h-key{display:flex;align-items:stretch;gap:7px;margin:0 0 9px}
+.h-kc{flex:1 1 0;min-width:0;padding:11px 12px;border-radius:12px;
+  background:var(--bloom-bg);border:1px solid #BFDCC8;display:flex;flex-direction:column;gap:3px}
+.h-kt{font-size:13.5px;font-weight:800;color:#24543B}
+.h-kd{font-size:11.5px;line-height:1.6;color:#3C6B4C}
+.h-kd b{color:#24543B;font-weight:800}
+.h-op{align-self:center;font-size:17px;font-weight:800;color:var(--ink-3);flex:0 0 auto}
+.h-kg{flex:0 0 auto;width:76px;padding:11px 6px;border-radius:12px;background:var(--bloom);
+  color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.h-kg .h-ic{width:26px;height:26px;stroke-width:2}
+.h-kg b{color:#fff;font-size:13px;font-weight:800}
+.h-kn{margin:0 0 20px;font-size:12.5px;line-height:1.7;color:var(--ink-3)}
+/* 역할 셋 */
+.h-rs{display:grid;gap:10px;grid-template-columns:repeat(3,1fr);margin-bottom:16px}
+.h-r{border:1px solid var(--line);border-radius:13px;padding:13px;background:var(--card)}
+.h-r h4{display:flex;align-items:center;gap:7px;margin:0 0 8px;font-size:15px;
+  font-weight:800;letter-spacing:-0.02em}
+.h-r ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.h-r li{position:relative;padding-left:12px;font-size:12.5px;line-height:1.65}
+.h-r li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;
+  border-radius:50%;background:var(--line-2)}
+.h-r[data-r="s"]{border-color:#BFDCC8;background:#F6FBF8}
+.h-r[data-r="s"] h4{color:#24543B} .h-r[data-r="s"] h4 .h-ic{color:var(--bloom)}
+.h-r[data-r="p"]{border-color:#EDC6D5;background:#FDF7F9}
+.h-r[data-r="p"] h4{color:#7A2A44} .h-r[data-r="p"] h4 .h-ic{color:#993556}
+.h-r[data-r="t"]{border-color:#B7D3EE;background:#F5F9FD}
+.h-r[data-r="t"] h4{color:#134B82} .h-r[data-r="t"] h4 .h-ic{color:#185FA5}
+/* 교사만 필요한 깊은 이야기 */
+.h-more{border:1px solid var(--line);border-radius:12px;background:var(--card-2);
+  padding:11px 13px;margin-bottom:4px}
+.h-more>summary{cursor:pointer;list-style:none;font-size:13.5px;font-weight:800;
+  color:var(--ink-2);display:flex;align-items:center;gap:7px}
+.h-more>summary::-webkit-details-marker{display:none}
+.h-more>summary::after{content:"▾";margin-left:auto;font-weight:400;color:var(--ink-3)}
+.h-more[open]>summary::after{content:"▴"}
+.h-more ul{margin:10px 0 2px;padding:0;list-style:none;
+  display:flex;flex-direction:column;gap:6px}
+.h-more li{position:relative;padding-left:12px;font-size:12.5px;line-height:1.65}
+.h-more li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;
+  border-radius:50%;background:var(--line-2)}
 .hlp .hnote{margin-top:16px;font-size:12.5px;line-height:1.7;color:#8A5A1E;
   background:#FDF6E6;border:1px solid #EBD9AE;border-radius:11px;padding:11px 13px}
+@media (max-width:620px){
+  .h-flow{grid-template-columns:repeat(2,1fr)}
+  .h-rs{grid-template-columns:1fr}
+  .h-key{flex-wrap:wrap}
+  .h-kc{flex:1 1 44%} .h-kg{width:100%;flex-direction:row;gap:7px;padding:9px}
+  .h-op{width:100%;text-align:center;align-self:auto}
+}
 /* 사용법 창 맨 아래 — 되돌릴 수 없는 일은 떼어 놓는다 */
 .hwipe{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 .hwipe button{font:inherit;font-size:13px;font-weight:700;color:#A3492F;background:none;
@@ -4272,32 +4327,69 @@ $("#mapFilt").addEventListener("click",function(){S.filtOpen=!S.filtOpen;renderM
 $("#mapMine").addEventListener("click",function(){openMine();});
 $("#btnBag").addEventListener("click",function(){show("bag");});
 $("#helpBtn").addEventListener("click",function(){openHelp();});
+/* 아이콘은 모두 자작 인라인 SVG — 바깥 그림 파일을 쓰지 않는다 */
+function hIc(d, extra){
+  return '<svg class="h-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
+    +' stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    +d+(extra||"")+'</svg>';
+}
+var H_PIN  = hIc('<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>');
+var H_UP   = hIc('<path d="M5 19v-3.5M12 19v-7.5M19 19v-11.5"/>');
+var H_CHK2 = hIc('<path d="M3 12.5l2.6 2.6L10 10.5"/><path d="M13 12.5l2.6 2.6L20 10.5"/>');
+var H_GEM  = hIc('<path d="M12 3.2l7.4 4.3v8.6L12 20.8l-7.4-4.7V7.5Z"/>');
+var H_STU  = hIc('<path d="M12 4l9 4.5-9 4.5-9-4.5Z"/><path d="M7 11v4.5c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5V11"/>');
+var H_PAR  = hIc('<path d="M4 11.5 12 5l8 6.5"/><path d="M6.5 10.5V19h11v-8.5"/><path d="M10.2 19v-4.4h3.6V19"/>');
+var H_TEA  = hIc('<path d="M4 5.5h16v10H4z"/><path d="M8 19h8"/><path d="M12 15.5V19"/><path d="M7.5 9h6"/>');
+
 function openHelp(){
+  var step=function(n,ic,t,d){
+    return '<li class="h-st"><span class="h-stn">'+n+'</span>'+ic
+      +'<b>'+t+'</b><span>'+d+'</span></li>';};
   modal('<h3>해냄 보물상자 사용법</h3><div class="hlp">'
-    +'<div class="hflow"><span>① 고른다</span><span>② 해낸다</span>'
-      +'<span>③ 확인받는다</span><span>④ 쌓인다</span></div>'
-    +'<h4>학생</h4><p>목표 지도에서 하고 싶은 목표를 <b>담고</b>, 해낸 만큼 '
-      +'<b>+1 · +2 · +3</b>을 누릅니다. 다 해내면 보호자와 선생님께 확인을 받습니다. '
-      +'인증받은 목표는 보석이 되어 <b>보물 주머니</b>에 담깁니다.</p>'
-    +'<h4>보석이 되려면 열쇠 두 개</h4>'
-    +'<p>· <b>보호자 확인</b> — 옆에 계시면 <b>보호자에게 확인받기</b>(보호자 PIN), '
-      +'멀리 계시면 파일을 보내 확인받습니다.</p>'
-    +'<p>· <b>선생님 인증</b> — 선생님께 받은 코드를 <b>선생님 인증 코드 넣기</b>에 넣습니다.</p>'
-    +'<p>둘 중 하나만 있으면 <b>확인 기다리는 중</b>이고, 둘이 모두 모여야 보석이 됩니다. '
-      +'순서는 상관없습니다.</p>'
-    +'<h4>학부모</h4><p>아이가 보낸 <b>.json</b> 파일을 올려 목표와 아이가 적은 내용을 보고 '
-      +'확인해 줍니다. 확인한 뒤 파일을 다시 내려받아 아이에게 보냅니다.</p>'
-    +'<h4>교사</h4><p>먼저 <b>교사 서명 PIN</b>을 정하고, 학생 파일을 모아 '
-      +'<b>인증 코드</b>를 발급합니다. 모은 파일에서 코드가 맞는지 대조됩니다.</p>'
-    +'<h4>아이가 스스로 도장을 찍지 못하게</h4>'
-    +'<p>학기 초에 선생님이 <b>보호자 확인 번호</b>를 학생마다 하나씩 만들어 '
-      +'<b>가정으로 직접</b> 보냅니다(「코드 발급」 탭). 보호자가 그 번호로 확인하면 '
-      +'그 기록에 서명이 남고, 선생님 기기에서 대조됩니다. '
-      +'학생 기기에는 교사 PIN이 없어 <b>아이는 이 번호를 만들어 낼 수 없습니다.</b></p>'
-    +'<p>번호를 쓰지 않으면 가정에서 네 자리를 정해 쓸 수 있지만, '
-      +'선생님 화면에는 <b>「대조할 수 없음」</b>으로 표시됩니다. '
-      +'PIN을 지운 횟수와 틀린 횟수, 짧은 시간에 몰아서 확인한 자국은 '
-      +'파일에 담겨 선생님께 보입니다.</p>'
+    /* ① 넉 자짜리 칩 네 개가 장식처럼 떠 있던 자리 — 실제 흐름으로 */
+    +'<ol class="h-flow">'
+      +step(1,H_PIN, "고른다","목표 지도에서 하고 싶은 목표를 담아요")
+      +step(2,H_UP,  "해낸다","해낸 만큼 +1 · +2 · +3을 눌러요")
+      +step(3,H_CHK2,"확인받는다","보호자와 선생님, 두 분께 받아요")
+      +step(4,H_GEM, "쌓인다","보석이 되어 보물 주머니에 담겨요")
+    +'</ol>'
+    /* ② 이 앱의 핵심 규칙인데 글 세 줄로만 있던 자리 — 식으로 보인다 */
+    +'<div class="h-key">'
+      +'<div class="h-kc"><span class="h-kt">보호자 확인</span>'
+        +'<span class="h-kd">옆에 계시면 <b>보호자에게 확인받기</b><br>멀리 계시면 파일을 보내서</span></div>'
+      +'<span class="h-op">+</span>'
+      +'<div class="h-kc"><span class="h-kt">선생님 인증</span>'
+        +'<span class="h-kd">선생님께 받은 <b>여섯 자리 코드</b>를<br><b>코드를 받았어요</b>에 넣어서</span></div>'
+      +'<span class="h-op">=</span>'
+      +'<div class="h-kg">'+H_GEM+'<b>보석</b></div>'
+    +'</div>'
+    +'<p class="h-kn"><b>열쇠 두 개</b>가 다 모여야 보석이 됩니다. '
+      +'하나만 있으면 <b>확인 기다리는 중</b>이고, 순서는 상관없습니다.</p>'
+    /* ③ 세 역할이 h4 하나로만 갈려, 자기 것만 읽을 수 없던 자리 */
+    +'<div class="h-rs">'
+      +'<section class="h-r" data-r="s"><h4>'+H_STU+'학생</h4>'
+        +'<ul><li>목표 지도에서 목표를 <b>담고</b>, 해낸 만큼 <b>+1 · +2 · +3</b>을 누릅니다.</li>'
+        +'<li>다 해내면 <b>보호자</b>와 <b>선생님</b>께 확인을 받습니다.</li>'
+        +'<li>인증받은 목표는 보석이 되어 <b>보물 주머니</b>에 담깁니다.</li></ul></section>'
+      +'<section class="h-r" data-r="p"><h4>'+H_PAR+'학부모</h4>'
+        +'<ul><li>아이가 보낸 <b>.json</b> 파일을 올립니다.</li>'
+        +'<li>목표와 아이가 적은 내용을 보고 확인해 줍니다.</li>'
+        +'<li>확인한 뒤 파일을 다시 내려받아 <b>아이에게 보냅니다</b>.</li></ul></section>'
+      +'<section class="h-r" data-r="t"><h4>'+H_TEA+'교사</h4>'
+        +'<ul><li>먼저 <b>교사 서명 PIN</b>을 정합니다.</li>'
+        +'<li>학생 파일을 모아 <b>인증 코드</b>를 발급합니다.</li>'
+        +'<li>모은 파일에서 코드가 맞는지 대조됩니다.</li></ul></section>'
+    +'</div>'
+    /* ④ 교사에게만 필요한 깊은 이야기 246자 — 접어 둔다 */
+    +'<details class="h-more"><summary>아이가 스스로 도장을 찍지 못하게 — 교사용</summary>'
+      +'<ul><li>학기 초에 <b>보호자 확인 번호</b>를 학생마다 하나씩 만들어 '
+        +'<b>가정으로 직접</b> 보냅니다(「코드 발급」 탭).</li>'
+      +'<li>보호자가 그 번호로 확인하면 그 기록에 서명이 남고, 선생님 기기에서 대조됩니다.</li>'
+      +'<li>학생 기기에는 교사 PIN이 없어 <b>아이는 이 번호를 만들어 낼 수 없습니다.</b></li>'
+      +'<li>번호를 쓰지 않으면 가정에서 네 자리를 정해 쓸 수 있지만, '
+        +'선생님 화면에는 <b>「대조할 수 없음」</b>으로 표시됩니다.</li>'
+      +'<li>PIN을 지운 횟수와 틀린 횟수, 짧은 시간에 몰아서 확인한 자국은 '
+        +'파일에 담겨 선생님께 보입니다.</li></ul></details>'
     +'<div class="hnote"><b>기록은 이 기기에만 저장됩니다.</b> 서버가 없어 '
       +'브라우저 저장소를 지우거나 기기를 바꾸면 사라집니다. '
       +'<b>내 기록</b> → <b>선생님께 낼 파일 받기</b>로 받은 파일을 꼭 보관해 주세요.</div>'
@@ -4306,7 +4398,7 @@ function openHelp(){
     +'<p>'+wipeWhat()+'</p></div>'
     +'<div class="acts" style="margin-top:16px">'
     +'<button class="btn btn-q btn-full" onclick="closeModal()">닫기</button></div>',
-  function(){ $("#hWipe").addEventListener("click",openWipe); });
+  function(){ $("#hWipe").addEventListener("click",openWipe); }, "wide");
 }
 
 /* ── 이 기기 기록 모두 지우기 ──
