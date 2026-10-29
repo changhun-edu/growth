@@ -506,6 +506,24 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .cpin-f .pin{width:104px;text-align:center;letter-spacing:.3em;font-weight:800;padding:7px 8px}
 /* ① 못 누르는 이유는 단추 밖으로 — 단추는 늘 자기 이름을 지킨다 */
 .cm-n{margin:7px 0 0;font-size:12.5px;text-align:center;color:var(--ink-3)}
+.si-c{font-style:normal;font-weight:700;color:var(--ink-2)}
+/* ① 학기 초에 한 번 — 이름 올리기 */
+.jn{display:flex;align-items:center;gap:11px;flex-wrap:wrap;margin-bottom:12px;
+  padding:12px 14px;border-radius:13px;background:#EAF1F8;border:1px solid #C6D9EC}
+.jn-i{font-size:19px;flex:0 0 auto}
+.jn-t{flex:1 1 230px;font-size:12.8px;line-height:1.65;color:#2A4A68}
+.jn-t b{color:#1B3550}
+.jn .t-link{flex:0 0 auto}
+/* ④ 선생님께 보여 주는 쪽지 */
+.shw{margin-top:14px;padding:18px 16px;border-radius:14px;text-align:center;
+  background:var(--card-2);border:2px solid var(--ink)}
+.shw-n{font-size:26px;font-weight:800;letter-spacing:-0.02em}
+.shw-n i{font-style:normal;font-size:16px;font-weight:700;color:var(--ink-3)}
+.shw-g{margin-top:1px;font-size:13px;color:var(--ink-3)}
+.shw-t{margin-top:12px;font-size:17px;font-weight:700;line-height:1.5;word-break:keep-all}
+.shw-c{margin-top:6px;font-size:21px;font-weight:800;letter-spacing:.06em;color:var(--bloom)}
+.shw-s{margin-top:10px;font-size:13px;font-weight:700;color:var(--grow)}
+.two-c .btn.btn-s{min-height:36px;font-size:13px}
 .cm-n[data-on="0"]{display:none}
 /* ② 코드가 나올 자리 */
 .cprev{margin-top:14px;border:2px dashed var(--line-2);border-radius:13px;
@@ -1863,6 +1881,7 @@ button.ttl-b{cursor:pointer}
       <div id="growBox"></div>
     </div>
     <div class="sec">
+      <div id="joinHint"></div>
       <div id="saveHint"></div>
       <div id="bHint"></div>
       <div class="bbar" id="bBar"></div>
@@ -2088,7 +2107,7 @@ var S = {role:null, me:{name:"", grade:null, no:""}, my:[], view:"role", uid:"",
          ttlOpen:false,
          filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect", tsent:false, pby:"", cHow:false, dlAt:"", dlSig:"",
          pkind:"", pRst:0, pFail:0, pFailN:0, pLock:0, dupSeen:false,
-         tpinAt:"", tpins:[], prOpt:null,
+         tpinAt:"", tpins:[], prOpt:null, sentName:false,
          tgrade:null, tnames:[], codes:[], numCode:false, tFilter:"wait", tSort:"wait"};
 
 /* 2022 개정 교육과정의 성취기준은 학년이 아니라 학년군 단위다 */
@@ -2181,6 +2200,8 @@ function pvSign(num, name, gid, at){
 function makeCode(pin, parts){
   return S.numCode ? signNum(pin,parts) : sign(pin,parts);
 }
+/* ⑤ 성취기준 코드를 비교할 수 있는 모양으로 — [6국01-01] · 6국01-01 · 6국0101 이 모두 같아진다 */
+function codeKey(v){ return String(v||"").replace(/[\[\]\s·\-–—]/g,""); }
 function prettyCode(c){
   c=String(c||"");
   return c.length===6 ? c.slice(0,3)+" "+c.slice(3) : c;
@@ -2324,7 +2345,7 @@ function touch(){if(!Store.ok)return;clearTimeout(tm);
       bagSeen:S.bagSeen,dlAt:S.dlAt||"",dlSig:S.dlSig||"",
       pkind:S.pkind||"",pRst:S.pRst||0,pFail:S.pFail||0,pFailN:S.pFailN||0,pLock:S.pLock||0,
       uid:S.uid||"",school:S.school||"",tpinAt:S.tpinAt||"",tpins:(S.tpins||[]).slice(-8),
-      prOpt:S.prOpt||null,
+      prOpt:S.prOpt||null,sentName:!!S.sentName,
       tpin:S.tpin,ppin:S.ppin,roster:keep,tgrade:S.tgrade,tnames:S.tnames,
       codes:S.codes.slice(-60),numCode:S.numCode,tsent:!!S.tsent,pby:S.pby||"",cHow:!!S.cHow,
       at:new Date().toISOString()});},400);}
@@ -3578,9 +3599,13 @@ function actsHtml(m,i){
     +'<button class="btn '+(ok?"btn-p":"btn-wait")+' btn-full" data-ask="'+i+'"'
     +(ok?"":" disabled")+'>'+(ok?"보호자에게 확인받기":"어디까지 했는지 먼저 골라 주세요")+'</button>'
     +'<span>보호자가 <b>옆에 계실 때</b> · 멀리 계시면 <b>파일로</b></span></div>';
+  /* ④ 서버가 없어 「요청했다」가 선생님께 자동으로 가지 않는다 —
+     아이가 화면을 보여 주는 것이 교실에서 가장 빠른 전령이다. */
   if(!hasT) btns+='<div class="two-c">'
-    +'<button class="btn btn-full" data-code="'+i+'">선생님 인증 코드 넣기</button>'
-    +'<span>선생님이 <b>코드를 주셨을 때</b></span></div>';
+    +'<button class="btn '+(ok?"btn-w":"btn-wait")+' btn-full" data-show="'+i+'"'
+    +(ok?"":" disabled")+'>'+(ok?"선생님께 보여 주기":"어디까지 했는지 먼저 골라 주세요")+'</button>'
+    +'<button class="btn btn-q btn-s btn-full" data-code="'+i+'">코드를 받았어요</button>'
+    +'<span>보여 드리고 → 받은 <b>코드를 넣어요</b></span></div>';
   return '<p class="pk-h"><span class="pk-n">3</span><b>확인받기</b>'
       +'<span class="pk-s">두 가지가 모두 모이면 보석이 돼요</span></p>'
     +keyRow(m)
@@ -3605,6 +3630,7 @@ function renderBoard(){
   $("#boardSub").textContent=(S.me.grade?S.me.grade+"학년":"")
     +(S.my.length?" · 목표 "+S.my.length+"개 · 인증 "+_bl+"개":"");
   renderBHint();
+  renderJoinHint();
   renderSaveHint();
   if(!S.my.length){ $("#bBar").innerHTML=""; $("#myList").innerHTML=""; renderFoot(); return; }
   renderBBar();
@@ -3643,6 +3669,22 @@ function renderBoard(){
   });
   $("#myList").innerHTML=html;
   renderFoot();
+}
+/* ① 「아무것도 안 했는데 기록을 왜 보내지?」 — 보내는 일의 이름을 바꾼다.
+   같은 파일이지만 「기록 제출」이 아니라 「출석부에 이름 올리기」다. */
+function renderJoinHint(){
+  var h=$("#joinHint"); if(!h) return;
+  if(STU_DEMO || S.sentName || !S.my.length || !S.me.name){ h.innerHTML=""; return; }
+  h.innerHTML='<div class="jn"><span class="jn-i">🙋</span>'
+    +'<span class="jn-t"><b>학기 초에 한 번 — 선생님께 내 이름 보내기.</b> '
+    +'선생님 명단에 오르면 인증 코드를 더 빨리 받을 수 있어요. '
+    +'아직 해낸 목표가 없어도 괜찮아요.</span>'
+    +'<button class="btn btn-w" id="jnGo">이름 보내기</button>'
+    +'<button type="button" class="t-link" id="jnNo">나중에</button></div>';
+  $("#jnGo").addEventListener("click",function(){
+    S.sentName=true; touch(); renderBoard();   /* 띠를 먼저 거둔다 */
+    openSave("선생님께 내 이름을 올리는 파일이에요. 아직 해낸 목표가 없어도 괜찮습니다.");});
+  $("#jnNo").addEventListener("click",function(){ S.sentName=true; touch(); renderBoard(); });
 }
 /* ③ 모달을 연 사람만 보던 경고를 밖으로 — 한 번도 안 받았으면 목표판에서 붙잡는다 */
 function renderSaveHint(){
@@ -3833,7 +3875,7 @@ $("#myList").addEventListener("keydown",function(e){
 $("#myList").addEventListener("click",function(e){
   var me=e.target.closest("[data-med]");
   if(me){openMine(me.dataset.med);return;}
-  var b=e.target.closest("[data-rung],[data-ask],[data-code],[data-del],[data-more],[data-evopen]");
+  var b=e.target.closest("[data-rung],[data-ask],[data-code],[data-show],[data-del],[data-more],[data-evopen]");
   if(!b)return;
   var card=b.closest(".myc"),i=+card.dataset.i,m=S.my[i];if(!m)return;
   if(b.dataset.more!==undefined){openMore[i]=!openMore[i];renderBoard();return;}
@@ -3857,6 +3899,7 @@ $("#myList").addEventListener("click",function(e){
   }
   if(b.dataset.ask!==undefined){openAsk(i);return;}
   if(b.dataset.code!==undefined){openCode(i);return;}
+  if(b.dataset.show!==undefined){openShow(i);return;}
   if(b.dataset.del!==undefined){
     var g=goalById(m.gid);
     if(!confirm('"'+(g?g.title:"이 목표")+'"을(를) 목표판에서 뺄까요?'))return;
@@ -4367,6 +4410,35 @@ function openVerifyGo(i,num){
       if(m.st==="bloom"&&was!=="bloom")burst(g,elemOf(g),tierOf(g));
       else toast(by+"님이 확인했어요! 이제 선생님 인증만 남았어요");
     });
+  });
+}
+/* ④ 선생님께 보여 주는 쪽지 — 이름·번호·목표·성취기준 코드를 크게.
+   선생님은 이것만 보면 바로 코드를 만들 수 있다(코드로도 검색된다). */
+function openShow(i){
+  var m=S.my[i], g=goalById(m.gid)||{};
+  modal('<h3>선생님께 보여 주세요</h3>'
+    +'<div class="muted">이 화면을 선생님께 보여 드리면 인증 코드를 만들어 주십니다.</div>'
+    +'<div class="shw">'
+      +'<div class="shw-n">'+esc(S.me.name||"")
+        +(noOf(S.me)?' <i>'+esc(noOf(S.me))+'번</i>':'')+'</div>'
+      +'<div class="shw-g">'+esc(S.me.grade||"")+'학년'
+        +(S.school?' · '+esc(S.school):'')+'</div>'
+      +'<div class="shw-t">'+esc(g.alt||g.title||"")+'</div>'
+      +(g.code?'<div class="shw-c">'+esc(g.code)+'</div>':'')
+      +'<div class="shw-s">'+(["아직 고르지 않았어요","+1","+2","+3"][m.rung||0])
+        +(m.rung?'까지 해냈어요':'')+'</div>'
+    +'</div>'
+    +'<div class="acts" style="margin-top:14px">'
+      +'<button class="btn btn-g btn-full" id="shOk">보여 드렸어요</button></div>'
+    +'<p class="sv-sub">누르면 <b>확인 기다리는 중</b>이 됩니다. '
+      +'선생님께 코드를 받으면 <b>코드를 받았어요</b>에 넣어 주세요.</p>'
+    +'<div class="acts" style="margin-top:9px">'
+      +'<button class="btn btn-q btn-full" onclick="closeModal()">닫기</button></div>',
+  function(){
+    $("#shOk").addEventListener("click",function(){
+      if(m.st!=="bloom") m.st="wait";
+      closeModal(); renderBoard(); touch();
+      toast("선생님 인증을 기다리는 중이에요");});
   });
 }
 /* 교사 인증 코드 입력 */
@@ -5436,7 +5508,8 @@ function renderClass(){
       +'<span data-on="'+(S.tsent?"1":"0")+'">안내 보내기</span>'
       +'<span data-now="1">파일 기다리는 중</span></div>'
       +'<b>아직 모은 기록이 없습니다</b>'
-      +'<p>학생이 「내 기록」에서 받은 파일을 올리면 여기에 우리 반이 한눈에 보입니다.</p>'
+      +'<p>학생이 「내 기록」에서 받은 파일을 올리면 여기에 우리 반이 한눈에 보입니다.<br>'
+      +'<b>파일이 없어도 「코드 발급」에서 바로 인증 코드를 만들 수 있습니다.</b></p>'
       +'<div class="acts"><button class="btn btn-p" id="teGo">기록 모으기로 가기</button>'
       +'<button class="btn" id="tePeek">샘플로 둘러보기</button></div></div>';
     var g1=$("#teGo"); if(g1) g1.addEventListener("click",function(){
@@ -5924,7 +5997,7 @@ function bigCode(code,name,title){
   el.querySelector("#bcX").addEventListener("click",function(){el.remove();});
   el.addEventListener("click",function(e){if(e.target===el)el.remove();});
 }
-var CNAME="", CNO="", CFREE=false;   /* 학년을 다시 고르면 폼을 다시 그리는데, 적어 둔 이름은 지키게 */
+var CNAME="", CNO="";   /* 학년을 다시 고르면 폼을 다시 그리는데, 적어 둔 이름은 지키게 */
 /* 코드는 [이름·학년·목표·PIN]으로 만든다. 학생 기기에 적힌 이름과 한 글자라도
    다르면, 학생이 정직하게 코드를 넣어도 몇 달 뒤 「코드 불일치」로 찍힌다.
    그래서 아는 이름은 적게 하지 않고 고르게 한다. */
@@ -6024,16 +6097,17 @@ function renderCode(){
     +(function(){
       if(nRs) return "";                       /* 기록이 있으면 안내가 필요 없다 */
       var roll=(S.tnames||[]).length;
-      if(roll) return '<div class="note" style="margin-bottom:14px">'
-        +'<b>아직 모은 학생 기록이 없습니다.</b> 아래 <b>학급 명단</b>에서 이름을 골라 '
-        +'바로 발급할 수 있어요. 학생 파일을 받아 두면 「우리 반 현황」에서 '
-        +'누가 기다리는지 보고 발급할 수 있습니다. '
+      /* ② 학기 초에 파일이 없는 것은 결핍이 아니라 정상이다 — 그렇게 말한다 */
+      if(roll) return '<div class="note note-g" style="margin-bottom:14px">'
+        +'<b>학기 초에는 이대로 쓰시면 됩니다.</b> 아래 <b>학급 명단</b>에서 이름을 골라 '
+        +'바로 코드를 만들 수 있어요. 나중에 학생 파일을 받아 두면 '
+        +'「우리 반 현황」에서 <b>누가 기다리는지 보고</b> 만들 수 있어 더 편해집니다. '
         +'<button type="button" class="t-link" id="cGoCollect">기록 모으기로 가기</button></div>';
-      /* 가장 위험한 경우 — 고를 이름이 하나도 없어 직접 적는 수밖에 없다 */
-      return '<div class="note note-w" style="margin-bottom:14px">'
-        +'<b>모은 기록도, 학급 명단도 없습니다.</b> 이름을 직접 적으면 '
-        +'<b>학생 기기에 적힌 이름과 한 글자라도 다를 때</b> 나중에 「코드 불일치」로 나옵니다. '
-        +'<b>학급 명단</b>을 먼저 등록하시면 이름을 골라 쓸 수 있어 안전합니다.'
+      /* 고를 이름이 하나도 없는 경우 — 적어도 되지만, 명단이 더 안전하다 */
+      return '<div class="note" style="margin-bottom:14px">'
+        +'<b>이름을 바로 적어도 코드는 만들어집니다.</b> 다만 '
+        +'<b>학생 기기에 적힌 이름과 한 글자라도 다르면</b> 나중에 「코드 불일치」로 나옵니다. '
+        +'<b>학급 명단</b>을 한 번 등록해 두면 이름을 골라 쓸 수 있어 안전합니다.'
         +'<div class="acts" style="margin-top:11px">'
         +'<button class="btn btn-s btn-p" id="cRoll">학급 명단 등록</button>'
         +'<button class="btn btn-s" id="cGoCollect">기록 모으기로 가기</button></div></div>';
@@ -6049,7 +6123,7 @@ function renderCode(){
     +'</div>'
     +(function(){
       var ks=gr?knownNames(gr):[];
-      var free=!ks.length || CFREE;
+      /* ③ 전에는 작은 링크 뒤에 숨어 있어 「등록해야만 된다」로 읽혔다 — 늘 함께 둔다 */
       return '<div class="fld cstep" data-k="n"><label for="cName">'+cN(2)+'학생 이름'+cOk(!!CNAME)+'</label>'
         /* ① 적게 하지 않고 고르게 한다 — 오타가 원천적으로 생기지 않는다 */
         +(ks.length?'<div class="chips cnames">'+ks.map(function(x){
@@ -6057,14 +6131,13 @@ function renderCode(){
               +((CNAME===x.name && CNO===(x.no||""))?"1":"0")+'">'+esc(nameNo(x))
               +(x.src==="file"?'<i class="cn-f" title="기록을 받은 학생">●</i>':'')+'</button>';}).join("")
           +'</div>':'')
-        +(free?'<input type="text" id="cName" placeholder="예) 김민준" autocomplete="off"'
-            +' value="'+esc(CNAME)+'"'+(ks.length?' style="margin-top:9px"':'')+'>'
-          :'<button type="button" class="t-link cn-else" id="cFree">명단에 없는 학생에게 발급</button>')
+        +'<input type="text" id="cName" placeholder="'+(ks.length?'명단에 없는 학생은 여기에 적어 주세요':'예) 김민준')+'" autocomplete="off"'
+          +' value="'+esc(CNAME)+'"'+(ks.length?' style="margin-top:9px"':'')+'>'
         +'<p class="cn-w" id="cNameW"></p></div>';
     })()
     /* ⑨ 가운데 정렬 안내가 라벨인지 모호하던 자리 — 칸 안으로 내린다 */
     +'<div class="fld srch cstep" data-k="s"><label for="cGoal">'+cN(3)+'목표 고르기'+cOk(false)+'</label>'
-      +'<input type="text" id="cGoal" placeholder="낱말을 넣으면 걸러집니다 — 예) 읽기, 발표, 관찰" autocomplete="off">'
+      +'<input type="text" id="cGoal" placeholder="낱말이나 성취기준 코드 — 예) 읽기, 발표, 6국01-01" autocomplete="off">'
       +'<div class="srch-l hidden" id="cList"></div></div>'
     +'<div id="cSel"></div>'
     /* ① 단추 글이 안내문으로 바뀌면 「만들기」라는 말이 화면에서 사라진다 — 이름은 고정 */
@@ -6125,7 +6198,9 @@ function renderCode(){
     /* ① 단추는 늘 「인증 코드 만들기」, 남은 일은 그 아래 한 줄로 */
     var left = !hasG ? "담임 학년을 골라 주세요"
              /* 이름을 고르는 화면인지 적는 화면인지에 따라 말이 달라야 한다 */
-             : !hasN ? ($("#cName") ? "학생 이름을 적어 주세요" : "학생을 골라 주세요")
+             /* 칩과 입력칸이 함께 있으니 두 길을 모두 말한다 */
+             : !hasN ? ($$("#tCode [data-cnm]").length ? "학생을 고르거나 이름을 적어 주세요"
+                                                       : "학생 이름을 적어 주세요")
              : !hasS ? "목표를 골라 주세요" : "";
     var mn=$("#cMakeN");
     if(mn){ mn.textContent=left; mn.dataset.on=left?"1":"0"; }
@@ -6206,9 +6281,8 @@ function renderCode(){
     window.scrollTo({top:0,behavior:"smooth"});});
   $$("#tCode [data-cnm]").forEach(function(b){
     b.addEventListener("click",function(){
-      CNAME=b.dataset.cnm; CNO=b.dataset.cno||""; CFREE=false; renderCode();});});
-  var cf=$("#cFree");
-  if(cf) cf.addEventListener("click",function(){ CFREE=true; CNAME=""; CNO=""; renderCode(); });
+      CNAME=b.dataset.cnm; CNO=b.dataset.cno||""; renderCode();});});
+  /* 칩을 누르면 번호까지 따라오고, 손으로 고치면 번호는 떨어진다 */
   $$("#tCode [data-cg]").forEach(function(b){
     b.addEventListener("click",function(){
       CNAME=($("#cName")||{}).value||""; if($("#cName")) CNO="";
@@ -6224,7 +6298,7 @@ function renderCode(){
     S.numCode=this.checked; touch();
     toast(S.numCode?"숫자 6자리 코드로 바꿉니다(저학년용)":"영문·숫자 코드로 바꿉니다");});
   var ni=$("#cName");
-  if(ni) ni.addEventListener("input",function(){ CNAME=ni.value; upd(); });
+  if(ni) ni.addEventListener("input",function(){ CNAME=ni.value; CNO=""; upd(); });
 
   function hideList(){$("#cList").classList.add("hidden");}
   function showList(){
@@ -6232,14 +6306,20 @@ function renderCode(){
     if(!gr){$("#cList").innerHTML='<div class="srch-i"><span>담임 학년을 먼저 고르세요</span></div>';
       $("#cList").classList.remove("hidden");return;}
     var pool=G.filter(function(x){return x.band===bandOf(gr);});
-    if(q){var k=q.replace(/\s/g,"");
+    /* ⑤ 아이가 「6국01-01」이라고 읽어 주면 그대로 찾아야 한다 —
+       대괄호·붙임표·공백을 떼고 맞춰 본다. 전에는 코드가 아예 빠져 있었다. */
+    if(q){
+      var k=q.replace(/\s/g,""), kc=codeKey(q);
       pool=pool.filter(function(x){
-        return (x.title+x.subject+x.keys.join("")+x.unit).replace(/\s/g,"").indexOf(k)>=0;});}
+        if((x.title+x.subject+x.keys.join("")+x.unit).replace(/\s/g,"").indexOf(k)>=0) return true;
+        return !!(kc && codeKey(x.code).indexOf(kc)>=0);
+      });}
     pool=pool.slice(0,40);
     $("#cList").innerHTML=pool.length
       ? pool.map(function(x){
           return '<div class="srch-i" data-pick="'+x.id+'"><b>'+esc(x.title)+'</b>'
-            +'<span>'+esc(x.subject)+' · '+esc(x.keys.join(" · "))+'</span></div>';}).join("")
+            +'<span>'+esc(x.subject)+(x.code?' · <i class="si-c">'+esc(x.code)+'</i>':'')
+            +' · '+esc(x.keys.join(" · "))+'</span></div>';}).join("")
       : '<div class="srch-i"><span>찾는 목표가 없습니다</span></div>';
     $("#cList").classList.remove("hidden");
     $$("#cList [data-pick]").forEach(function(it){
@@ -6255,7 +6335,7 @@ function renderCode(){
   $("#cMake").addEventListener("click",function(){
     var nm=(($("#cName") ? $("#cName").value : CNAME)||"").trim();
     addCode(nm,gr,sel.gid,sel.title,sel.subject,CNO);
-    CNAME=""; CNO=""; CFREE=false; setSel(null);
+    CNAME=""; CNO=""; setSel(null);
     renderCode();          /* 이름 칩과 ✓ 표시를 처음 상태로 되돌린다 */
     toast(nm+" 학생의 코드를 만들었습니다");});
 
@@ -6608,7 +6688,7 @@ window.addEventListener("popstate",function(){
     S.codes=d.codes||[];S.numCode=!!d.numCode;
     S.pkind=d.pkind||"";S.pRst=d.pRst||0;S.pFail=d.pFail||0;S.pFailN=d.pFailN||0;S.pLock=d.pLock||0;
     S.uid=d.uid||"";S.school=d.school||"";S.tpinAt=d.tpinAt||"";S.tpins=d.tpins||[];
-    S.prOpt=d.prOpt||null;
+    S.prOpt=d.prOpt||null;S.sentName=!!d.sentName;
     $("#sName").value=S.me.name||"";renderGrades();chkStart();
   }
   renderHeroCards();
