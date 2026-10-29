@@ -302,6 +302,10 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 /* ⑧ 주 행동은 넓게 */
 .btn-go{width:100%;margin-top:4px;padding:15px 20px;font-size:16px;border-radius:13px}
 /* ① 아직 못 누를 때 — 꽉 찬 회색 대신, 할 일을 적은 빈 단추 */
+/* ⑤ 고르기 전과 후가 같은 모습이어서 꺼진 단추처럼 보이던 자리 */
+.btn-go[data-wait="0"]{background:var(--bloom);border-color:var(--bloom);color:#fff;
+  box-shadow:0 3px 12px rgba(47,125,91,.3)}
+.btn-go[data-wait="0"]:hover{background:#27694C;border-color:#27694C}
 .btn-go[data-wait="1"]{background:var(--card-2);border:1.5px dashed var(--line-2);
   color:var(--ink-3);opacity:1;cursor:default}
 /* ⑨ 샘플 둘러보기 */
@@ -546,7 +550,28 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .cprev[data-on="0"] .cprev-c{letter-spacing:.34em;color:var(--line-2)}
 .cprev-t{margin:5px 0 0;font-size:12px;line-height:1.6;color:var(--ink-3)}
 .cprev-t b{color:var(--ink-2)}
-@media (max-width:420px){ .cprev-c{font-size:23px} }
+/* ④ 교실에서 읽어 줘야 하는 여섯 글자가 28px이던 자리 */
+.cprev[data-on="2"]{border-style:solid;border-color:var(--bloom);
+  background:var(--bloom-bg);padding:17px 13px}
+.cprev[data-on="2"] .cprev-c{color:var(--bloom);font-size:46px;letter-spacing:.14em;margin:2px 0}
+.cprev-w{margin:0;font-size:12.5px;font-weight:800;color:var(--bloom)}
+.cprev-s{margin:3px 0 0;font-size:13px;color:#3C6B4C}
+.cprev-s b{color:#24543B}
+.cprev-a{justify-content:center;margin-top:11px}
+.c-empty{margin:4px 0 0;font-size:12.5px;color:var(--ink-3);text-align:center}
+/* ① 두 발급을 좌우로 */
+.ctabs{display:flex;gap:5px;margin:12px 0 15px;padding:4px;background:var(--card-2);
+  border:1px solid var(--line);border-radius:13px}
+.ctabs button{flex:1 1 0;padding:10px 10px;border:0;background:none;border-radius:10px;
+  font:inherit;font-size:14.5px;font-weight:700;color:var(--ink-3);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;letter-spacing:-0.02em}
+.ctabs button:hover{color:var(--ink-2)}
+.ctabs button[data-on="1"]{background:var(--card);color:var(--ink);
+  box-shadow:0 1px 3px rgba(0,0,0,.09)}
+.ctb{font-style:normal;font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px;
+  background:#FBECEC;color:#8E3030;border:1px solid #E9C9C9}
+@media (max-width:420px){ .cprev-c{font-size:23px}
+  .cprev[data-on="2"] .cprev-c{font-size:36px} }
 .codebox{font-size:30px;font-weight:800;letter-spacing:.2em;text-align:center;
   padding:18px;background:var(--card-2);border:2px dashed var(--line-2);
   border-radius:13px;margin:14px 0;font-variant-numeric:tabular-nums;word-break:break-all}
@@ -1331,11 +1356,11 @@ button.ttl-b{cursor:pointer}
 .c-steps{list-style:none;counter-reset:cs;margin:11px 0 0;padding:0;
   display:grid;grid-template-columns:repeat(2,1fr);gap:12px}   /* 두 열쇠가 생겨 네 걸음 */
 @media (max-width:560px){.c-steps{grid-template-columns:1fr;gap:9px}}
-.c-steps li{counter-increment:cs;display:flex;flex-direction:column;gap:1px;
-  padding-left:30px;position:relative}
-.c-steps li::before{content:counter(cs);position:absolute;left:0;top:0;
-  width:21px;height:21px;border-radius:50%;background:var(--ink);color:#fff;
-  font-size:11.5px;font-weight:800;display:grid;place-items:center}
+.c-steps li{display:flex;flex-direction:column;gap:1px;
+  padding-left:22px;position:relative}
+/* ⑦ 설명의 ①②③④ 바로 아래 폼의 ①②③이 또 나와, ①을 두 번 만나던 자리 */
+.c-steps li::before{content:"";position:absolute;left:7px;top:7px;
+  width:7px;height:7px;border-radius:50%;background:var(--line-2)}
 .c-steps li b{font-size:13.5px;letter-spacing:-0.02em}
 .c-steps li span{font-size:12.5px;line-height:1.6;color:var(--ink-2)}
 .c-note{margin:12px 0 0;padding-top:10px;border-top:1px dashed var(--line);
@@ -2129,7 +2154,7 @@ var S = {role:null, me:{name:"", grade:null, no:""}, my:[], view:"role", uid:"",
          filtOpen:false, zeroOpen:false,
          bFilter:"all", bSort:"todo", bView:"card", last:"", bagElem:"", bagSeen:0,
          ttlOpen:false,
-         filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect", tsent:false, pby:"", cHow:false, dlAt:"", dlSig:"",
+         filterKeys:[], filterElem:"", dexFilter:"all", term:0, subject:"", tpin:"", ppin:"", roster:{}, tabT:"collect", tsent:false, pby:"", cHow:false, cSub:"code", cHelp:null, dlAt:"", dlSig:"",
          pkind:"", pRst:0, pFail:0, pFailN:0, pLock:0, dupSeen:false,
          tpinAt:"", tpins:[], prOpt:null, sentName:false, pnSent:false,
          tgrade:null, tnames:[], codes:[], numCode:false, tFilter:"wait", tSort:"wait"};
@@ -2371,7 +2396,7 @@ function touch(){if(!Store.ok)return;clearTimeout(tm);
       uid:S.uid||"",school:S.school||"",tpinAt:S.tpinAt||"",tpins:(S.tpins||[]).slice(-8),
       prOpt:S.prOpt||null,sentName:!!S.sentName,pnSent:!!S.pnSent,
       tpin:S.tpin,ppin:S.ppin,roster:keep,tgrade:S.tgrade,tnames:S.tnames,
-      codes:S.codes.slice(-60),numCode:S.numCode,tsent:!!S.tsent,pby:S.pby||"",cHow:!!S.cHow,
+      codes:S.codes.slice(-60),numCode:S.numCode,tsent:!!S.tsent,pby:S.pby||"",cHow:!!S.cHow,cSub:S.cSub||"code",cHelp:(S.cHelp===true||S.cHelp===false)?S.cHelp:null,
       at:new Date().toISOString()});},400);}
 
 /* ⑤ 소개 페이지에서 들어왔으면 그 주소를 기억해 둔다 — 머리글에 「소개」가 생긴다 */
@@ -6056,7 +6081,9 @@ function bigCode(code,name,title){
   el.querySelector("#bcX").addEventListener("click",function(){el.remove();});
   el.addEventListener("click",function(e){if(e.target===el)el.remove();});
 }
-var CNAME="", CNO="";   /* 학년을 다시 고르면 폼을 다시 그리는데, 적어 둔 이름은 지키게 */
+var CNAME="", CNO="";
+/* ④ 만든 코드가 이력으로만 떨어지던 자리 — 방금 만든 것은 눈앞에 남는다 */
+var LASTC=null;   /* 학년을 다시 고르면 폼을 다시 그리는데, 적어 둔 이름은 지키게 */
 /* 코드는 [이름·학년·목표·PIN]으로 만든다. 학생 기기에 적힌 이름과 한 글자라도
    다르면, 학생이 정직하게 코드를 넣어도 몇 달 뒤 「코드 불일치」로 찍힌다.
    그래서 아는 이름은 적게 하지 않고 고르게 한다. */
@@ -6187,41 +6214,66 @@ function pnWire(root){
   if(sk) sk.addEventListener("click",function(){
     S.pnSent=true; touch(); renderTeacher(); toast("보낸 것으로 표시했습니다");});
 }
+/* ③ 코드를 만드는 화면에서 PIN이 보이지 않아, PIN 없이 만든 코드가 나갈 수 있었다 */
+function cPinBar(){
+  return S.tpin
+    ? '<div class="cpin ok"><span class="cpin-k">서명 PIN ✓</span>'
+      +'<span class="cpin-t">이 PIN으로 코드를 만듭니다. 한 해 동안 바꾸지 마세요.</span>'
+      +'<button type="button" class="t-link" id="cPinEdit">바꾸기</button></div>'
+    : '<div class="cpin no"><span class="cpin-k">⚠ 서명 PIN이 없습니다</span>'
+      +'<span class="cpin-t">먼저 네 자리를 정해 주세요. 지금 만든 코드는 나중에 '
+      +'<b>대조할 수 없습니다.</b></span>'
+      +'<span class="cpin-f">'
+        +'<input type="password" id="cPin" class="pin" inputmode="numeric" maxlength="4" placeholder="----" autocomplete="off">'
+        +'<button type="button" class="btn btn-s btn-p" id="cPinOk">정하기</button></span></div>';
+}
+function cPinWire(){
+  var cpo=$("#cPinOk");
+  if(cpo) cpo.addEventListener("click",function(){
+    var v=($("#cPin").value||"").replace(/\D/g,"").slice(0,4);
+    if(v.length!==4){ toast("숫자 4자리를 넣어 주세요"); $("#cPin").focus(); return; }
+    pinNew(v); touch(); renderTeacher(); toast("서명 PIN을 정했습니다");});
+  var cpe=$("#cPinEdit");
+  if(cpe) cpe.addEventListener("click",function(){
+    S.tabT="collect"; renderTeacher(); touch();
+    var t=$("#tPin"); if(t){ t.scrollIntoView({behavior:"smooth",block:"center"}); t.focus(); }});
+}
+/* ① 매일 쓰는 것과 1년에 한 번 쓰는 것을 위아래가 아니라 좌우로 */
+function cSubBar(){
+  var pn=(S.cSub==="pn");
+  return '<div class="ctabs" role="tablist">'
+    +'<button type="button" data-cs="code" data-on="'+(pn?"0":"1")+'">인증 코드</button>'
+    +'<button type="button" data-cs="pn" data-on="'+(pn?"1":"0")+'">보호자 번호'
+      +(S.pnSent?'':'<i class="ctb">아직</i>')+'</button>'
+    +'</div>';
+}
+function cSubWire(){
+  $$("#tCode [data-cs]").forEach(function(b){
+    b.addEventListener("click",function(){
+      if(S.cSub===b.dataset.cs) return;
+      S.cSub=b.dataset.cs; touch(); renderCode();
+      var t=$("#tCode"); if(t) t.scrollIntoView({behavior:"smooth",block:"start"});});});
+}
+function cHelpOpen(){
+  if(S.cHelp===true||S.cHelp===false) return S.cHelp;  /* 선생님이 직접 정했으면 그대로 */
+  return !(S.codes||[]).length;                         /* 아직 한 번도 안 만들었으면 펼침 */
+}
 function cN(n){ return '<i class="c-num">'+n+'</i>'; }
 function cOk(on){ return '<i class="c-ok"'+(on?'':' hidden')+'>✓</i>'; }
 function renderCode(){
   var gr = S.tgrade;
   var sel = {gid:null, title:"", subject:""};
   var nRs=Object.keys(S.roster||{}).length;
+  /* ① 매일 쓰는 발급과 1년에 한 번 쓰는 번호를 한 줄에 쌓지 않는다 */
+  if(S.cSub==="pn"){
+    $("#tCode").innerHTML = cPinBar() + cSubBar() + '<div id="pnTop"></div>';
+    cPinWire(); cSubWire();
+    $("#pnTop").innerHTML=pnCard(gr, true);
+    pnWire("#pnTop");
+    return;
+  }
   $("#tCode").innerHTML=
-    /* ③ 코드를 만드는 화면에서 PIN이 보이지 않아, PIN 없이 만든 코드가 나갈 수 있었다 */
-    (S.tpin
-      ? '<div class="cpin ok"><span class="cpin-k">서명 PIN ✓</span>'
-        +'<span class="cpin-t">이 PIN으로 코드를 만듭니다. 한 해 동안 바꾸지 마세요.</span>'
-        +'<button type="button" class="t-link" id="cPinEdit">바꾸기</button></div>'
-      : '<div class="cpin no"><span class="cpin-k">⚠ 서명 PIN이 없습니다</span>'
-        +'<span class="cpin-t">먼저 네 자리를 정해 주세요. 지금 만든 코드는 나중에 '
-        +'<b>대조할 수 없습니다.</b></span>'
-        +'<span class="cpin-f">'
-          +'<input type="password" id="cPin" class="pin" inputmode="numeric" maxlength="4" placeholder="----" autocomplete="off">'
-          +'<button type="button" class="btn btn-s btn-p" id="cPinOk">정하기</button></span></div>')
-    /* ② 맨 아래 접힌 채로 있어 「가끔 쓰는 것」처럼 보이던 자리 — PIN 바로 아래로 */
-    +'<div id="pnTop"></div>'
-    /* ③④ 한 번 읽으면 그만인 글이 매번 104픽셀을 차지하던 자리 — 접고, 세 걸음으로 */
-    +'<details class="c-how"'+(S.cHow?"":" open")+' id="cHow">'
-      +'<summary>인증 코드는 언제 만드나요?</summary>'
-      +'<ol class="c-steps">'
-      +'<li><b>학생이 요청합니다</b><span>목표를 다 해내고 <b>확인 기다리는 중</b>으로 바꿉니다.</span></li>'
-      +'<li><b>선생님이 코드를 만듭니다</b><span>아래에서 그 학생과 목표를 골라 코드를 만들어 알려 줍니다.</span></li>'
-      +'<li><b>학생이 코드를 넣습니다</b><span>학생 화면의 <b>선생님 인증 코드 넣기</b>에 넣으면 '
-        +'<b>선생님 인증</b>이 끝납니다.</span></li>'
-      +'<li><b>보호자 확인까지 모이면 보석</b><span>선생님 인증과 <b>보호자 확인</b>이 둘 다 있어야 '
-        +'보석이 됩니다. 순서는 상관없습니다.</span></li>'
-      +'</ol>'
-      +'<p class="c-note">코드는 <b>학생 이름 · 학년 · 목표 · 선생님 PIN</b> 네 가지로 만듭니다. '
-      +'그래서 <b>학생이 자기 기기에 적은 이름·학년과 한 글자도 다르면 안 됩니다.</b> '
-      +'다르면 지금은 통과해도, 나중에 기록을 모을 때 「코드가 맞지 않는 인증」으로 나옵니다.</p>'
-    +'</details>'
+    cPinBar() + cSubBar()
     /* ⑥ 오타가 날 수 없는 길이 이미 있다 — 그쪽으로 보낸다 */
     +(function(){
       var w=0; Object.keys(S.roster||{}).forEach(function(k){
@@ -6234,20 +6286,12 @@ function renderCode(){
     })()
     /* 안내문은 화면에 실제로 있는 길과 맞아야 한다 —
        이름을 고르게 바꾼 뒤로 「아래에서 바로 만들어도 됩니다」가 어긋났다. */
+    /* ⑥ 「학기 초에는 이대로」 79px은 설명일 뿐이어서 도움말로 내렸다.
+       고를 이름이 하나도 없을 때만, 할 일이 있으므로 남긴다. */
     +(function(){
-      if(nRs) return "";                       /* 기록이 있으면 안내가 필요 없다 */
-      var roll=(S.tnames||[]).length;
-      /* ② 학기 초에 파일이 없는 것은 결핍이 아니라 정상이다 — 그렇게 말한다 */
-      if(roll) return '<div class="note note-g" style="margin-bottom:14px">'
-        +'<b>학기 초에는 이대로 쓰시면 됩니다.</b> 아래 <b>학급 명단</b>에서 이름을 골라 '
-        +'바로 코드를 만들 수 있어요. 나중에 학생 파일을 받아 두면 '
-        +'「우리 반 현황」에서 <b>누가 기다리는지 보고</b> 만들 수 있어 더 편해집니다. '
-        +'<button type="button" class="t-link" id="cGoCollect">기록 모으기로 가기</button></div>';
-      /* 고를 이름이 하나도 없는 경우 — 적어도 되지만, 명단이 더 안전하다 */
+      if(nRs || (S.tnames||[]).length) return "";
       return '<div class="note" style="margin-bottom:14px">'
-        +'<b>이름을 바로 적어도 코드는 만들어집니다.</b> 다만 '
-        +'<b>학생 기기에 적힌 이름과 한 글자라도 다르면</b> 나중에 「코드 불일치」로 나옵니다. '
-        +'<b>학급 명단</b>을 한 번 등록해 두면 이름을 골라 쓸 수 있어 안전합니다.'
+        +'<b>학급 명단</b>을 한 번 등록해 두면 이름을 골라 쓸 수 있어 오타가 없습니다. '
         +'<div class="acts" style="margin-top:11px">'
         +'<button class="btn btn-s btn-p" id="cRoll">학급 명단 등록</button>'
         +'<button class="btn btn-s" id="cGoCollect">기록 모으기로 가기</button></div></div>';
@@ -6291,7 +6335,29 @@ function renderCode(){
     +'<label class="c-sw"><input type="checkbox" id="cNum"'+(S.numCode?" checked":"")+'>'
       +'<span><b>숫자만 쓰기</b> — 1·2학년이 입력하기 쉬워요</span></label>'
     +'</div>'
-    +'<div id="cHist"></div>';
+    +'<div id="cHist"></div>'
+    /* ⑥ 네 상자가 같은 말을 네 번 하던 자리 — 한 곳으로 모으고 맨 아래로 */
+    /* 설명을 한곳에 모으면서, 아직 한 번도 안 만들어 본 선생님에게서
+       길 안내까지 거두어 가면 안 된다 — 첫 코드 전까지는 펼쳐 둔다 */
+    +'<details class="c-how"'+(cHelpOpen()?" open":"")+' id="cHow" style="margin:16px 0 0">'
+      +'<summary>도움말 — 인증 코드는 어떻게 쓰나요?</summary>'
+      +'<ol class="c-steps">'
+      +'<li><b>학생이 요청합니다</b><span>목표를 다 해내고 <b>확인 기다리는 중</b>으로 바꿉니다.</span></li>'
+      +'<li><b>선생님이 코드를 만듭니다</b><span>위에서 그 학생과 목표를 골라 코드를 만들어 알려 줍니다.</span></li>'
+      +'<li><b>학생이 코드를 넣습니다</b><span>학생 화면의 <b>코드를 받았어요</b>에 넣으면 '
+        +'<b>선생님 인증</b>이 끝납니다.</span></li>'
+      +'<li><b>보호자 확인까지 모이면 보석</b><span>선생님 인증과 <b>보호자 확인</b>이 둘 다 있어야 '
+        +'보석이 됩니다. 순서는 상관없습니다.</span></li>'
+      +'</ol>'
+      +'<p class="c-note">코드는 <b>학생 이름 · 학년 · 목표 · 선생님 PIN</b> 네 가지로 만듭니다. '
+      +'그래서 <b>학생이 자기 기기에 적은 이름·학년과 한 글자도 다르면 안 됩니다.</b> '
+      +'다르면 지금은 통과해도, 나중에 기록을 모을 때 「코드가 맞지 않는 인증」으로 나옵니다.</p>'
+      +'<p class="c-note"><b>학기 초에 학생 파일이 없어도 정상입니다.</b> 학급 명단에서 이름을 골라 '
+      +'바로 만들 수 있어요. 나중에 파일을 받아 두면 「우리 반 현황」에서 '
+      +'<b>누가 기다리는지 보고</b> 만들 수 있어 더 편해집니다.</p>'
+      +'<p class="c-note">만든 코드는 아래 <b>발급한 코드</b>에 쌓입니다. 거기서 <b>복사</b>하거나, '
+      +'<b>교실 앞에 크게</b> 띄우거나, <b>쿠폰으로 인쇄</b>해 나누어 줄 수 있어요.</p>'
+    +'</details>';
 
   function upd(){
     /* 못 누르는 회색 단추 대신, 무엇이 남았는지 단추가 말한다 */
@@ -6316,13 +6382,26 @@ function renderCode(){
       if(hasN&&hasG&&hasS){
         pv.dataset.on="1";
         pv.innerHTML='<div class="cprev-c">'+prettyCode(makeCode(S.tpin,sigParts(nmNow.trim(),gr,CNO,sel.gid)))+'</div>'
-          +'<p class="cprev-t"><b>위 단추를 누르면 이 코드가 발급됩니다.</b><br>'
-          +'누른 뒤 복사하거나, 교실 앞에 크게 띄우거나, 쿠폰으로 인쇄할 수 있어요.</p>';
+          +'<p class="cprev-t"><b>위 단추를 누르면 이 코드가 발급됩니다.</b></p>';
+      }else if(LASTC){
+        /* ④ 방금 만든 코드는 이력으로 떨어지지 않고 여기 크게 남는다 */
+        pv.dataset.on="2";
+        pv.innerHTML='<p class="cprev-w">✓ 발급했습니다 — 이 여섯 자리를 알려 주세요</p>'
+          +'<div class="cprev-c">'+prettyCode(LASTC.code)+'</div>'
+          +'<p class="cprev-s"><b>'+esc(LASTC.name)+'</b> · '+esc(LASTC.title)+'</p>'
+          +'<div class="acts cprev-a">'
+          +'<button type="button" class="btn btn-s" id="cvCopy">복사</button>'
+          +'<button type="button" class="btn btn-s" id="cvBig">교실 앞에 크게</button></div>';
+        var cc=$("#cvCopy");
+        if(cc) cc.addEventListener("click",function(){
+          try{navigator.clipboard.writeText(LASTC.code);toast("코드를 복사했습니다");}
+          catch(e){toast("코드: "+prettyCode(LASTC.code));}});
+        var cb=$("#cvBig");
+        if(cb) cb.addEventListener("click",function(){bigCode(LASTC.code,LASTC.name,LASTC.title);});
       }else{
         pv.dataset.on="0";
         pv.innerHTML='<div class="cprev-c">------</div>'
-          +'<p class="cprev-t">여기에 <b>여섯 자리 코드</b>가 나옵니다. '
-          +'그 여섯 자리를 학생에게 알려 주면, 학생이 자기 화면에 넣습니다.</p>';
+          +'<p class="cprev-t">여기에 <b>여섯 자리 코드</b>가 나옵니다.</p>';
       }
     }
     /* ⑤⑥ 다 한 칸에는 ✓, 지금 해야 할 칸은 테두리로 가리킨다 */
@@ -6356,20 +6435,9 @@ function renderCode(){
   if(gc) gc.addEventListener("click",function(){
     S.tabT="collect"; renderTeacher(); touch();
     window.scrollTo({top:0,behavior:"smooth"});});
-  /* ② 아직 안 보냈으면 펼쳐서, 보냈으면 접어서 */
-  $("#pnTop").innerHTML=pnCard(gr, !S.pnSent);
-  pnWire("#pnTop");
+  cPinWire(); cSubWire();
   var cr=$("#cRoll");
   if(cr) cr.addEventListener("click",openRoster);
-  var cpo=$("#cPinOk");
-  if(cpo) cpo.addEventListener("click",function(){
-    var v=($("#cPin").value||"").replace(/\D/g,"").slice(0,4);
-    if(v.length!==4){ toast("숫자 4자리를 넣어 주세요"); $("#cPin").focus(); return; }
-    pinNew(v); touch(); renderTeacher(); toast("서명 PIN을 정했습니다");});
-  var cpe=$("#cPinEdit");
-  if(cpe) cpe.addEventListener("click",function(){
-    S.tabT="collect"; renderTeacher(); touch();
-    var t=$("#tPin"); if(t){ t.scrollIntoView({behavior:"smooth",block:"center"}); t.focus(); }});
   var gk=$("#cGoClass");
   if(gk) gk.addEventListener("click",function(){
     S.tabT="class"; S.tFilter="wait"; renderTeacher(); touch();
@@ -6388,7 +6456,7 @@ function renderCode(){
     CNAME=($("#cName")||{}).value||"";
     gr=null; S.tgrade=null; touch(); renderCode();});
   var ch=$("#cHow");
-  if(ch) ch.addEventListener("toggle",function(){ S.cHow=!ch.open; touch(); });
+  if(ch) ch.addEventListener("toggle",function(){ S.cHelp=ch.open; touch(); });
   $("#cNum").addEventListener("change",function(){
     S.numCode=this.checked; touch();
     toast(S.numCode?"숫자 6자리 코드로 바꿉니다(저학년용)":"영문·숫자 코드로 바꿉니다");});
@@ -6430,8 +6498,13 @@ function renderCode(){
   $("#cMake").addEventListener("click",function(){
     var nm=(($("#cName") ? $("#cName").value : CNAME)||"").trim();
     addCode(nm,gr,sel.gid,sel.title,sel.subject,CNO);
+    /* ④ 만든 코드를 눈앞에 남긴다 — 이력까지 내려가 찾지 않게 */
+    var last=S.codes[S.codes.length-1];
+    LASTC={code:last.code, name:nm, title:sel.title||""};
     CNAME=""; CNO=""; setSel(null);
     renderCode();          /* 이름 칩과 ✓ 표시를 처음 상태로 되돌린다 */
+    var pv=$("#cPrev");
+    if(pv) pv.scrollIntoView({behavior:"smooth",block:"center"});
     toast(nm+" 학생의 코드를 만들었습니다");});
 
   renderHist();
@@ -6441,12 +6514,8 @@ function renderHist(){
   var box=$("#cHist"); if(!box)return;
   var l=S.codes.slice().reverse();
   /* ⑥ 회색 한 줄이던 자리 — 만들면 무엇을 할 수 있는지 미리 알려 준다 */
-  if(!l.length){box.innerHTML='<div class="note" style="line-height:1.8">'
-    +'<b>아직 만든 코드가 없습니다.</b> 위에서 학생과 목표를 골라 만들면 '
-    +'<b>여기에 쌓입니다.</b><br>'
-    +'쌓인 코드는 <b>복사</b>하거나, <b>교실 앞에 크게</b> 띄우거나, '
-    +'<b>쿠폰으로 인쇄</b>해 나누어 줄 수 있어요. '
-    +'학생이 코드를 넣었는지도 여기서 보입니다.</div>';return;}
+  /* ⑥ 119자 설명이 매번 78픽셀을 차지하던 자리 — 한 줄로 */
+  if(!l.length){box.innerHTML='<p class="c-empty">만든 코드가 여기에 쌓입니다.</p>';return;}
   box.innerHTML='<div class="sec-h" style="margin-bottom:10px"><h2 style="font-size:17px">발급한 코드</h2>'
     +'<span>최근 '+l.length+'개</span></div>'
     +'<div class="clog">'+l.map(function(c,i){
@@ -6784,6 +6853,7 @@ window.addEventListener("popstate",function(){
     S.pkind=d.pkind||"";S.pRst=d.pRst||0;S.pFail=d.pFail||0;S.pFailN=d.pFailN||0;S.pLock=d.pLock||0;
     S.uid=d.uid||"";S.school=d.school||"";S.tpinAt=d.tpinAt||"";S.tpins=d.tpins||[];
     S.prOpt=d.prOpt||null;S.sentName=!!d.sentName;S.pnSent=!!d.pnSent;
+    S.cSub=d.cSub||"code";S.cHelp=(d.cHelp===true||d.cHelp===false)?d.cHelp:null;
     $("#sName").value=S.me.name||"";renderGrades();chkStart();
   }
   renderHeroCards();
