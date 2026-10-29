@@ -909,6 +909,48 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
   border:1px solid var(--line);border-radius:99px;padding:1px 8px;font-size:11px}
 
 /* 보물 주머니 */
+/* ⑤ 한 걸음에 하나 */
+.stp{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.stp-i{border:1px solid var(--line);border-radius:13px;background:var(--card-2);overflow:hidden}
+.stp-i[data-open="1"]{background:var(--card);border-color:var(--line-2);
+  box-shadow:0 1px 2px rgba(30,35,40,.04)}
+.stp-h{width:100%;display:flex;align-items:center;gap:9px;padding:13px 14px;border:0;
+  background:none;font:inherit;cursor:pointer;text-align:left;color:var(--ink-2)}
+.stp-h b{font-size:14px;font-weight:800;color:var(--ink-3);flex:0 0 auto}
+.stp-i[data-open="1"] .stp-h b{color:var(--ink)}
+.stp-n{flex:0 0 auto;width:21px;height:21px;border-radius:50%;background:var(--line);
+  color:var(--ink-3);font-style:normal;font-size:11.5px;font-weight:800;
+  display:grid;place-items:center}
+.stp-i[data-open="1"] .stp-n{background:var(--ink);color:#fff}
+.stp-i[data-ok="1"] .stp-n{background:var(--bloom);color:#fff}
+.stp-v{flex:1 1 auto;min-width:0;font-size:14px;font-weight:700;color:var(--ink);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stp-i[data-open="1"] .stp-v{display:none}
+.stp-e{flex:0 0 auto;font-style:normal;font-size:12.5px;font-weight:700;color:var(--ink-3);
+  text-decoration:underline;text-underline-offset:3px}
+.stp-i[data-open="1"] .stp-e,.stp-i[data-ok="0"] .stp-e{display:none}
+.stp-b{display:none;padding:0 14px 14px}
+.stp-i[data-open="1"] .stp-b{display:block}
+.stp-h .okm{flex:0 0 auto}
+/* ⑦ 번호는 필요한 사람만 */
+.st-more{display:block;width:100%;margin:11px 0 0;padding:11px;border:1px dashed var(--line-2);
+  border-radius:11px;background:none;font:inherit;font-size:12.5px;color:var(--ink-3);
+  cursor:pointer;text-align:center}
+.st-more:hover{background:var(--card-2);color:var(--ink-2)}
+.st-more b{font-weight:800;color:var(--ink-2)}
+/* ⑥ 학교 고르기 */
+.sch-si{margin:4px 0 2px}
+.sch-hd{display:flex;align-items:center;gap:9px;margin:0 0 9px}
+.sch-hd b{font-size:13.5px;font-weight:800;color:var(--ink)}
+.sch-l{margin:9px 0 0;display:flex;flex-direction:column;gap:4px;max-height:232px;
+  overflow-y:auto;border:1px solid var(--line);border-radius:11px;padding:5px}
+.sch-it{display:block;width:100%;text-align:left;padding:10px 11px;border:0;border-radius:8px;
+  background:none;font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer}
+.sch-it:hover{background:var(--card-2)}
+.sch-ok{padding:12px 13px;border-radius:11px;background:var(--bloom-bg);
+  border:1px solid #BFDCC8;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.sch-ok b{font-size:14.5px;font-weight:800;color:#24543B}
+.sch-ok span{font-size:12px;color:#3C6B4C}
 .bag-i{font-size:13px;line-height:1.65;color:var(--ink-3);margin:-2px 0 14px}
 .bag-i b{color:var(--ink-2);font-weight:700}
 /* ① 칠각형 */
@@ -1003,6 +1045,8 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .gem::after{content:"";position:absolute;inset:3px;background:var(--eb);
   clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
 .gem i{position:relative;z-index:1;font-style:normal;font-size:15px;line-height:1}
+/* 칩과 첫 카드가 맞붙어 있어 어디까지가 메뉴인지 안 보이던 자리 */
+#bagBar{margin-bottom:14px}
 .bag-l{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:8px}
 .bag-it{display:flex;align-items:center;gap:12px;text-align:left;width:100%;
   background:var(--card);border:1px solid var(--line);border-radius:13px;padding:11px 13px;
@@ -1905,26 +1949,41 @@ button.ttl-b{cursor:pointer}
       <p class="st-lead">고른 목표를 한 해 동안 모읍니다.
         <b>2~3분</b>이면 첫 목표를 담을 수 있어요.</p>
       <div class="card">
-        <div class="fld">
-          <label for="sName">이름 <i class="okm" id="okName">✓</i></label>
-          <input type="text" id="sName" placeholder="예) 김민준" autocomplete="off"
-            enterkeyhint="go" aria-describedby="nameWhy">
-          <!-- ⑪ 가장 궁금한 자리에 답을 둔다 -->
-          <p class="st-why" id="nameWhy">이름은 <b>이 기기에만</b> 저장됩니다. 어디로도 보내지 않아요.</p>
-        </div>
-        <div class="fld">
-          <label>학년 <i class="okm" id="okGrade">✓</i></label>
-          <div class="grades" id="gradePick"></div>
-          <p class="st-band" id="bandNote"></p>
-        </div>
-        <!-- ③ 같은 반에 이름이 같은 친구가 있을 때만 필요하다 -->
-        <div class="fld">
-          <label for="sNo">번호 <span class="hint">안 적어도 돼요</span></label>
-          <input type="text" id="sNo" inputmode="numeric" maxlength="2" placeholder="예) 7"
-            autocomplete="off" style="width:110px">
-          <p class="st-why">같은 반에 <b>이름이 같은 친구</b>가 있으면 적어 주세요.
-            기록이 섞이지 않습니다.</p>
-        </div>
+        <!-- ⑤ 네 가지를 한 화면에 쌓으면 폰에서 「시작」이 화면 밖으로 나간다 — 한 걸음에 하나 -->
+        <ol class="stp">
+          <li class="stp-i" id="stName" data-k="n" data-open="1" data-ok="0">
+            <button type="button" class="stp-h" data-go="n">
+              <i class="stp-n">1</i><b>이름</b>
+              <span class="stp-v" id="svName"></span>
+              <i class="okm" id="okName" hidden>✓</i><em class="stp-e">바꾸기</em></button>
+            <div class="stp-b">
+              <input type="text" id="sName" placeholder="예) 김민준" autocomplete="off"
+                enterkeyhint="next" aria-describedby="nameWhy">
+              <p class="st-why" id="nameWhy">이름은 <b>이 기기에만</b> 저장됩니다. 어디로도 보내지 않아요.</p>
+            </div>
+          </li>
+          <li class="stp-i" id="stGrade" data-k="g" data-open="0" data-ok="0">
+            <button type="button" class="stp-h" data-go="g">
+              <i class="stp-n">2</i><b>학년</b>
+              <span class="stp-v" id="svGrade"></span>
+              <i class="okm" id="okGrade" hidden>✓</i><em class="stp-e">바꾸기</em></button>
+            <div class="stp-b">
+              <div class="grades" id="gradePick"></div>
+            </div>
+          </li>
+          <!-- ⑥ 6천여 곳에서 한 번에 찾지 않는다 — 시도를 먼저 고르면 17분의 1 -->
+          <li class="stp-i" id="stSch" data-k="s" data-open="0" data-ok="0">
+            <button type="button" class="stp-h" data-go="s">
+              <i class="stp-n">3</i><b>학교</b>
+              <span class="stp-v" id="svSch"></span>
+              <i class="okm" id="okSch" hidden>✓</i><em class="stp-e">바꾸기</em></button>
+            <div class="stp-b" id="schBox"></div>
+          </li>
+        </ol>
+        <!-- 걸음이 접히면 「3~4학년 목표 231개」가 함께 사라진다 — 밖에 둔다 -->
+        <p class="st-band" id="bandNote"></p>
+        <!-- ⑦ 같은 이름이 있을 때만 필요한 칸이 늘 펼쳐져 148픽셀을 먹던 자리 -->
+        <div id="noWrap"></div>
         <button class="btn btn-p btn-go" id="startGo" disabled>이름을 적어 주세요</button>
       </div>
       <!-- ⑨ 처음 온 사람이 가장 누르고 싶은 것을 위로 -->
@@ -2215,7 +2274,8 @@ var G = window.GOALS || [];
    my   : [{gid, st, rung, ev, at, pv:{by,at,sig}, tv:{by,at,sig}}]
           st: seed | grow | wait | bloom
    teacher: {pin, roster:{키=이름|학년: 학생기록}}                     */
-var S = {role:null, me:{name:"", grade:null, no:""}, my:[], view:"role", uid:"", school:"",
+var S = {role:null, me:{name:"", grade:null, no:"", school:"", schoolSkip:false},
+         my:[], view:"role", uid:"", school:"",
          seals:0, mine:[], badge:"", klass:null, peek:null,
          mapQ:"", mapSub:"", mapFilter:"all", mapOpen:{},
          filtOpen:false, zeroOpen:false,
@@ -2525,6 +2585,8 @@ function show(v){
   if(v==="parent")renderParent();
   if(v==="teacher")renderTeacher();
   if(v==="role")renderResume({me:S.me,my:S.my,roster:S.roster,tpin:S.tpin});
+  /* ⑤ 시작 화면을 열 때마다 걸음을 다시 맞춘다 — 주소로 받은 학교가 늦게 들어오기도 한다 */
+  if(v==="start"){ renderSteps(); }
   /* ③ 바로 적을 수 있게 — 좁은 화면은 키보드가 튀어올라 오히려 거슬리므로 넓을 때만 */
   if(v==="start" && window.innerWidth>820){
     var ni=$("#sName"); if(ni && !ni.value) setTimeout(function(){try{ni.focus();}catch(e){}},80);
@@ -2710,6 +2772,139 @@ function renderResume(d){
 }
 
 var PENDING_G=null;   /* QR로 왔는데 아직 이름·학년을 모를 때 */
+
+/* ───────── 학교 ─────────
+   ③ 학교 이름은 서명에 들어가지 않는다. 넣는 순간 이미 나간 인증 코드가 전부
+   무효가 되기 때문이다. 오직 증서·안내문에 찍히는 표시용이다.
+   명단은 NEIS 학교기본정보에서 한 번 받아 아래에 심는다. API 키를 앱에 박으면
+   소스 보기 한 번에 새어 나가고, 학교 망이 막힌 교실에서는 아예 못 쓴다.
+   rows 한 줄 = [시도번호, "학교이름", "표준학교코드"] */
+var SIDO=["서울","부산","대구","인천","광주","대전","울산","세종",
+          "경기","강원","충북","충남","전북","전남","경북","경남","제주"];
+window.SCHOOLS = window.SCHOOLS || {v:"", rows:[]};
+function schRows(){ return (window.SCHOOLS&&window.SCHOOLS.rows)||[]; }
+function schHas(){ return schRows().length>0; }
+function schFind(si, q){
+  var rows=schRows(), out=[];
+  q=String(q||"").replace(/\s/g,"");
+  for(var i=0;i<rows.length;i++){
+    var r=rows[i];
+    if(si!=null && r[0]!==si) continue;
+    if(q && String(r[1]).indexOf(q)<0) continue;
+    out.push(r);
+    if(out.length>=40) break;
+  }
+  return out;
+}
+var SCH_SI=null, SCH_Q="", SCH_FREE=false;
+function schPick(name, code){
+  S.me.school=String(name||"").trim().slice(0,40);
+  S.me.schoolCode=code||""; S.me.schoolSkip=false;
+  SSTEP=null; touch(); renderSteps(); chkStart();
+}
+function renderSchool(){
+  var box=$("#schBox"); if(!box) return;
+  /* ④ 선생님이 안내문 주소에 학교를 실어 보냈으면 아이는 고를 일이 없다 */
+  if(S.me.school){
+    box.innerHTML='<div class="sch-ok"><b>'+esc(S.me.school)+'</b>'
+      +(S.schoolBy==="teacher"?'<span>선생님이 보내 주셨어요</span>':'')+'</div>'
+      +'<div class="acts" style="margin-top:11px">'
+      +'<button type="button" class="btn btn-s" data-sc="reset">다른 학교로</button></div>';
+  } else if(!schHas() || SCH_FREE){
+    box.innerHTML='<input type="text" id="schFree" placeholder="예) 운남초등학교" autocomplete="off"'
+      +' enterkeyhint="done">'
+      +'<p class="st-why">학교 이름은 <b>증서와 안내문에만</b> 찍힙니다. 인증에는 쓰이지 않아요.</p>'
+      +'<div class="acts"><button type="button" class="btn btn-s btn-p" data-sc="ok">이 이름으로</button>'
+      +(schHas()?'<button type="button" class="btn btn-s" data-sc="back">목록에서 찾기</button>':'')
+      +'<button type="button" class="t-link" data-sc="skip">나중에 고를게요</button></div>';
+  } else if(SCH_SI===null){
+    box.innerHTML='<p class="st-why">우리 학교가 있는 <b>시·도</b>를 먼저 골라 주세요.</p>'
+      +'<div class="chips sch-si">'+SIDO.map(function(n,i){
+        return '<button type="button" class="fchip" data-si="'+i+'">'+n+'</button>';}).join("")+'</div>'
+      +'<div class="acts"><button type="button" class="t-link" data-sc="free">직접 적을게요</button>'
+      +'<button type="button" class="t-link" data-sc="skip">나중에 고를게요</button></div>';
+  } else {
+    var hits=schFind(SCH_SI, SCH_Q);
+    box.innerHTML='<div class="sch-hd"><b>'+SIDO[SCH_SI]+'</b>'
+      +'<button type="button" class="t-link" data-sc="si">다른 시·도</button></div>'
+      +'<input type="text" id="schQ" value="'+esc(SCH_Q)+'" placeholder="학교 이름 두 글자 — 예) 운남"'
+      +' autocomplete="off" enterkeyhint="search">'
+      +(SCH_Q
+        ? (hits.length
+            ? '<div class="sch-l">'+hits.map(function(r){
+                return '<button type="button" class="sch-it" data-sn="'+esc(r[1])+'" data-cd="'
+                  +esc(r[2]||"")+'">'+esc(r[1])+'</button>';}).join("")
+              +'</div>'+(hits.length>=40?'<p class="st-why">너무 많아요. 한 글자 더 적어 보세요.</p>':'')
+            : '<p class="st-why">찾는 학교가 없어요. <b>직접 적기</b>로 넘어가도 됩니다.</p>')
+        : '')
+      +'<div class="acts"><button type="button" class="t-link" data-sc="free">직접 적을게요</button>'
+      +'<button type="button" class="t-link" data-sc="skip">나중에 고를게요</button></div>';
+  }
+  var q=$("#schQ"); if(q){ q.addEventListener("input",function(){ SCH_Q=this.value; renderSchool();
+    var e=$("#schQ"); if(e){ e.focus(); e.setSelectionRange(e.value.length,e.value.length); } }); }
+  var fr=$("#schFree");
+  if(fr) fr.addEventListener("keydown",function(e){
+    if(e.key==="Enter"){ e.preventDefault(); if(fr.value.trim()) schPick(fr.value,""); }});
+  $$("#schBox [data-si]").forEach(function(b){ b.addEventListener("click",function(){
+    SCH_SI=+b.dataset.si; SCH_Q=""; renderSchool(); var e=$("#schQ"); if(e) e.focus(); }); });
+  $$("#schBox [data-sn]").forEach(function(b){ b.addEventListener("click",function(){
+    schPick(b.dataset.sn, b.dataset.cd); }); });
+  $$("#schBox [data-sc]").forEach(function(b){ b.addEventListener("click",function(){
+    var k=b.dataset.sc;
+    if(k==="free"){ SCH_FREE=true; renderSchool(); var e=$("#schFree"); if(e) e.focus(); }
+    else if(k==="back"){ SCH_FREE=false; renderSchool(); }
+    else if(k==="si"){ SCH_SI=null; SCH_Q=""; renderSchool(); }
+    else if(k==="skip"){ /* ⑩ 학교 없이도 시작할 수 있어야 한다 */
+      S.me.schoolSkip=true; SSTEP=null; touch(); renderSteps(); chkStart(); }
+    else if(k==="reset"){ S.me.school=""; S.me.schoolCode=""; S.schoolBy="";
+      SCH_FREE=false; SCH_SI=null; SCH_Q=""; renderSchool(); }
+    else if(k==="ok"){ var f=$("#schFree");
+      if(f && f.value.trim()) schPick(f.value,""); else if(f) f.focus(); }
+  }); });
+}
+
+/* ⑤ 지금 열어야 할 걸음 */
+var SSTEP=null;
+function stepAuto(){
+  if(!S.me.name) return "n";
+  if(!S.me.grade) return "g";
+  if(!S.me.school && !S.me.schoolSkip) return "s";
+  return "";
+}
+function renderSteps(){
+  if(!$("#stName")) return;
+  var cur = SSTEP || stepAuto();
+  var rows=[["n","stName",!!S.me.name],["g","stGrade",!!S.me.grade],
+            ["s","stSch",!!(S.me.school||S.me.schoolSkip)]];
+  rows.forEach(function(r){
+    var el=$("#"+r[1]); if(!el) return;
+    el.dataset.open=(r[0]===cur)?"1":"0";
+    el.dataset.ok=r[2]?"1":"0";});
+  $("#svName").textContent=S.me.name||"";
+  $("#svGrade").textContent=S.me.grade?(S.me.grade+"학년"):"";
+  $("#svSch").textContent=S.me.school||(S.me.schoolSkip?"나중에 고르기":"");
+  if(cur==="s") renderSchool();
+  renderNoBox();
+}
+/* ⑦ 번호는 필요한 사람만 */
+function renderNoBox(){
+  var w=$("#noWrap"); if(!w) return;
+  var open = !!S.me.no || S.noOpen;
+  if(!open){
+    w.innerHTML='<button type="button" class="st-more" id="sNoOpen">'
+      +'같은 반에 <b>이름이 같은 친구</b>가 있어요</button>';
+    $("#sNoOpen").addEventListener("click",function(){
+      S.noOpen=true; renderNoBox(); var e=$("#sNo"); if(e) e.focus(); });
+    return;
+  }
+  w.innerHTML='<div class="fld"><label for="sNo">번호 <span class="hint">출석번호</span></label>'
+    +'<input type="text" id="sNo" inputmode="numeric" maxlength="2" placeholder="예) 7"'
+    +' autocomplete="off" style="width:110px" value="'+esc(S.me.no||"")+'">'
+    +'<p class="st-why">번호를 적으면 <b>이름이 같아도</b> 기록이 섞이지 않습니다.</p></div>';
+  $("#sNo").addEventListener("input",function(){
+    this.value=this.value.replace(/[^0-9]/g,"");
+    S.me.no=this.value; touch();});
+}
 /* ───────── 학생: 시작 ───────── */
 /* ⑦ 학년마다 자람 단계를 하나씩 — 숫자만 여섯 개 놓이지 않게 */
 var GR_IC=["🌱","🌿","🪴","🌳","🌸","🍎"];
@@ -2730,36 +2925,46 @@ function renderGrades(){
     note.hidden=false;
   } else note.hidden=true;
 }
-/* ④ 이름 치고 Enter — 학년까지 골랐으면 그대로 넘어간다 */
+/* 이름 치고 Enter — 다음 걸음으로 */
 $("#sName").addEventListener("keydown",function(e){
   if(e.key!=="Enter") return;
   e.preventDefault();
-  if(S.me.name && S.me.grade) $("#startGo").click();
-  else { var f=$('.gbtn[data-on="0"]'); if(f) f.focus(); }
+  if(!S.me.name) return;
+  if(S.me.name && S.me.grade && (S.me.school||S.me.schoolSkip)){ $("#startGo").click(); return; }
+  SSTEP=null; renderSteps();
+  var f=$('.gbtn[data-on="0"]'); if(f && !S.me.grade) f.focus();
 });
+/* ⑤ 걸음 머리를 누르면 그 걸음이 열린다 */
+$$("#vStart .stp-h").forEach(function(b){
+  b.addEventListener("click",function(){ SSTEP=b.dataset.go; renderSteps(); 
+    if(b.dataset.go==="n"){ var e=$("#sName"); if(e) e.focus(); } });});
 $("#gradePick").addEventListener("click",function(e){
   var b=e.target.closest("[data-g]");if(!b)return;
   var g=+b.dataset.g;
   if(S.me.grade&&S.me.grade!==g&&S.my.length&&
      !confirm("학년을 바꾸면 담아 둔 목표 "+S.my.length+"개가 사라집니다. 계속할까요?"))return;
   if(S.me.grade!==g){S.my=[];S.filterKeys=[];S.subject="";}
-  S.me.grade=g;renderGrades();chkStart();touch();
+  S.me.grade=g;renderGrades();SSTEP=null;renderSteps();chkStart();touch();
 });
-$("#sName").addEventListener("input",function(){S.me.name=this.value.trim();chkStart();touch();});
-$("#sNo").addEventListener("input",function(){
-  this.value=this.value.replace(/[^0-9]/g,"");
-  S.me.no=this.value; touch();});
+$("#sName").addEventListener("input",function(){
+  S.me.name=this.value.trim();
+  $("#svName").textContent=S.me.name;
+  $("#stName").dataset.ok=S.me.name?"1":"0";
+  chkStart();touch();});
 /* ①② 못 누르는 단추를 두는 대신, 무엇이 남았는지 단추가 말한다 */
 function chkStart(){
   var b=$("#startGo"); if(!b) return;
   var nf=$("#sNo"); if(nf && nf.value!==(S.me.no||"")) nf.value=S.me.no||"";
   var hasN=!!S.me.name, hasG=!!S.me.grade;
+  /* ⑩ 학교는 시작을 막지 않는다 — 망이 막힌 교실에서 아이가 갇히면 안 된다 */
   b.disabled=!(hasN&&hasG);
   b.dataset.wait=b.disabled?"1":"0";
-  b.textContent = hasN&&hasG ? "목표 고르러 가기"
+  /* 학교를 고르는 중에 단추가 「나중에」라고 말하면 건너뛰라는 소리로 읽힌다 */
+  b.textContent = (hasN&&hasG) ? "목표 고르러 가기"
                 : (!hasN ? "이름을 적어 주세요" : "학년을 골라 주세요");
   var on=$("#okName"); if(on) on.hidden=!hasN;
   var og=$("#okGrade"); if(og) og.hidden=!hasG;
+  var os=$("#okSch");  if(os) os.hidden=!S.me.school;
 }
 function flushPending(){
   if(!PENDING_G)return false;
@@ -4761,6 +4966,7 @@ function rushMax(){
 function payload(){
   return {app:"goalboard",v:1,at:new Date().toISOString(),
     name:S.me.name,grade:S.me.grade,no:noOf(S.me),
+    school:S.me.school||"",            /* 표시용 — 서명에는 들어가지 않는다 */
     uid:myUid(),                       /* ① 선생님 기기에서 나를 가리키는 표 */
     pk:S.pkind||"",
     pw:{rst:S.pRst||0, fail:S.pFailN||0, rush:rushMax()},
@@ -4869,7 +5075,8 @@ function openLoad(){
         var d=null;try{d=JSON.parse(e.target.result);}catch(x){}
         if(!d||d.app!=="goalboard"||!d.my){
           $("#ldMsg").innerHTML='<div class="note note-e" style="margin-top:12px">이 앱에서 내보낸 파일이 아니에요.</div>';return;}
-        S.me={name:d.name||"",grade:d.grade||null,no:d.no||""};
+        S.me={name:d.name||"",grade:d.grade||null,no:d.no||"",
+              school:d.school||"",schoolSkip:!!d.school};
         if(d.uid) S.uid=d.uid;         /* ① 같은 학생이 둘로 보이지 않게 표를 이어받는다 */
         S.my=(d.my||[]).map(function(m){return {gid:m.gid,st:m.st||"seed",rung:m.rung||0,
           ev:m.ev||"",at:m.at||today(),pv:m.pv||null,tv:m.tv||null};})
@@ -5617,8 +5824,11 @@ function pnNote(){
 function classNote(){
   var u=location.href.split("#")[0].split("?")[0];
   var ok=/^https?:/i.test(u);
+  /* ④ 주소에 학교를 실어 보내면 아이는 6천여 곳에서 찾을 일이 없다 */
+  var link = ok ? (u + (S.school ? "?s="+encodeURIComponent(S.school) : "")) : "";
   return (S.school?"["+S.school+"] ":"")+"「해냄 보물상자」으로 한 해 목표를 기록합니다.\n"
-    +"1. 아래 주소를 엽니다.\n   "+(ok?u:"(여기에 우리 학교가 쓰는 주소를 적어 주세요)")+"\n"
+    +"1. 아래 주소를 엽니다.\n   "+(ok?link:"(여기에 우리 학교가 쓰는 주소를 적어 주세요)")+"\n"
+    +(S.school&&ok?"   (이 주소로 들어가면 학교가 저절로 채워집니다)\n":"")
     +"2. 첫 화면에서 ‘학생’을 고르고 이름과 학년을 넣습니다.\n"
     +"3. 목표 지도에서 하고 싶은 목표를 담고, 해낸 만큼 +1 +2 +3을 누릅니다.\n"
     +"4. 보호자께 확인을 받고(보호자 확인), 선생님께 받은 코드를 넣습니다(선생님 인증).\n"
@@ -7075,8 +7285,15 @@ window.addEventListener("popstate",function(){
     $("#sName").value=S.me.name||"";renderGrades();chkStart();
   }
   renderHeroCards();
+  renderSteps();
   renderResume(d);          /* 기록이 있으면 첫 화면에서 바로 이어간다 */
   /* 쿠폰 QR로 들어온 경우 — 그 목표를 담고 주소는 깨끗하게 지운다 */
+  /* ④ 선생님 안내문 주소로 들어왔으면 학교를 받아 둔다 — 표시용이라 서명과 무관하다 */
+  var qs=(location.search.match(/[?&]s=([^&]+)/)||[])[1];
+  if(qs){ try{
+    var sv=decodeURIComponent(qs).replace(/[<>]/g,"").trim().slice(0,40);
+    if(sv && !S.me.school){ S.me.school=sv; S.schoolBy="teacher"; S.me.schoolSkip=false; touch(); }
+  }catch(e){} }
   var qg=(location.search.match(/[?&]g=([^&]+)/)||[])[1];
   if(qg){
     qg=decodeURIComponent(qg);
