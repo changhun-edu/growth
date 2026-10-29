@@ -917,6 +917,10 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .rd-sp{stroke:var(--line);stroke-width:1}
 .rd-area{fill:var(--bloom);fill-opacity:.13;stroke:var(--bloom);stroke-width:2;
   stroke-linejoin:round}
+.rd-past{fill:none;stroke:var(--ink-3);stroke-width:1.6;stroke-dasharray:4 3;
+  stroke-linejoin:round;opacity:.55}
+.rd-pk{display:inline-block;width:15px;height:0;vertical-align:middle;
+  border-top:2px dashed var(--ink-3);opacity:.6;margin:0 1px}
 .rd-dot{fill:var(--ec);stroke:var(--card);stroke-width:2}
 .rd-dot.z{fill:var(--line-2);stroke-width:0}
 .rd-l{font-size:12px;font-weight:800;fill:var(--ec);dominant-baseline:middle}
@@ -938,28 +942,33 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .tb-s b{font-size:14px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.1}
 .tb-s em{font-style:normal;font-size:10.5px;font-weight:700;opacity:.8;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-/* ⑤ 작은 지도 */
-.bmap{margin:0;display:flex;flex-direction:column;gap:4px}
-.bm-r{display:grid;grid-template-columns:38px repeat(7,1fr);gap:4px;align-items:center}
-.bm-h{font-size:12px;text-align:center;line-height:1}
-.bm-t{font-size:10.5px;font-weight:800;text-align:right;letter-spacing:-0.03em}
-.bm-c{height:18px;border-radius:5px;background:var(--line);opacity:.45}
-.bm-c[data-l="x"]{background:none;border:1px dashed var(--line);opacity:.5}
-.bm-c[data-l="1"]{background:var(--ec);opacity:.34}
-.bm-c[data-l="2"]{background:var(--ec);opacity:.66}
-.bm-c[data-l="3"]{background:var(--ec);opacity:1}
-/* ⑤ 자세히 보기 */
-.bagmore{margin:18px 0 0;border-top:1px dashed var(--line);padding-top:12px}
-.bagmore>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:7px;
-  font-size:13px;font-weight:800;color:var(--ink-2)}
-.bagmore>summary::-webkit-details-marker{display:none}
-.bagmore>summary::after{content:"▾";margin-left:auto;color:var(--ink-3);font-weight:400}
-.bagmore[open]>summary::after{content:"▴"}
-.bagmore .bag-i{margin:11px 0 12px}
+/* ① 보석 타임라인 */
+.tl{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;
+  padding:9px 2px 0;border-radius:12px;background:var(--card-2);border:1px solid var(--line)}
+.tl-c{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.tl-g{display:flex;flex-direction:column-reverse;align-items:center;gap:2px;
+  min-height:16px;justify-content:flex-start}
+.tl-x{width:var(--z);height:var(--z);background:var(--ec);font-style:normal;
+  clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.tl-x[data-t="3"]{box-shadow:0 0 0 2px #EF9F27}
+.tl-n{font-size:9.5px;font-weight:800;color:var(--ink-3);line-height:1}
+.tl-l{font-size:10.5px;font-weight:700;color:var(--ink-3);line-height:1;
+  padding:4px 0 6px;border-top:1px solid var(--line);width:100%;text-align:center}
+.tl-c[data-now="1"] .tl-l{color:var(--bloom);font-weight:900}
+.tl-c[data-n="0"] .tl-l{opacity:.5}
+/* ③ 교과 × 속성 */
+.sbar{display:flex;flex-direction:column;gap:6px}
+.sb-r{display:grid;grid-template-columns:46px 1fr 26px;gap:8px;align-items:center}
+.sb-n{font-size:12px;font-weight:800;color:var(--ink-2);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.sb-b{display:flex;gap:2px;height:20px}
+.sb-s{background:var(--ec);border-radius:4px;min-width:5px;display:grid;place-items:center;
+  font-size:10.5px;font-weight:800;color:#fff;overflow:hidden}
+.sb-t{font-size:12px;font-weight:800;color:var(--ink-3);text-align:right;
+  font-variant-numeric:tabular-nums}
 @media (max-width:420px){
   .rd-l,.rd-i{font-size:13px} .rd-v{font-size:13.5px}
-  .bm-r{grid-template-columns:32px repeat(7,1fr);gap:3px}
-  .bm-c{height:20px}
+  .tl{gap:2px} .sb-r{grid-template-columns:40px 1fr 24px;gap:6px}
 }
 .baggrid{display:flex;flex-direction:column;gap:6px}
 .bg-r{display:grid;grid-template-columns:92px repeat(4,1fr);gap:6px;align-items:center}
@@ -2009,14 +2018,13 @@ button.ttl-b{cursor:pointer}
       <div id="bagRadar"></div>
       <!-- ③ 등급은 순서가 있는 값이라 축이 아니라 한 줄 띠가 맞다 -->
       <div id="bagTier"></div>
-      <!-- ⑤ 교차표는 없애지 않고, 숫자 없는 작은 지도로 줄인 뒤 접어 둔다 -->
-      <div id="bagMap"></div>
-      <details class="bagmore" id="bagMore">
-        <summary>속성 × 등급 자세히 보기</summary>
-        <p class="bag-i">빈자리는 아직 얻지 못한 <b>속성 × 등급</b>이에요.
-          <b>/ 뒤의 수</b>는 이 학년에 있는 전체 목표 수입니다.</p>
-        <div class="baggrid" id="bagGrid"></div>
-      </details>
+      <!-- ① 시간 × 속성 × 등급 — 기록돼 있으나 어디에도 안 나오던 「언제」 -->
+      <div id="bagTime"></div>
+      <!-- ③ 교과 × 속성 — 교차표가 끝내 못 보여 주는 「어느 과목에서」 -->
+      <div id="bagSub2"></div>
+      <!-- ⓪ 교차표는 접지 않는다. 새 그림은 교차표를 대신하는 게 아니라 곁에 선다. -->
+      <div class="tb-h">속성 × 등급 <span>빈자리는 아직 얻지 못한 짝이에요</span></div>
+      <div class="baggrid" id="bagGrid"></div>
     </div>
     <div class="sec">
       <div class="chips" id="bagBar"></div>
@@ -4187,7 +4195,7 @@ function bagOwned(){
 }
 /* ① 칠각형 — 분모로 그리면 성취기준이 적은 속성이 커 보여 거짓말이 된다.
    그래서 「내가 모은 개수」를 그리고, 바깥 눈금만 내 최고치에 맞춘다. */
-function radarSvg(cnt, mx){
+function radarSvg(cnt, mx, past){
   var E=ELEM, n=E.length, R=72, cx=150, cy=116, LR=94, TAU=Math.PI*2;
   var ang=function(i){ return -Math.PI/2 + TAU*i/n; };
   var pt=function(i,r){ var a=ang(i); return [cx+Math.cos(a)*r, cy+Math.sin(a)*r]; };
@@ -4200,6 +4208,12 @@ function radarSvg(cnt, mx){
   var vs=[], any=false;
   for(var i=0;i<n;i++){ var v=cnt[E[i].id]||0; if(v) any=true;
     vs.push(pt(i, R*Math.min(1, v/mx))); }
+  /* ⑥ 한 달 전을 먼저 깔고, 지금을 그 위에 */
+  if(past){
+    var ps=[]; for(var j=0;j<n;j++) ps.push(pt(j, R*Math.min(1,(past[E[j].id]||0)/mx)));
+    g+='<polygon class="rd-past" points="'
+      +ps.map(function(q){return q[0].toFixed(1)+","+q[1].toFixed(1);}).join(" ")+'"/>';
+  }
   if(any) g+='<polygon class="rd-area" points="'
     +vs.map(function(q){return q[0].toFixed(1)+","+q[1].toFixed(1);}).join(" ")+'"/>';
   for(var i=0;i<n;i++){ var v=cnt[E[i].id]||0, q=vs[i];
@@ -4240,21 +4254,83 @@ function bagTierBar(own){
         +';border-color:'+t.bd+'" title="'+t.name+" "+n+'개"><b>'+n+'</b>'
         +'<em>'+t.name+'</em></span>';}).join("")+'</div>';
 }
-/* ⑤ 28개 숫자쌍을 색만 남긴 작은 지도로 */
-function bagMap(have, tot){
-  var E=ELEM;
-  return '<div class="tb-h">속성 × 등급 <span>색이 진할수록 많이 모았어요</span></div>'
-    +'<div class="bmap"><div class="bm-r bm-hd"><span></span>'
-    +E.map(function(e){ return '<span class="bm-h" style="color:'+e.fg+'" title="'
-      +esc(e.name)+'">'+e.icon+'</span>';}).join("")+'</div>'
-    +TIER.slice().reverse().map(function(t){
-      return '<div class="bm-r"><span class="bm-t" style="color:'+t.fg+'">'+t.name+'</span>'
-        +E.map(function(e){
-          var k=e.id+"|"+t.id, n=have[k]||0, N=tot[k]||0;
-          var lv = !N ? "x" : (!n ? "0" : (n>=N ? "3" : (n>=3 ? "2" : "1")));
-          return '<span class="bm-c" data-l="'+lv+'" style="--ec:'+e.fg+'" title="'
-            +esc(e.name)+" · "+t.name+" "+(N ? (n?n+"개":"아직") : "없음")+'"></span>';}).join("")
-        +'</div>';}).join("")+'</div>';
+/* 보석에 적힌 날짜 — 선생님 인증일이 없으면 보호자 확인일, 그것도 없으면 담은 날 */
+function gemDay(m){
+  return (m.tv&&m.tv.at) || (m.pv&&m.pv.at) || m.at || "";
+}
+/* 3월에 시작해 이듬해 2월에 끝나는 한 해 */
+function yearStart(){
+  var d=new Date(), y=d.getFullYear();
+  if(d.getMonth()+1 < 3) y-=1;
+  return y;
+}
+function monthSlot(day){
+  var p=String(day||"").split("-"); if(p.length<2) return -1;
+  var y=+p[0], mo=+p[1], ys=yearStart();
+  if(y===ys && mo>=3) return mo-3;          /* 3월 → 0 */
+  if(y===ys+1 && mo<=2) return mo+9;        /* 1월 → 10, 2월 → 11 */
+  return -1;                                 /* 지난 해 것 */
+}
+/* ① 시간 × 속성 × 등급 — 한 해가 한 줄로 */
+function bagTimeline(own){
+  if(!own.length) return "";
+  var MO=[3,4,5,6,7,8,9,10,11,12,1,2], bins=[], old=0;
+  for(var i=0;i<12;i++) bins.push([]);
+  own.forEach(function(o){
+    var k=monthSlot(gemDay(o.m));
+    if(k<0){ old++; return; }
+    bins[k].push(o);});
+  var nowSlot=monthSlot(today());
+  var CAP=6, Z=[11,13,15,18];
+  var cols=bins.map(function(b,i){
+    b.sort(function(x,y){return tierOf(y.g).id-tierOf(x.g).id;});
+    var sh=b.slice(0,CAP), more=b.length-sh.length;
+    return '<span class="tl-c" data-n="'+b.length+'" data-now="'+(i===nowSlot?"1":"0")
+      +'" title="'+MO[i]+'월 '+b.length+'개">'
+      +'<span class="tl-g">'
+        +sh.map(function(o){ var e=elemOf(o.g), t=tierOf(o.g);
+          return '<i class="tl-x" data-t="'+t.id+'" style="--ec:'+e.fg+';--z:'+Z[t.id]+'px"></i>';}).join("")
+        +(more?'<span class="tl-n">+'+more+'</span>':'')
+      +'</span>'
+      +'<span class="tl-l">'+MO[i]+'</span></span>';});
+  return '<div class="tb-h">언제 모았나 <span>색은 속성 · 클수록 높은 등급'
+    +(old?' · 지난 해 '+old+'개는 빼고':'')+'</span></div>'
+    +'<div class="tl">'+cols.join("")+'</div>';
+}
+/* ③ 교과 × 속성 — 교차표에 없는 축 */
+function bagSubjBar(own){
+  if(!own.length) return "";
+  var by={};
+  own.forEach(function(o){
+    var sj=o.g.subject||"그 밖에", e=elemOf(o.g);
+    var r=by[sj]||(by[sj]={n:0,e:{}});
+    r.n++; r.e[e.id]=(r.e[e.id]||0)+1;});
+  var rows=Object.keys(by).map(function(k){return {name:k, r:by[k]};});
+  rows.sort(function(a,b){return b.r.n-a.r.n || a.name.localeCompare(b.name);});
+  var mx=rows[0].r.n;
+  var EA=ELEM.concat([ELEM_ETC]);
+  return '<div class="tb-h">어느 과목에서 <span>칸 색은 속성</span></div>'
+    +'<div class="sbar">'+rows.map(function(x){
+      return '<span class="sb-r"><span class="sb-n">'+esc(x.name)+'</span>'
+        +'<span class="sb-b" style="width:'+(x.r.n/mx*100).toFixed(1)+'%">'
+        +EA.filter(function(e){return x.r.e[e.id];}).map(function(e){
+          var n=x.r.e[e.id];
+          return '<span class="sb-s" style="--ec:'+e.fg+';flex:'+n+'" title="'
+            +esc(x.name)+" · "+esc(e.name)+" "+n+'개">'+(n>1?n:"")+'</span>';}).join("")
+        +'</span><span class="sb-t">'+x.r.n+'</span></span>';}).join("")+'</div>';
+}
+/* ⑥ 한 달 전의 나 — 남이 아니라 과거의 나와만 겹친다 */
+function monthAgo(){
+  var d=new Date(); d.setMonth(d.getMonth()-1);
+  var p=function(x){return String(x).padStart(2,"0");};
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
+}
+function bagPast(own){
+  var cut=monthAgo(), c={}, n=0;
+  own.forEach(function(o){
+    var d=gemDay(o.m); if(!d || d>cut) return;
+    c[elemOf(o.g).id]=(c[elemOf(o.g).id]||0)+1; n++;});
+  return n ? c : null;
 }
 function renderBag(){
   var own=bagOwned(), p=pool();
@@ -4271,13 +4347,15 @@ function renderBag(){
   var ec={}; own.forEach(function(o){ var i=elemOf(o.g).id; ec[i]=(ec[i]||0)+1; });
   var mx=0; ELEM.forEach(function(e){ if((ec[e.id]||0)>mx) mx=ec[e.id]; });
   mx=Math.max(mx,3);                      /* 14개만 모아도 모양이 생기게 */
-  $("#bagRadar").innerHTML = radarSvg(ec, mx)
+  var past=bagPast(own);
+  $("#bagRadar").innerHTML = radarSvg(ec, mx, past)
     +'<p class="rd-cap">바깥 칸 = <b>'+mx+'개</b>'
+    +(past?' · <i class="rd-pk"></i> 점선은 <b>한 달 전</b>':'')
     +(ec.etc?' · ✨ 그 밖에 <b>'+ec.etc+'개</b>':'')+'</p>'
     +'<p class="rd-sum">'+bagLine(ec)+'</p>';
   $("#bagTier").innerHTML = bagTierBar(own);
-  /* 아무것도 없을 때 28칸 회색 격자는 아무 말도 하지 않는다 */
-  $("#bagMap").innerHTML = own.length ? bagMap(have,tot) : "";
+  $("#bagTime").innerHTML = bagTimeline(own);
+  $("#bagSub2").innerHTML = bagSubjBar(own);
   var rows=ELEM.concat([ELEM_ETC]).filter(function(e){
     return TIER.some(function(t){return tot[e.id+"|"+t.id];});});
   $("#bagGrid").innerHTML=
