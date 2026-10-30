@@ -1044,6 +1044,37 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .bulk-en{color:#A08A5A;border-left-color:#E0C98A;font-style:italic}
 .bulk.bulk-no{background:#FFFCF4;border-radius:9px}
 /* ② 우리 반 인증 파일 안내 */
+/* 목표판에서 바로 담기 */
+.b-add{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:15px 16px;
+  border:1.5px dashed var(--line-2);border-radius:14px;background:none;font:inherit;
+  cursor:pointer;text-align:left;color:var(--ink-2)}
+.b-add:hover{border-color:var(--bloom);background:var(--bloom-bg);color:var(--ink)}
+.b-add-p{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--bloom);
+  color:#fff;font-size:19px;font-weight:800;line-height:1;display:grid;place-items:center}
+.b-add-t b{display:block;font-size:14.5px;font-weight:800;color:var(--ink)}
+.b-add-t span{font-size:12px;color:var(--ink-3)}
+.ad-n{margin:10px 0 0;font-size:12px;color:var(--ink-3)}
+.ad-l{margin:8px 0 0;display:flex;flex-direction:column;gap:4px;
+  max-height:40vh;overflow-y:auto;border:1px solid var(--line);border-radius:11px;padding:5px}
+.ad-it{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:0;
+  border-radius:9px;background:none;font:inherit;cursor:pointer;text-align:left}
+.ad-it:hover{background:var(--card-2)}
+.ad-it:disabled{cursor:default}
+.ad-ic{flex:0 0 auto;width:28px;height:28px;position:relative;display:grid;place-items:center}
+.ad-ic::before{content:"";position:absolute;inset:0;background:var(--ec);
+  clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.ad-ic::after{content:"";position:absolute;inset:2.5px;background:var(--eb);
+  clip-path:polygon(50% 0%,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)}
+.ad-ic i{position:relative;z-index:1;font-style:normal;font-size:12px;line-height:1}
+.ad-tx{flex:1 1 auto;min-width:0}
+.ad-tx b{display:block;font-size:13.5px;font-weight:700;line-height:1.45}
+.ad-tx span{font-size:11.5px;color:var(--ink-3)}
+.ad-tx i{font-style:normal;font-weight:700}
+.ad-go{flex:0 0 auto;font-size:12px;font-weight:800;color:var(--bloom);
+  border:1px solid var(--bloom);border-radius:999px;padding:4px 10px}
+.ad-it.got{background:var(--bloom-bg)}
+.ad-it.got .ad-go{background:var(--bloom);color:#fff}
+.ad-c{margin:9px 0 0;font-size:12.5px;font-weight:700;color:var(--bloom);text-align:center}
 .newread{margin:0 0 14px;line-height:1.75}
 .clog-n{margin:10px 0 0;font-size:12px;line-height:1.7;color:var(--ink-3)}
 .clog-n b{color:var(--ink-2);font-weight:700}
@@ -2145,6 +2176,8 @@ button.ttl-b{cursor:pointer}
       <div id="bHint"></div>
       <div class="bbar" id="bBar"></div>
       <div class="my" id="myList"></div>
+      <!-- 목표판 안에 목표를 담는 길이 하나도 없어, 지도 탭으로 나갔다 와야 했다 -->
+      <div id="bAddBox"></div>
     </div>
   </section>
 
@@ -4148,6 +4181,95 @@ function actsHtml(m,i){
 
 var ST={seed:["담은 목표","st"],grow:["도전 중","st st-grow"],
         wait:["확인 기다리는 중","st st-wait"],bloom:["인증 완료","st st-bloom"]};
+/* ── 목표판에서 바로 담기 ──
+   지도로 넘어가면 방금 보던 목표판을 잃는다. 창으로 가져온다. */
+var ADD_Q="", ADD_IME=false, ADD_N=0;
+function addPool(){
+  return pool().filter(function(x){ return !myOf(x.id); });
+}
+function renderAddBox(){
+  var box=$("#bAddBox"); if(!box) return;
+  if(!S.my.length){ box.innerHTML=""; return; }     /* 빈 목표판에는 다른 안내가 있다 */
+  var left=addPool().length;
+  box.innerHTML='<button type="button" class="b-add" id="bAdd">'
+    +'<span class="b-add-p">+</span>'
+    +'<span class="b-add-t"><b>목표 더 담기</b>'
+    +'<span>아직 담지 않은 '+left+'개에서 고를 수 있어요</span></span></button>';
+  $("#bAdd").addEventListener("click",openAdd);
+}
+function addRank(g,q){
+  var t=String(g.alt||g.title||"");
+  if(t.indexOf(q)===0) return 0;
+  if(t.indexOf(q)>=0) return 1;
+  return 2;
+}
+function addFind(q){
+  q=String(q||"").replace(/\s/g,"");
+  var list=addPool();
+  if(!q) return list;
+  var kc=codeKey(q), out=[];
+  list.forEach(function(x){
+    var hay=((x.alt||"")+x.title+x.subject+(x.keys||[]).join("")+(x.unit||"")).replace(/\s/g,"");
+    if(hay.indexOf(q)>=0 || (kc && codeKey(x.code||"").indexOf(kc)>=0)) out.push(x);});
+  out.sort(function(a,b){
+    var ra=addRank(a,q), rb=addRank(b,q);
+    return (ra-rb) || (subRank(a.subject)-subRank(b.subject));});
+  return out;
+}
+function renderAddRes(){
+  var r=$("#adRes"); if(!r) return;
+  var hits=addFind(ADD_Q), show=hits.slice(0,40);
+  if(!hits.length){
+    r.innerHTML='<p class="ad-n">찾는 목표가 없어요. 글자를 줄여 보세요.</p>'; return; }
+  r.innerHTML='<p class="ad-n">'+(ADD_Q?hits.length+"개":"아직 담지 않은 "+hits.length+"개")
+      +(hits.length>40?' · 먼저 40개만 — 낱말을 적어 좁혀 보세요':'')+'</p>'
+    +'<div class="ad-l">'+show.map(function(g){
+      var e=elemOf(g), t=tierOf(g);
+      return '<button type="button" class="ad-it" data-ag="'+esc(g.id)+'">'
+        +'<span class="ad-ic" style="--ec:'+e.fg+';--eb:'+e.bg+'"><i>'+e.icon+'</i></span>'
+        +'<span class="ad-tx"><b>'+esc(g.alt||g.title)+'</b>'
+        +'<span>'+esc(g.subject||"")+(g.code?' · '+esc(g.code):'')
+          +' · <i style="color:'+t.fg+'">'+t.name+'</i></span></span>'
+        +'<span class="ad-go">담기</span></button>';}).join("")+'</div>';
+  $$("#adRes [data-ag]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var gid=btn.dataset.ag;
+      if(myOf(gid)) return;
+      S.my.push({gid:gid,st:"seed",rung:0,ev:"",at:today(),pv:null,tv:null});
+      ADD_N++; touch();
+      /* 창을 닫지 않는다 — 여러 개를 이어서 담는 일이 잦다 */
+      btn.classList.add("got"); btn.disabled=true;
+      btn.querySelector(".ad-go").textContent="담았어요";
+      var c=$("#adCnt"); if(c){ c.textContent=ADD_N?"이번에 "+ADD_N+"개 담았어요":""; }
+      renderBoard();});});
+}
+function openAdd(){
+  ADD_Q=""; ADD_N=0;
+  modal('<h3>목표 더 담기</h3>'
+    +'<div class="muted">하고 싶은 목표를 골라 담으세요. '
+      +'<b>'+(S.me.grade?bandOf(S.me.grade)-1:"")+'~'+(S.me.grade?bandOf(S.me.grade):"")+'학년</b> '
+      +'목표에서 고릅니다.</div>'
+    +'<input type="text" id="adQ" placeholder="낱말이나 성취기준 코드 — 예) 읽기, 발표, 6국01-01"'
+      +' autocomplete="off" enterkeyhint="search">'
+    +'<div id="adRes"></div>'
+    +'<p class="ad-c" id="adCnt"></p>'
+    +'<div class="acts" style="margin-top:12px">'
+      +'<button class="btn btn-w btn-s" id="adMine">✎ 나만의 목표 만들기</button>'
+      +'<button class="btn btn-s" id="adMap">목표 지도에서 보기</button></div>'
+    +'<div class="acts" style="margin-top:9px">'
+      +'<button class="btn btn-q btn-full" onclick="closeModal()">닫기</button></div>',
+  function(){
+    var q=$("#adQ");
+    /* 한글 한 글자는 여러 번의 input 을 거쳐 완성된다 — 조합 중에는 손대지 않는다 */
+    q.addEventListener("compositionstart",function(){ ADD_IME=true; });
+    q.addEventListener("compositionend",function(){ ADD_IME=false; ADD_Q=q.value; renderAddRes(); });
+    q.addEventListener("input",function(){ ADD_Q=q.value; if(!ADD_IME) renderAddRes(); });
+    $("#adMine").addEventListener("click",function(){ closeModal(); openMine(); });
+    $("#adMap").addEventListener("click",function(){ closeModal(); show("map"); });
+    renderAddRes();
+    try{ q.focus(); }catch(e){}
+  });
+}
 function renderBoard(){
   renderShelf();
   todayStep();
@@ -4158,6 +4280,7 @@ function renderBoard(){
   renderBHint();
   renderJoinHint();
   renderSaveHint();
+  renderAddBox();
   if(!S.my.length){ $("#bBar").innerHTML=""; $("#myList").innerHTML=""; renderFoot(); return; }
   renderBBar();
   var rows=S.my.map(function(m,i){return {m:m,i:i,g:goalById(m.gid)};})
