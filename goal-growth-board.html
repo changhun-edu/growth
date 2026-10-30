@@ -1075,6 +1075,24 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .ad-it.got{background:var(--bloom-bg)}
 .ad-it.got .ad-go{background:var(--bloom);color:#fff}
 .ad-c{margin:9px 0 0;font-size:12.5px;font-weight:700;color:var(--bloom);text-align:center}
+/* ①③⑥ 고른 학생이 담은 목표 — 이름을 cmi- 로 둔다. cm- 는 이미 「만들기」 줄이 쓴다. */
+.cmi-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px;
+  font-size:12.5px;color:var(--ink-3)}
+.cmi-h b{color:var(--ink-2);font-weight:800}
+.cmi-h .btn{margin-left:auto}
+.cmi-l{display:flex;flex-direction:column;gap:5px;margin-bottom:9px}
+.cmi-it{display:block;width:100%;text-align:left;padding:10px 12px;border:1.5px solid var(--line);
+  border-radius:11px;background:var(--card);font:inherit;cursor:pointer}
+.cmi-it:hover{border-color:var(--line-2);background:var(--card-2)}
+.cmi-it.on{border-color:var(--bloom);background:var(--bloom-bg)}
+.cmi-it b{display:block;font-size:13.5px;font-weight:700;line-height:1.45;color:var(--ink)}
+.cmi-it span{font-size:11.5px;color:var(--ink-3)}
+.cmi-n{margin:0 0 9px;font-size:11.5px;color:var(--ink-3)}
+.cmi-x{margin:0 0 9px;padding:10px 12px;border-radius:11px;background:#FDF6E6;
+  border:1px solid #EBD9AE;font-size:12.5px;line-height:1.7;color:#8A5A1E}
+.cmi-x b{color:#6E4A12;font-weight:800}
+.srch-i.si-own{background:var(--bloom-bg)}
+.si-m{font-style:normal;font-weight:800;color:var(--bloom)}
 .newread{margin:0 0 14px;line-height:1.75}
 .clog-n{margin:10px 0 0;font-size:12px;line-height:1.7;color:var(--ink-3)}
 .clog-n b{color:var(--ink-2);font-weight:700}
@@ -5536,6 +5554,43 @@ function printOpen(html, fname){
   }catch(e){ viaTab(); }
 }
 /* ⑤ 보석 하나 — 등급 색으로 칠한 팔각형. SVG라서 인쇄에도 그대로 나온다. */
+/* 증서에 박는 보석.
+   흑백으로 뽑혀도 읽히도록 바탕색에 기대지 않고 겹테두리와 속 선으로 모양을 잡는다.
+   glow=true면 둘레에 광채 열두 가닥 — 전설 보석만 받는 대접(⑥). */
+function gemCert(t, el, size, glow){
+  var r=size/2, pts=[], i, a, ray="";
+  for(i=0;i<8;i++){ a=Math.PI/4*i - Math.PI/8;
+    pts.push((r+r*0.76*Math.cos(a)).toFixed(1)+","+(r+r*0.76*Math.sin(a)).toFixed(1)); }
+  if(glow){ for(i=0;i<8;i++){ a=Math.PI/4*i;
+    ray+='<line x1="'+(r+r*0.88*Math.cos(a)).toFixed(1)+'" y1="'+(r+r*0.88*Math.sin(a)).toFixed(1)
+      +'" x2="'+(r+r*0.99*Math.cos(a)).toFixed(1)+'" y2="'+(r+r*0.99*Math.sin(a)).toFixed(1)
+      +'" stroke="'+t.bd+'" stroke-width="'+(size*0.03).toFixed(2)+'" stroke-linecap="round"/>'; } }
+  return '<svg class="cg" viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'">'+ray
+    +'<polygon points="'+pts.join(" ")+'" fill="'+t.bg+'" stroke="'+t.bd
+      +'" stroke-width="'+(size*0.07).toFixed(2)+'"/>'
+    +'<polygon points="'+pts.join(" ")+'" fill="none" stroke="'+t.fg
+      +'" stroke-width="'+(size*0.025).toFixed(2)+'"'
+      +' transform="translate('+(r*0.1).toFixed(1)+','+(r*0.1).toFixed(1)+') scale(0.9)"/>'
+    +((el&&el.icon)?'<text x="'+r+'" y="'+(r+size*0.155).toFixed(1)+'" text-anchor="middle"'
+      +' font-size="'+(size*0.42).toFixed(1)+'">'+el.icon+'</text>':"")
+    +'</svg>';
+}
+/* 오른쪽 아래 금빛 봉인(⑤) — 톱니 둘레 + 보물상자 + '인증' */
+function certSeal(px){
+  var teeth="", i, a;
+  for(i=0;i<40;i++){ a=Math.PI/20*i;
+    teeth+='<line x1="'+(50+43*Math.cos(a)).toFixed(1)+'" y1="'+(50+43*Math.sin(a)).toFixed(1)
+      +'" x2="'+(50+49*Math.cos(a)).toFixed(1)+'" y2="'+(50+49*Math.sin(a)).toFixed(1)
+      +'" stroke="#C9A227" stroke-width="2.2"/>'; }
+  return '<svg class="sealsvg" viewBox="0 0 100 100" width="'+px+'" height="'+px+'">'+teeth
+    +'<circle cx="50" cy="50" r="43" fill="none" stroke="#C9A227" stroke-width="2.6"/>'
+    +'<circle cx="50" cy="50" r="36.5" fill="none" stroke="#DCC478" stroke-width="1"/>'
+    +'<path d="M30 46 q20 -18 40 0" fill="none" stroke="#9A8431" stroke-width="2.6" stroke-linecap="round"/>'
+    +'<rect x="30" y="46" width="40" height="19" rx="2" fill="none" stroke="#9A8431" stroke-width="2.6"/>'
+    +'<rect x="46" y="51.5" width="8" height="10" rx="1" fill="#C9A227"/>'
+    +'<text x="50" y="81" text-anchor="middle" font-size="14" font-weight="800"'
+      +' fill="#9A8431" letter-spacing="2">인증</text></svg>';
+}
 function gemSvgP(t, el, size){
   var r=size/2;
   var pts=[];
@@ -5584,21 +5639,43 @@ function reportHtml(o){
     /* ④ 증서 — 일반 상장의 차례를 따른다.
        제목 → 받는 사람 → 본문 → 날짜 → 수여자(학교 이름이 가장 크게) */
     /* A4 269mm(여백 뺀 높이)을 꽉 채운다 — 상장이 반쪽만 차면 허전하다 */
-    +'.cert{border:3px double #9A8431;border-radius:4mm;padding:24mm 14mm 18mm;text-align:center;'
+    +'.cert{position:relative;border:3px double #9A8431;border-radius:4mm;'
+      +'padding:17mm 16mm 13mm;text-align:center;'
       +'min-height:263mm;display:flex;flex-direction:column}'
-    +'.c-k{font-size:11.5px;letter-spacing:.3em;color:#9A8431;margin-bottom:8mm}'
-    +'.c-t{font-size:38px;font-weight:800;letter-spacing:.2em;margin:0 0 12mm}'
+    /* ③ 상장다운 액자 — 안쪽 가는 선 한 겹에 모서리 네 곳 금빛 꺾쇠.
+       바탕색이 아니라 선으로만 꾸며 흑백 인쇄에서도 그대로 나온다 */
+    +'.c-in{position:absolute;top:4mm;right:4mm;bottom:4mm;left:4mm;'
+      +'border:1px solid #E0CE94;border-radius:2mm;pointer-events:none}'
+    +'.c-cn{position:absolute;width:15mm;height:15mm;border:2.2px solid #C9A227;pointer-events:none}'
+    +'.c-cn.a{top:4mm;left:4mm;border-right:0;border-bottom:0;border-top-left-radius:2mm}'
+    +'.c-cn.b{top:4mm;right:4mm;border-left:0;border-bottom:0;border-top-right-radius:2mm}'
+    +'.c-cn.c{bottom:4mm;left:4mm;border-right:0;border-top:0;border-bottom-left-radius:2mm}'
+    +'.c-cn.d{bottom:4mm;right:4mm;border-left:0;border-top:0;border-bottom-right-radius:2mm}'
+    +'.c-k{font-size:11.5px;letter-spacing:.3em;color:#9A8431;margin-bottom:6mm}'
+    +'.c-t{font-size:38px;font-weight:800;letter-spacing:.2em;margin:0 0 9mm}'
     +'.c-w{font-size:14px;color:#5E6670;margin-bottom:2.5mm;letter-spacing:.06em}'
-    +'.c-n{font-size:32px;font-weight:800;letter-spacing:.18em;margin-bottom:11mm}'
-    +'.c-big{font-size:15px;color:#3A4047;line-height:2.1}'
+    +'.c-n{font-size:32px;font-weight:800;letter-spacing:.18em;margin-bottom:8mm}'
+    +'.c-big{font-size:15px;color:#3A4047;line-height:1.95}'
     +'.c-big b{font-size:44px;font-weight:800;color:#2F7D5B;vertical-align:-5px;margin:0 3px}'
-    +'.c-tier{display:flex;justify-content:center;gap:5mm;margin:10mm 0 0;flex-wrap:wrap}'
-    +'.c-tier span{border:1.6px solid;border-radius:999px;padding:2mm 5mm;font-size:13px;font-weight:700}'
-    +'.c-el{margin-top:6mm;font-size:12.5px;color:#5E6670}'
-    +'.c-span{margin-top:5mm;font-size:11.5px;color:#8D97A1}'
+    /* ① 아이가 모은 보석을 그대로 박는 자리 — 비어 있던 한가운데를 채운다 */
+    +'.c-gems{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;'
+      +'gap:2.6mm 2.6mm;margin:7mm auto 0;max-width:126mm}'
+    +'.c-gems .cg{display:block}'
+    +'.c-more{font-size:12px;font-weight:700;color:#8D97A1;align-self:center;margin-left:1mm}'
+    /* ④ 등급을 글자 칩이 아니라 보석으로 보여 준다 */
+    +'.c-leg{display:flex;justify-content:center;align-items:flex-end;gap:7mm;'
+      +'margin:6mm 0 0;flex-wrap:wrap}'
+    +'.c-leg span{display:flex;align-items:center;gap:1.6mm}'
+    +'.c-leg i{font-style:normal;font-size:12.5px;font-weight:700}'
+    /* ⑨ 한 줄 개인화 */
+    +'.c-top{margin-top:5mm;font-size:14px;color:#3A4047;letter-spacing:.02em}'
+    +'.c-top b{font-weight:800;color:#2F7D5B}'
+    +'.c-el{margin-top:3mm;font-size:11.5px;color:#8D97A1}'
+    +'.c-span{margin-top:3mm;font-size:11.5px;color:#8D97A1}'
     /* 수여자 — 상장에서 가장 큰 글씨가 오는 자리 */
-    +'.c-f{margin-top:auto;padding-top:10mm}'
-    +'.c-date{font-size:15px;color:#3A4047;letter-spacing:.1em;margin-bottom:9mm}'
+    +'.c-f{position:relative;margin-top:auto;padding-top:7mm}'
+    +'.c-seal{position:absolute;right:0;bottom:0;line-height:0}'
+    +'.c-date{font-size:15px;color:#3A4047;letter-spacing:.1em;margin-bottom:7mm}'
     +'.c-org{font-size:30px;font-weight:800;letter-spacing:.16em;color:#1E2328;line-height:1.35}'
     +'.c-by{margin-top:3.5mm;font-size:11px;letter-spacing:.24em;color:#9A8431}'
     /* ⑤ 보석 모음 */
@@ -5626,24 +5703,53 @@ function reportHtml(o){
     var whoLine = (S.me.grade?S.me.grade+"학년":"")
       + (S.me.room?" "+S.me.room+"반":"")
       + (noOf(S.me)?" "+noOf(S.me)+"번":"");
+    /* ① 모은 보석을 등급 높은 것부터 늘어놓는다.
+       개수가 늘면 크기를 줄여 A4 한 장 안에서 버틴다 */
+    var gl = bl.map(function(m){ var g=goalById(m.gid); return g?{t:tierOf(g),e:elemOf(g)}:null; })
+               .filter(Boolean);
+    gl.sort(function(a,b){ return b.t.id-a.t.id; });
+    var GCAP = 84, gmore = gl.length>GCAP ? gl.length-GCAP : 0;
+    var gshow = gmore ? gl.slice(0,GCAP) : gl;
+    var gn = gshow.length;
+    /* 보석이 많아질수록 작게 — 그래도 등급 차이는 크기로 남긴다 */
+    var gsz = gn<=2 ? 76 : gn<=4 ? 60 : gn<=6 ? 50 : gn<=12 ? 38
+            : gn<=20 ? 33 : gn<=30 ? 28 : gn<=45 ? 23 : gn<=64 ? 19 : 16;
+    var GMUL = [0.84, 1.0, 1.12, 1.3];   /* 기본·희귀·영웅·전설 */
+
+    /* ⑨ 가장 많이 모은 속성 한 줄 */
+    var eIcon={}, topEl="", topN=0;
+    bl.forEach(function(m){ var g=goalById(m.gid); if(!g) return;
+      var e=elemOf(g); eIcon[e.name]=e.icon; });
+    Object.keys(ec).forEach(function(k){ if(ec[k]>topN){ topN=ec[k]; topEl=k; } });
+
     out+='<section class="pg"><div class="cert">'
+    +'<div class="c-in"></div><div class="c-cn a"></div><div class="c-cn b"></div>'
+    +'<div class="c-cn c"></div><div class="c-cn d"></div>'
     +'<div class="c-k">해냄 보물상자</div>'
     +'<h1 class="c-t">해 냄 증 서</h1>'
     +(whoLine?'<div class="c-w">'+esc(whoLine)+'</div>':"")
     +'<div class="c-n">'+esc(S.me.name||"")+'</div>'
     +'<div class="c-big">위 학생은 한 해 동안 스스로 목표를 세우고<br>'
-      +'<b>'+bl.length+'</b> 개를 해내어 인증받았으므로<br>'
+      +'아래 <b>'+bl.length+'</b> 개를 해내어 인증받았으므로<br>'
       +'이를 칭찬하여 이 증서를 드립니다.</div>'
-    +'<div class="c-tier">'+TIER.map(function(t){
-        return tc[t.id] ? '<span style="color:'+t.fg+';border-color:'+t.bd+'">'
-          +t.name+' '+tc[t.id]+'</span>' : "";}).join("")+'</div>'
-    +(Object.keys(ec).length?'<div class="c-el">'
+    +(gn?'<div class="c-gems">'
+      +gshow.map(function(x){
+          return gemCert(x.t, x.e, Math.round(gsz*GMUL[x.t.id]), x.t.id===3); }).join("")
+      +(gmore?'<span class="c-more">+'+gmore+'</span>':"")
+      +'</div>':"")
+    +'<div class="c-leg">'+TIER.slice().reverse().map(function(t){
+        return tc[t.id] ? '<span>'+gemCert(t, null, 16+t.id*3, t.id===3)
+          +'<i style="color:'+t.fg+'">'+t.name+' '+tc[t.id]+'</i></span>' : "";}).join("")+'</div>'
+    +(topEl?'<div class="c-top">가장 많이 모은 것은 '
+      +(eIcon[topEl]||"")+' <b>'+esc(topEl)+' '+topN+'개</b>입니다</div>':"")
+    +(Object.keys(ec).length>1?'<div class="c-el">'
       +Object.keys(ec).map(function(k){return k+" "+ec[k];}).join(" · ")+'</div>':"")
     +(span?'<div class="c-span">'+esc(span)+'</div>':"")
     +'<div class="c-f">'
       +'<div class="c-date">'+dkor(today())+'</div>'
       +'<div class="c-org">'+esc(org||"해냄 보물상자")+'</div>'
       +(org?'<div class="c-by">해냄 보물상자</div>':"")
+      +'<div class="c-seal">'+certSeal(86)+'</div>'
     +'</div>'
     +'</div></section>';
   }
@@ -7158,6 +7264,28 @@ function cHelpOpen(){
   if(S.cHelp===true||S.cHelp===false) return S.cHelp;  /* 선생님이 직접 정했으면 그대로 */
   return !(S.codes||[]).length;                         /* 아직 한 번도 안 만들었으면 펼침 */
 }
+/* 코드 발급 탭에서 고른 이름에 해당하는 학생 기록 — 없으면 null */
+function cStu(gr){
+  var nm=String(CNAME||"").trim(), no=String(CNO||"").trim();
+  if(!nm) return null;
+  var hit=null;
+  rosterList().forEach(function(d){
+    if(hit) return;
+    if(String(d.name||"").trim()!==nm) return;
+    if(gr && +d.grade!==+gr) return;
+    if(no && noOf(d)!==no) return;
+    hit=d;});
+  return hit;
+}
+/* 그 학생이 담은 목표 — 확인 대기가 먼저 */
+function cStuGoals(d){
+  if(!d) return [];
+  var ORD={wait:0,grow:1,seed:2,bloom:3};
+  return (d.my||[]).map(function(m){
+      return {m:m, g:goalById(m.gid)||{id:m.gid,title:m.title||"",subject:m.subject||"",code:m.code||""}};})
+    .filter(function(r){ return r.g && r.g.id; })
+    .sort(function(a,b){ return (ORD[a.m.st]-ORD[b.m.st]); });
+}
 function cN(n){ return '<i class="c-num">'+n+'</i>'; }
 function cOk(on){ return '<i class="c-ok"'+(on?'':' hidden')+'>✓</i>'; }
 function renderCode(){
@@ -7221,6 +7349,8 @@ function renderCode(){
     })()
     /* ⑨ 가운데 정렬 안내가 라벨인지 모호하던 자리 — 칸 안으로 내린다 */
     +'<div class="fld srch cstep" data-k="s"><label for="cGoal">'+cN(3)+'목표 고르기'+cOk(false)+'</label>'
+      /* ① 그 학생이 무엇을 기다리는지 이미 알면서 빈 검색창을 내주던 자리 */
+      +'<div id="cMine"></div>'
       +'<input type="text" id="cGoal" placeholder="낱말이나 성취기준 코드 — 예) 읽기, 발표, 6국01-01" autocomplete="off">'
       +'<div class="srch-l hidden" id="cList"></div></div>'
     +'<div id="cSel"></div>'
@@ -7323,12 +7453,65 @@ function renderCode(){
         : "";
     }
   }
+  /* ①③⑥ 고른 학생이 담은 목표를 그 자리에 내놓는다 */
+  function renderMine(){
+    var box=$("#cMine"); if(!box) return;
+    var nm=String(CNAME||"").trim();
+    if(!nm){ box.innerHTML=""; return; }
+    var d=cStu(gr);
+    if(!d){
+      /* ⑥ 명단에만 있는 학생 — 담은 목표를 알 길이 없다. 그렇게 말한다.
+         이름을 치는 중에는 글자마다 경고가 뜨지 않게, 명단에 있는 이름일 때만. */
+      box.innerHTML = nameKnown(nm, gr)
+        ? '<p class="cmi-x">'+esc(nm)+' 학생은 <b>아직 기록을 내지 않아</b> '
+          +'담은 목표를 알 수 없습니다. 아래에서 찾아 주세요.</p>'
+        : "";
+      return;
+    }
+    var rows=cStuGoals(d);
+    var wait=rows.filter(function(r){return r.m.st==="wait";});
+    var grow=rows.filter(function(r){return r.m.st==="grow"||r.m.st==="seed";});
+    var done=rows.filter(function(r){return r.m.st==="bloom";});
+    if(!rows.length){
+      box.innerHTML='<p class="cmi-x">'+esc(nm)+' 학생이 <b>담은 목표가 없습니다.</b></p>';
+      return;}
+    var pick = wait.length ? wait : grow;
+    var head = wait.length
+      ? '이 학생이 <b>확인을 기다리는 목표</b> '+wait.length+'개'
+      : '확인을 기다리는 목표는 없습니다 · <b>도전 중</b> '+grow.length+'개';
+    box.innerHTML='<div class="cmi-h"><span>'+head+'</span>'
+      +(wait.length>1?'<button type="button" class="btn btn-g btn-s" id="cmAll">'
+        +wait.length+'개 모두 만들기</button>':'')+'</div>'
+      +(pick.length?'<div class="cmi-l">'+pick.map(function(r){
+        return '<button type="button" class="cmi-it'+(sel.gid===r.g.id?" on":"")
+          +'" data-cmg="'+esc(r.g.id)+'">'
+          +'<b>'+esc(r.g.alt||r.g.title)+'</b>'
+          +'<span>'+esc(r.g.subject||"")+(r.g.code?' · '+esc(r.g.code):'')
+            +' · '+stName(r.m.st)+'</span></button>';}).join("")+'</div>':"")
+      +'<p class="cmi-n">'
+        +(done.length?'인증 완료 '+done.length+'개 · ':'')
+        +'다른 목표는 아래에서 찾아 주세요.</p>';
+    $$("#cMine [data-cmg]").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        var g=goalById(btn.dataset.cmg);
+        if($("#cGoal")) $("#cGoal").value = g ? (g.alt||g.title) : "";
+        setSel(g); hideList();});});
+    var all=$("#cmAll");
+    if(all) all.addEventListener("click",function(){
+      var made=0;
+      wait.forEach(function(r){
+        addCode(d.name, d.grade, r.g.id, r.g.title, r.g.subject, noOf(d)); made++;});
+      CNAME=""; CNO=""; setSel(null); renderCode();
+      toast(d.name+" 학생의 인증 코드 "+made+"개를 만들었습니다");});
+  }
   function setSel(g){
     sel={gid:g?g.id:null,title:g?g.title:"",subject:g?g.subject:""};
     $("#cSel").innerHTML = g
       ? '<div class="note note-g" style="margin-bottom:14px"><b>'+esc(g.title)+'</b>'
         +'<div style="font-size:12.5px;margin-top:3px">'+esc(g.subject)+' · '+esc(g.code)+'</div></div>'
       : "";
+    $$("#cMine [data-cmg]").forEach(function(b){
+      b.classList.toggle("on", !!g && b.dataset.cmg===g.id);});
     upd();
   }
   var gc=$("#cGoCollect");
@@ -7361,7 +7544,10 @@ function renderCode(){
     S.numCode=this.checked; touch();
     toast(S.numCode?"숫자 6자리 코드로 바꿉니다(저학년용)":"영문·숫자 코드로 바꿉니다");});
   var ni=$("#cName");
-  if(ni) ni.addEventListener("input",function(){ CNAME=ni.value; CNO=""; upd(); });
+  if(ni) ni.addEventListener("input",function(){
+    CNAME=ni.value; CNO="";
+    renderMine();          /* 칩을 안 누르고 손으로 적어도 그 학생 목표가 뜨게 */
+    upd(); });
 
   function hideList(){$("#cList").classList.add("hidden");}
   function showList(){
@@ -7377,11 +7563,17 @@ function renderCode(){
         if((x.title+x.subject+x.keys.join("")+x.unit).replace(/\s/g,"").indexOf(k)>=0) return true;
         return !!(kc && codeKey(x.code).indexOf(kc)>=0);
       });}
+    /* ④ 무엇을 치든 그 학생이 담은 목표를 맨 위로 */
+    var sd=cStu(gr), own={};
+    if(sd) (sd.my||[]).forEach(function(m){ own[m.gid]=m.st; });
+    pool.sort(function(a,b){ return (own[b.id]?1:0)-(own[a.id]?1:0); });
     pool=pool.slice(0,40);
     $("#cList").innerHTML=pool.length
       ? pool.map(function(x){
-          return '<div class="srch-i" data-pick="'+x.id+'"><b>'+esc(x.title)+'</b>'
-            +'<span>'+esc(x.subject)+(x.code?' · <i class="si-c">'+esc(x.code)+'</i>':'')
+          return '<div class="srch-i'+(own[x.id]?" si-own":"")+'" data-pick="'+x.id+'">'
+            +'<b>'+esc(x.title)+'</b>'
+            +'<span>'+(own[x.id]?'<i class="si-m">'+stName(own[x.id])+'</i> · ':'')
+            +esc(x.subject)+(x.code?' · <i class="si-c">'+esc(x.code)+'</i>':'')
             +' · '+esc(x.keys.join(" · "))+'</span></div>';}).join("")
       : '<div class="srch-i"><span>찾는 목표가 없습니다</span></div>';
     $("#cList").classList.remove("hidden");
@@ -7407,6 +7599,16 @@ function renderCode(){
     if(pv) pv.scrollIntoView({behavior:"smooth",block:"center"});
     toast(nm+" 학생의 코드를 만들었습니다");});
 
+  renderMine();
+  /* ② 기다리는 목표가 하나뿐이면 고를 것이 없다 — 미리 골라 둔다 */
+  (function(){
+    var d=cStu(gr); if(!d) return;
+    var w=cStuGoals(d).filter(function(r){return r.m.st==="wait";});
+    if(w.length!==1) return;
+    var g=goalById(w[0].g.id); if(!g) return;
+    if($("#cGoal")) $("#cGoal").value=g.alt||g.title;
+    setSel(g);
+  })();
   renderHist();
   upd();            /* ⑩ 처음 그릴 때부터 단추가 남은 일을 말하게 */
 }
