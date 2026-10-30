@@ -992,7 +992,8 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .stp-i[data-open="1"] .stp-h .okm{display:none}
 /* ⑦ 번호는 필요한 사람만 */
 /* 학년·반·번호 한 줄 */
-.cl-row{display:grid;grid-template-columns:96px 1fr;gap:11px;align-items:start;margin-top:13px}
+.cl-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;
+  align-items:start;margin-top:13px;max-width:290px}
 .cl-row .fld{margin:0}
 .cl-row input{width:100%;max-width:112px}
 .cl-row .st-why{margin-top:6px}
@@ -1082,7 +1083,7 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .sb-t{font-size:12px;font-weight:800;color:var(--ink-3);text-align:right;
   font-variant-numeric:tabular-nums}
 @media (max-width:420px){
-  .cl-row{grid-template-columns:82px 1fr;gap:9px}
+  .cl-row{gap:9px;max-width:none}
   .rd-l,.rd-i{font-size:13px} .rd-v{font-size:13.5px}
   .tl{gap:2px} .sb-r{grid-template-columns:40px 1fr 24px;gap:6px}
 }
@@ -2057,8 +2058,12 @@ button.ttl-b{cursor:pointer}
                 <div class="fld"><label for="sRoom">반 <span class="hint">몇 반인지</span></label>
                   <input type="text" id="sRoom" inputmode="numeric" maxlength="2"
                     placeholder="예) 3" autocomplete="off"></div>
-                <div class="fld" id="noCell"></div>
+                <div class="fld"><label for="sNo">번호 <span class="hint">출석번호</span></label>
+                  <input type="text" id="sNo" inputmode="numeric" maxlength="2"
+                    placeholder="예) 7" autocomplete="off"></div>
               </div>
+              <p class="st-why">반과 번호를 적어 두면 <b>이름이 같은 친구</b>가 있어도
+                기록이 섞이지 않습니다.</p>
             </div>
           </li>
         </ol>
@@ -2890,7 +2895,24 @@ function schFind(si, q){
   }
   return out;
 }
-var SCH_SI=null, SCH_Q="", SCH_FREE=false, SCH_NAR=false;
+var SCH_SI=null, SCH_Q="", SCH_FREE=false, SCH_NAR=false, SCH_IME=false;
+/* 결과만 다시 그린다 — 입력칸이 살아 있어야 한글이 제대로 들어온다 */
+function renderSchRes(){
+  var r=$("#schRes"); if(!r) return;
+  if(!String(SCH_Q||"").trim()){
+    r.innerHTML='<p class="sch-n">전국 <b>'+((window.SCHOOLS&&window.SCHOOLS.n)||0)
+      +'</b>곳에서 찾습니다.</p>'; return; }
+  var hits=schFind(SCH_SI, SCH_Q), many=hits.length>60;
+  r.innerHTML = hits.length
+    ? '<p class="sch-n">'+(many?"60곳 넘음 — 아래에서 좁혀 보세요":hits.length+"곳")
+        +(SCH_SI!=null?' · <b>'+SIDO[SCH_SI]+'</b>만':'')+'</p>'
+      +'<div class="sch-l">'+hits.slice(0,60).map(function(n){
+          return '<button type="button" class="sch-it" data-sn="'+esc(n)+'">'
+            +esc(n)+'</button>';}).join("")+'</div>'
+    : '<p class="sch-n sch-no">찾는 학교가 없어요. 글자를 줄이거나 <b>직접 적기</b>로 넘어가세요.</p>';
+  $$("#schRes [data-sn]").forEach(function(b){
+    b.addEventListener("click",function(){ schPick(b.dataset.sn); }); });
+}
 function schPick(name){
   S.me.school=String(name||"").trim().slice(0,40);
   S.me.schoolSkip=false;
@@ -2912,22 +2934,13 @@ function renderSchool(){
       +(schHas()?'<button type="button" class="btn btn-s" data-sc="back">목록에서 찾기</button>':'')
       +'<button type="button" class="t-link" data-sc="skip">나중에</button></div>';
   } else {
-    /* ⑥ 전국을 먼저 찾고, 너무 많을 때만 시·도로 좁힌다 */
-    var hits=schFind(SCH_SI, SCH_Q), many=hits.length>60;
+    /* ⑥ 전국을 먼저 찾고, 너무 많을 때만 시·도로 좁힌다.
+       입력칸은 여기서 한 번만 만든다 — 글자마다 다시 만들면 한글 조합이 깨진다. */
     box.innerHTML='<input type="text" id="schQ" value="'+esc(SCH_Q)+'"'
       +' placeholder="학교 이름 두 글자 — 예) 운남" autocomplete="off" enterkeyhint="search">'
-      +(SCH_Q
-        ? (hits.length
-            ? '<p class="sch-n">'+(many?"60곳 넘음 — 아래에서 좁혀 보세요":hits.length+"곳")
-                +(SCH_SI!=null?' · <b>'+SIDO[SCH_SI]+'</b>만':'')+'</p>'
-              +'<div class="sch-l">'+hits.slice(0,60).map(function(n){
-                  return '<button type="button" class="sch-it" data-sn="'+esc(n)+'">'
-                    +esc(n)+'</button>';}).join("")+'</div>'
-            : '<p class="sch-n sch-no">찾는 학교가 없어요. 글자를 줄이거나 <b>직접 적기</b>로 넘어가세요.</p>')
-        : '<p class="sch-n">전국 <b>'+((window.SCHOOLS&&window.SCHOOLS.n)||0)
-            +'</b>곳에서 찾습니다.</p>')
+      +'<div id="schRes"></div>'
       +'<details class="sch-nar"'+(SCH_NAR||SCH_SI!=null?" open":"")+'>'
-        +'<summary>시·도로 좁히기'+(SCH_SI!=null?' — <b>'+SIDO[SCH_SI]+'</b>':'')+'</summary>'
+        +'<summary>시·도로 좁히기 <b id="schSiN">'+(SCH_SI!=null?SIDO[SCH_SI]:"")+'</b></summary>'
         +'<div class="chips sch-si">'
         +'<button type="button" class="fchip" data-si="" data-on="'+(SCH_SI==null?"1":"0")+'">전국</button>'
         +SIDO.map(function(n,i){
@@ -2935,19 +2948,31 @@ function renderSchool(){
             +(SCH_SI===i?"1":"0")+'">'+n+'</button>';}).join("")+'</div></details>'
       +'<div class="acts"><button type="button" class="t-link" data-sc="free">직접 적을게요</button>'
       +'<button type="button" class="t-link" data-sc="skip">나중에</button></div>';
+    renderSchRes();
   }
   var q=$("#schQ");
-  if(q){ q.addEventListener("input",function(){ SCH_Q=this.value; renderSchool();
-    var e=$("#schQ"); if(e){ e.focus(); e.setSelectionRange(e.value.length,e.value.length); } }); }
+  if(q){
+    /* 한글 한 글자는 여러 번의 input 을 거쳐 완성된다 — 조합 중에는 손대지 않는다 */
+    q.addEventListener("compositionstart",function(){ SCH_IME=true; });
+    q.addEventListener("compositionend",function(){
+      SCH_IME=false; SCH_Q=q.value; renderSchRes(); });
+    q.addEventListener("input",function(){
+      SCH_Q=q.value;
+      if(!SCH_IME) renderSchRes();
+    });
+  }
   var fr=$("#schFree");
   if(fr){ fr.addEventListener("input",function(){ SCH_Q=this.value; });
     fr.addEventListener("keydown",function(e){
       if(e.key==="Enter"){ e.preventDefault(); if(fr.value.trim()) schPick(fr.value); }}); }
   $$("#schBox [data-si]").forEach(function(b){ b.addEventListener("click",function(){
     SCH_SI = b.dataset.si==="" ? null : +b.dataset.si;
-    SCH_NAR=true; renderSchool(); var e=$("#schQ"); if(e) e.focus(); }); });
-  $$("#schBox [data-sn]").forEach(function(b){ b.addEventListener("click",function(){
-    schPick(b.dataset.sn); }); });
+    SCH_NAR=true;
+    $$("#schBox [data-si]").forEach(function(x){
+      x.dataset.on = (x.dataset.si===b.dataset.si) ? "1" : "0"; });
+    var n=$("#schSiN"); if(n) n.textContent = SCH_SI!=null ? SIDO[SCH_SI] : "";
+    renderSchRes();                      /* 입력칸은 살려 둔다 */
+    var e=$("#schQ"); if(e) e.focus(); }); });
   var nd=$("#schBox .sch-nar");
   if(nd) nd.addEventListener("toggle",function(){ SCH_NAR=nd.open; });
   $$("#schBox [data-sc]").forEach(function(b){ b.addEventListener("click",function(){
@@ -2990,29 +3015,13 @@ function renderSteps(){
   $("#svName").textContent=S.me.name||"";
   $("#svSch").textContent=S.me.school||(S.me.schoolSkip?"나중에 고르기":"");
   $("#svClass").textContent=classSum();
-  var rm=$("#sRoom"); if(rm && rm.value!==(S.me.room||"")) rm.value=S.me.room||"";
   if(cur==="s") renderSchool();
   renderNoBox();
 }
-/* ⑦ 번호는 필요한 사람만 */
-/* ⑦ 번호는 같은 이름이 있을 때만 필요하다 — 반 옆에 접어 둔다 */
+/* 적어 둔 반·번호를 칸에 되살린다 */
 function renderNoBox(){
-  var w=$("#noCell"); if(!w) return;
-  if(!(S.me.no || S.noOpen)){
-    w.innerHTML='<button type="button" class="st-more" id="sNoOpen">'
-      +'<b>이름이 같은 친구</b>가 있어요</button>';
-    $("#sNoOpen").addEventListener("click",function(){
-      S.noOpen=true; renderNoBox(); var e=$("#sNo"); if(e) e.focus(); });
-    return;
-  }
-  w.innerHTML='<label for="sNo">번호 <span class="hint">출석번호</span></label>'
-    +'<input type="text" id="sNo" inputmode="numeric" maxlength="2" placeholder="예) 7"'
-    +' autocomplete="off" value="'+esc(S.me.no||"")+'">'
-    +'<p class="st-why">적어 두면 <b>이름이 같아도</b> 기록이 섞이지 않습니다.</p>';
-  $("#sNo").addEventListener("input",function(){
-    this.value=this.value.replace(/[^0-9]/g,"");
-    S.me.no=this.value;
-    $("#svClass").textContent=classSum(); touch();});
+  var rm=$("#sRoom"); if(rm && rm.value!==(S.me.room||"")) rm.value=S.me.room||"";
+  var no=$("#sNo");   if(no && no.value!==(S.me.no||""))   no.value=S.me.no||"";
 }
 /* ───────── 학생: 시작 ───────── */
 /* ⑦ 학년마다 자람 단계를 하나씩 — 숫자만 여섯 개 놓이지 않게 */
@@ -3058,11 +3067,12 @@ $("#gradePick").addEventListener("click",function(e){
   SSTEP="c";                 /* 반·번호가 남아 있으니 이 걸음에 머문다 */
   renderSteps();chkStart();touch();
 });
-/* 반 */
+/* 반 · 번호 */
 document.addEventListener("input",function(e){
-  if(!e.target || e.target.id!=="sRoom") return;
+  var id=e.target&&e.target.id;
+  if(id!=="sRoom" && id!=="sNo") return;
   e.target.value=e.target.value.replace(/[^0-9]/g,"");
-  S.me.room=e.target.value;
+  if(id==="sRoom") S.me.room=e.target.value; else S.me.no=e.target.value;
   var v=$("#svClass"); if(v) v.textContent=classSum();
   touch();});
 $("#sName").addEventListener("input",function(){
@@ -3073,7 +3083,6 @@ $("#sName").addEventListener("input",function(){
 /* ①② 못 누르는 단추를 두는 대신, 무엇이 남았는지 단추가 말한다 */
 function chkStart(){
   var b=$("#startGo"); if(!b) return;
-  var nf=$("#sNo"); if(nf && nf.value!==(S.me.no||"")) nf.value=S.me.no||"";
   var hasN=!!S.me.name, hasG=!!S.me.grade;
   /* ⑩ 학교는 시작을 막지 않는다 — 망이 막힌 교실에서 아이가 갇히면 안 된다 */
   b.disabled=!(hasN&&hasG);
