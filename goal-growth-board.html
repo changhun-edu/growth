@@ -1018,9 +1018,18 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .sch-hd b{font-size:13.5px;font-weight:800;color:var(--ink)}
 .sch-l{margin:9px 0 0;display:flex;flex-direction:column;gap:4px;max-height:232px;
   overflow-y:auto;border:1px solid var(--line);border-radius:11px;padding:5px}
-.sch-it{display:block;width:100%;text-align:left;padding:10px 11px;border:0;border-radius:8px;
-  background:none;font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer}
+/* ②④ 한 줄엔 이름, 아랫줄엔 어디인지 */
+.sch-it{display:grid;grid-template-columns:1fr auto;gap:2px 9px;width:100%;text-align:left;
+  padding:9px 11px;border:0;border-radius:9px;background:none;font:inherit;
+  color:var(--ink);cursor:pointer;align-items:center}
 .sch-it:hover{background:var(--card-2)}
+.sch-it b{grid-column:1;font-size:13.5px;font-weight:700}
+.sch-it .sch-a{grid-column:1;font-size:11.5px;color:var(--ink-3);line-height:1.4}
+.sch-it .sch-a::before{content:"📍 ";font-size:10px}
+.sch-n .sch-w{color:#8A5A1E;font-weight:800}
+/* 겹치는 이름일 때만 어디인지에 눈이 가게 */
+.sch-it.dup b{font-weight:800}
+.sch-it.dup .sch-a{color:#8A5A1E;font-weight:700}
 .sch-ok{padding:12px 13px;border-radius:11px;background:var(--bloom-bg);
   border:1px solid #BFDCC8;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .sch-ok b{font-size:14.5px;font-weight:800;color:#24543B}
@@ -2870,17 +2879,37 @@ var SIDO=["서울","부산","대구","인천","광주","대전","울산","세종
           "경기","강원","충북","충남","전북","전남","경북","경남","제주"];
 window.SCHOOLS = window.SCHOOLS || {v:"", p:[]};
 var _schC={};
+/* 한 시·도의 줄은 둘 중 하나다.
+   옛 판 : "운남|수완|…"                 (시·군·구 없음)
+   새 판 : "광산구>운남|수완;서구>치평|…"  (시·군·구별로 묶음) */
 function schNames(si){
   if(_schC[si]) return _schC[si];
   var raw=((window.SCHOOLS&&window.SCHOOLS.p)||[])[si]||"";
-  _schC[si]= raw ? raw.split("|").map(function(n){
-    return n.charAt(0)==="*" ? n.slice(1) : n+"초등학교"; }) : [];
-  return _schC[si];
+  var out=[];
+  if(raw){
+    raw.split(";").forEach(function(grp){
+      var k=grp.indexOf(">"), gu="", body=grp;
+      if(k>=0){ gu=grp.slice(0,k); body=grp.slice(k+1); }
+      if(!body) return;
+      body.split("|").forEach(function(n){
+        if(!n) return;
+        out.push({n:(n.charAt(0)==="*" ? n.slice(1) : n+"초등학교"), g:gu, s:si});});});
+  }
+  _schC[si]=out; return out;
 }
 function schHas(){
   var p=(window.SCHOOLS&&window.SCHOOLS.p)||[];
   for(var i=0;i<p.length;i++) if(p[i]) return true;
   return false;
+}
+/* ③ 「운남초」를 치면 「인천운남초등학교」가 먼저 나오던 자리 —
+   정확히 같은 이름 → 그 글자로 시작 → 어딘가에 포함 차례로 세운다 */
+function schRank(name, q){
+  if(name===q) return 0;
+  var base=name.replace(/초등학교$/,"");
+  if(base===q) return 0;
+  if(name.indexOf(q)===0 || base.indexOf(q)===0) return 1;
+  return 2;
 }
 /* si 가 null 이면 전국에서 찾는다 — 시·도는 좁히는 수단일 뿐 관문이 아니다 */
 function schFind(si, q){
@@ -2890,10 +2919,23 @@ function schFind(si, q){
   for(var k=lo;k<=hi;k++){
     var l=schNames(k);
     for(var i=0;i<l.length;i++){
-      if(l[i].indexOf(q)>=0){ out.push(l[i]); if(out.length>60) return out; }
+      if(l[i].n.indexOf(q)>=0){
+        out.push(l[i]);
+        if(out.length>=600) break;      /* 한 글자만 쳤을 때를 위한 울타리 */
+      }
     }
+    if(out.length>=600) break;
   }
+  out.sort(function(a,b){
+    var ra=schRank(a.n,q), rb=schRank(b.n,q);
+    if(ra!==rb) return ra-rb;
+    return a.n.localeCompare(b.n,"ko") || a.s-b.s;});
   return out;
+}
+/* ② 어디에 있는 학교인지 */
+function schWhere(r){
+  if(!r) return "";
+  return SIDO[r.s]+(r.g?" "+r.g:"");
 }
 var SCH_SI=null, SCH_Q="", SCH_FREE=false, SCH_NAR=false, SCH_IME=false;
 /* 결과만 다시 그린다 — 입력칸이 살아 있어야 한글이 제대로 들어온다 */
@@ -2903,16 +2945,28 @@ function renderSchRes(){
     r.innerHTML='<p class="sch-n">전국 <b>'+((window.SCHOOLS&&window.SCHOOLS.n)||0)
       +'</b>곳에서 찾습니다.</p>'; return; }
   var hits=schFind(SCH_SI, SCH_Q), many=hits.length>60;
+  var show=hits.slice(0,60);
+  /* ④ 넷 중 하나는 이름이 겹친다 — 겹치는 줄에서만 주소에 눈이 가게 */
+  var cnt={}; hits.forEach(function(x){ cnt[x.n]=(cnt[x.n]||0)+1; });
+  /* 꼬리표를 줄마다 붙이면 금성초등학교 11곳에 같은 말이 열한 번 달린다 — 머리말에 한 번만 */
+  var anyDup=show.some(function(x){return cnt[x.n]>1;});
   r.innerHTML = hits.length
-    ? '<p class="sch-n">'+(many?"60곳 넘음 — 아래에서 좁혀 보세요":hits.length+"곳")
-        +(SCH_SI!=null?' · <b>'+SIDO[SCH_SI]+'</b>만':'')+'</p>'
-      +'<div class="sch-l">'+hits.slice(0,60).map(function(n){
-          return '<button type="button" class="sch-it" data-sn="'+esc(n)+'">'
-            +esc(n)+'</button>';}).join("")+'</div>'
+    ? '<p class="sch-n">'+(many?hits.length+"곳 — 글자를 더 적거나 아래에서 좁혀 보세요"
+                                :hits.length+"곳")
+        +(SCH_SI!=null?' · <b>'+SIDO[SCH_SI]+'</b>만':'')
+        +(anyDup?' · <b class="sch-w">이름이 같은 학교가 있어요 — 📍 지역을 보고 고르세요</b>':'')
+        +'</p>'
+      +'<div class="sch-l">'+show.map(function(x){
+          var d=cnt[x.n]>1, w=schWhere(x);
+          return '<button type="button" class="sch-it'+(d?" dup":"")+'" data-sn="'+esc(x.n)+'">'
+            +'<b>'+esc(x.n)+'</b>'
+            +(w?'<span class="sch-a">'+esc(w)+'</span>':'')
+            +'</button>';}).join("")+'</div>'
     : '<p class="sch-n sch-no">찾는 학교가 없어요. 글자를 줄이거나 <b>직접 적기</b>로 넘어가세요.</p>';
   $$("#schRes [data-sn]").forEach(function(b){
     b.addEventListener("click",function(){ schPick(b.dataset.sn); }); });
 }
+
 function schPick(name){
   S.me.school=String(name||"").trim().slice(0,40);
   S.me.schoolSkip=false;
