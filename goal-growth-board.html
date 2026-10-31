@@ -2075,8 +2075,8 @@ button.ttl-b{cursor:pointer}
         <div class="fstep" data-c="1"><div class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.1" fill="currentColor"/></svg></div>
           <b>고른다</b><span>내 학년 목표를 담아요</span></div>
         <div class="farr"><svg viewBox="0 0 12 24" fill="none" aria-hidden="true"><path d="M4.2 8.4L7.8 12l-3.6 3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="fstep" data-c="2"><div class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 15.6V4.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M7.8 8.6L12 4.4l4.2 4.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.6 15v3.6A1.4 1.4 0 006 20h12a1.4 1.4 0 001.4-1.4V15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-          <b>보낸다</b><span>해낸 일을 적어 파일로</span></div>
+        <div class="fstep" data-c="2"><div class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19.6V6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.9 11.5 12 6.4l5.1 5.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <b>해낸다</b><span>+1 +2 +3으로 단계를 올려요</span></div>
         <div class="farr"><svg viewBox="0 0 12 24" fill="none" aria-hidden="true"><path d="M4.2 8.4L7.8 12l-3.6 3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="fstep" data-c="3"><div class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><path d="M8.1 12.3l2.8 2.8 5.2-5.9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <b>확인받는다</b><span>부모님 확인 · 선생님 인증</span></div>
@@ -2813,7 +2813,7 @@ function demoStuOff(toStart){
   $("#sName").value=S.me.name||"";
   renderGrades();chkStart();
   show(S.me.name?"board":"start");
-  toast(S.me.name?"샘플을 끝냈어요":"이름과 학년을 넣어 주세요");
+  toast(S.me.name?"샘플을 끝냈어요":"이름과 우리 반을 넣어 주세요");
 }
 /* 좌측 상단 이름·로고 → 언제나 첫 화면 */
 function goHome(){
@@ -5485,7 +5485,7 @@ function openLoad(){
         /* ② 선생님 인증 파일이면 내 기록을 덮지 않고 인증만 얹는다 */
         if(d && d.app==="goalboard-tv"){
           if(!S.me.name){ $("#ldMsg").innerHTML='<div class="note note-e" style="margin-top:12px">'
-            +'먼저 내 이름과 학년을 넣어 주세요.</div>'; return; }
+            +'먼저 내 이름과 우리 반을 넣어 주세요.</div>'; return; }
           var r2=applyTv(d);
           touch(); renderBoard(); renderFoot();
           if(r2.got){ closeModal();
@@ -6363,10 +6363,10 @@ function classNote(){
   var ok=/^https?:/i.test(u);
   /* ④ 주소에 학교를 실어 보내면 아이는 6천여 곳에서 찾을 일이 없다 */
   var link = ok ? (u + (S.school ? "?s="+encodeURIComponent(S.school) : "")) : "";
-  return (S.school?"["+S.school+"] ":"")+"「해냄 보물상자」으로 한 해 목표를 기록합니다.\n"
+  return (S.school?"["+S.school+"] ":"")+"「해냄 보물상자」로 한 해 목표를 기록합니다.\n"
     +"1. 아래 주소를 엽니다.\n   "+(ok?link:"(여기에 우리 학교가 쓰는 주소를 적어 주세요)")+"\n"
     +(S.school&&ok?"   (이 주소로 들어가면 학교가 저절로 채워집니다)\n":"")
-    +"2. 첫 화면에서 ‘학생’을 고르고 이름과 학년을 넣습니다.\n"
+    +"2. 첫 화면에서 ‘학생’을 고르고 이름·학교·반·번호를 넣습니다.\n"
     +"3. 목표 지도에서 하고 싶은 목표를 담고, 해낸 만큼 +1 +2 +3을 누릅니다.\n"
     +"4. 보호자께 확인을 받고(보호자 확인), 선생님께 받은 코드를 넣습니다(선생님 인증).\n"
     +"   두 가지가 모두 모이면 보석이 됩니다.\n"
