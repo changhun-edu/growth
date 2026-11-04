@@ -665,22 +665,30 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 
 /* 하단 바 */
 /* ── 아래 탭 바 — 본문 위에 떠 있고, 지금 있는 칸이 켜진다 ── */
+/* ⑤ 바닥에 붙인다 — 떠 있을 때 아래 12px 틈으로 본문이 지나가 겹쳐 보였다 */
 .foot{position:fixed;left:0;right:0;z-index:48;pointer-events:none;
-  bottom:calc(12px + env(safe-area-inset-bottom));padding:0 12px;
-  display:flex;justify-content:center}
+  bottom:0;padding:0;display:flex;justify-content:center}
+/* ⑩ 막대 위 페이드 — 본문이 막대 쪽에서 사라지듯 잦아든다 */
+.foot::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:18px;
+  pointer-events:none;background:linear-gradient(to top,var(--paper),rgba(244,241,234,0))}
+/* 막대는 가로로 꽉 채우고 탭만 가운데 470px 안에 모은다.
+   가운데만 덮으면 넓은 화면에서 양옆 본문이 바닥까지 그대로 흘러 지저분해진다 */
 .foot-in{pointer-events:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;
-  width:100%;max-width:470px;background:var(--card);border:1px solid var(--line-2);
-  border-radius:19px;padding:6px;
-  box-shadow:0 1px 2px rgba(42,38,30,.05),0 8px 24px -6px rgba(42,38,30,.22)}
+  width:100%;background:var(--card);
+  /* ③ 본문 카드와 같은 흰색·같은 테두리라 카드처럼 보이던 것을 윗선으로 가른다 */
+  border:0;border-top:2.5px solid #9A8431;border-radius:0;
+  padding:7px max(10px,calc(50% - 235px)) calc(8px + env(safe-area-inset-bottom));
+  /* ④ 그림자를 위로, 넓고 짙게 */
+  box-shadow:0 -2px 5px rgba(42,38,30,.06),0 -13px 32px -10px rgba(42,38,30,.34)}
 .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
   padding:9px 2px 8px;border:0;border-radius:14px;background:none;position:relative;
-  font-size:11.5px;font-weight:700;letter-spacing:-0.01em;color:var(--ink-3);
+  font-size:11.5px;font-weight:700;letter-spacing:-0.01em;color:var(--ink-2);
   min-height:56px;transition:.14s;cursor:pointer}
-.tab svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;
+.tab svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;
   stroke-linecap:round;stroke-linejoin:round;transition:.14s}
-.tab:hover{background:var(--card-2);color:var(--ink-2)}
+.tab:hover{background:var(--card-2);color:var(--ink)}
 .tab[data-on="1"]{background:var(--ink);color:#fff}
-.tab[data-on="1"] svg{stroke-width:2}
+.tab[data-on="1"] svg{stroke-width:2.3}
 .tab[data-on="1"]:hover{background:var(--ink)}
 .tab span{line-height:1}
 /* 배지 */
@@ -694,12 +702,11 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .tb-d{top:7px;right:calc(50% - 18px);width:9px;height:9px;background:#C8452F}
 .tb-d[data-on="1"]{display:block}
 @media (max-width:420px){
-  .foot{padding:0 8px;bottom:calc(8px + env(safe-area-inset-bottom))}
   .tab{font-size:11px;padding:8px 1px 7px;min-height:52px}
-  .tab svg{width:21px;height:21px}
+  .tab svg{width:22px;height:22px}
 }
 @media (prefers-reduced-motion:reduce){ .tab,.tab svg{transition:none} }
-.toast{position:fixed;left:50%;bottom:108px;transform:translateX(-50%) translateY(10px);
+.toast{position:fixed;left:50%;bottom:calc(22px + var(--footh,86px));transform:translateX(-50%) translateY(10px);
   background:var(--ink);color:#fff;border-radius:99px;padding:12px 22px;font-size:14.5px;
   font-weight:600;z-index:95;opacity:0;pointer-events:none;transition:.22s;max-width:92vw;text-align:center}
 .toast[data-on="1"]{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -711,6 +718,9 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .goal[data-t="3"]::before{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(135deg,rgba(255,230,160,.22),transparent 42%,rgba(255,255,255,.3) 62%,transparent 80%)}
 .tier{font-size:11px;font-weight:800;padding:3px 9px;border-radius:7px;border:1px solid}
+/* ② 내가 만든 목표는 등급이 늘 「기본」이라 교과 목표에 묻혔다 — 전용 표와 금빛 테두리를 준다 */
+.tier-mine{color:#7C6A26;background:#FBF4E2;border-color:#C9A227}
+.myc[data-mine="1"]{border-color:#DCC478;background:#FDFBF5}
 .elem{font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:7px;border:1px solid;
   display:inline-flex;align-items:center;gap:4px}
 .slots{display:flex;gap:4px}
@@ -911,13 +921,33 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
   font-size:13px;font-weight:700;color:var(--ink-3)}
 .iszero:hover{color:var(--ink-2);border-color:var(--ink-3)}
 .iszero b{color:var(--ink-2);font-weight:800}
-.isbar{display:flex;align-items:center;gap:13px;margin-bottom:12px;flex-wrap:wrap}
-.isbar-n{display:flex;align-items:center;gap:9px}
-.isbar-n .jar{width:58px;height:42px}
-.isbar-n b{font-size:19px;letter-spacing:-0.02em}
-.isback{font-size:13px;font-weight:700;color:var(--ink-2);background:var(--card);
-  border:1px solid var(--line-2);border-radius:99px;padding:8px 15px}
-.isback:hover{border-color:var(--ink-3)}
+/* ⑥ 교과 안에 있는 동안 위에 붙어 따라온다 — 400px만 내려도 나가는 길이 사라지던 자리.
+   지금 어느 교과 안인지도 늘 보인다 */
+.isbar{position:sticky;top:calc(61px + var(--sdemoh,0px));z-index:46;
+  display:flex;align-items:center;gap:13px;flex-wrap:wrap;
+  margin:0 -18px 12px;padding:9px 18px;
+  background:rgba(244,241,234,.94);backdrop-filter:blur(8px);
+  border-bottom:2px solid #9A8431}
+/* ⑤ 제목과 「모든 교과 보기」를 한 덩어리로 — 화면에서 가장 큰 글씨가 곧 나가는 길이 된다 */
+.isback{display:inline-flex;align-items:center;gap:10px;text-align:left;
+  background:var(--card);border:2px solid #9A8431;border-radius:99px;
+  padding:5px 18px 5px 6px;min-height:44px;cursor:pointer;font:inherit;
+  box-shadow:0 2px 9px rgba(42,38,30,.13);transition:.14s}
+.isback:hover{background:#FBF6E8;box-shadow:0 3px 13px rgba(42,38,30,.18)}
+.isb-ar{display:grid;place-items:center;width:32px;height:32px;flex:0 0 32px;
+  border-radius:99px;background:#9A8431;color:#fff}
+.isb-ar svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.4;
+  stroke-linecap:round;stroke-linejoin:round}
+.isb-j{display:flex;align-items:center;flex:0 0 auto}
+.isb-j .jar{width:36px;height:26px}
+.isb-t{line-height:1.18}
+.isb-t b{display:block;font-size:17px;font-weight:800;letter-spacing:-0.02em;color:var(--ink)}
+.isb-t em{display:block;font-style:normal;font-size:11.5px;font-weight:700;
+  color:var(--ink-2);margin-top:2px}
+@media (max-width:420px){
+  .isb-t b{font-size:16px}
+  .isback{padding-right:15px}
+}
 @media (max-width:640px){
   .isgrid{grid-template-columns:repeat(2,1fr);gap:8px}
   .isgrid-big{grid-template-columns:1fr;gap:9px}
@@ -1049,6 +1079,10 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
   border:1.5px dashed var(--line-2);border-radius:14px;background:none;font:inherit;
   cursor:pointer;text-align:left;color:var(--ink-2)}
 .b-add:hover{border-color:var(--bloom);background:var(--bloom-bg);color:var(--ink)}
+/* ⑤ 지도 안쪽까지 들어가야 보이던 「나만의 목표」를 목표판 바로 밑에 둔다 */
+.b-add.b-mine{margin-top:9px;border-color:#DCC478}
+.b-add.b-mine:hover{border-color:#C9A227;background:#FBF4E2}
+.b-add.b-mine .b-add-p{background:#C9A227;font-size:16px}
 .b-add-p{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--bloom);
   color:#fff;font-size:19px;font-weight:800;line-height:1;display:grid;place-items:center}
 .b-add-t b{display:block;font-size:14.5px;font-weight:800;color:var(--ink)}
@@ -1338,6 +1372,31 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .myc.flash{animation:flashc 1.4s ease-out}
 @keyframes flashc{0%,100%{box-shadow:var(--sh)}
   25%{box-shadow:0 0 0 3px var(--wait)}}
+/* ⑨ 하고 싶은 것 꾸러미 */
+.mpk{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.mpk button{display:flex;align-items:center;gap:7px;min-height:46px;padding:8px 9px;
+  background:var(--card);border:1.6px solid var(--line-2);border-radius:13px;
+  font:inherit;font-size:12.5px;font-weight:700;color:var(--ink);text-align:left;
+  line-height:1.25;cursor:pointer}
+.mpk button:hover{border-color:#C9A227}
+.mpk button i{font-style:normal;font-size:19px;flex:0 0 auto}
+.mpk button[data-on="1"]{border-color:#C9A227;border-width:2.4px;background:#FCF8EC}
+/* ⑧ 몇 번 할까 */
+.mhow{display:flex;gap:7px}
+.mhow button{flex:1;padding:11px 4px;background:var(--card);
+  border:1.6px solid var(--line-2);border-radius:12px;
+  font:inherit;font-size:15px;font-weight:800;color:var(--ink);cursor:pointer}
+.mhow button[data-on="1"]{border-color:#C9A227;border-width:2.4px;background:#FCF8EC;color:#7C6A26}
+.mprev{margin-top:10px;background:var(--bloom-bg);border:1px solid #BBDCC9;border-radius:11px;
+  padding:10px 12px;font-size:12px;color:#1D5B40;line-height:1.75}
+.mprev b{color:#0F4A31;font-size:13px}
+.mprev-e{color:var(--ink-3)}
+/* ⑦ 속성과 단계는 접어 둔다 */
+.mdet{margin-top:13px;border:1px dashed var(--line-2);border-radius:12px;
+  padding:0 13px;background:var(--card-2)}
+.mdet>summary{cursor:pointer;padding:12px 0;font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.mdet[open]>summary{border-bottom:1px solid var(--line);margin-bottom:4px}
+.mdet .fld:last-child{margin-bottom:13px}
 .mine-ed{font-size:12.5px;font-weight:700;color:var(--wait);background:none;
   text-decoration:underline;text-underline-offset:3px;padding:0}
 
@@ -1430,7 +1489,7 @@ textarea{resize:vertical;line-height:1.65;min-height:92px}
 .ttl-b.ttl-c{background:var(--card);border-style:dashed}
 button.ttl-b{cursor:pointer}
 /* 도장 연출 */
-.seal-pop{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);z-index:95;
+.seal-pop{position:fixed;left:50%;bottom:calc(14px + var(--footh,78px));transform:translateX(-50%);z-index:95;
   display:flex;align-items:center;gap:9px;padding:11px 18px;border-radius:99px;
   background:var(--bloom);color:#fff;font-weight:800;font-size:14.5px;
   box-shadow:0 6px 24px rgba(47,125,91,.35);animation:sealIn .3s ease-out, sealOut .3s ease-in 1.4s forwards}
@@ -1953,11 +2012,14 @@ button.ttl-b{cursor:pointer}
 .src-l a:hover{color:var(--ink-2)}
 
 /* 오픈소스 라이선스 */
-.lic-btn{position:fixed;right:16px;bottom:calc(16px + var(--footh,0px));z-index:47;
+.lic-btn{position:fixed;right:16px;bottom:calc(14px + var(--footh,0px));z-index:47;
   display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;
   padding:8px 13px;border-radius:99px;background:rgba(255,255,255,.94);
   backdrop-filter:blur(8px);border:1px solid var(--line-2);color:var(--ink-2);
   box-shadow:0 2px 10px rgba(30,35,40,.1);transition:.14s}
+/* 막대가 떠 있을 때는 라이선스 단추를 한 걸음 물러나게 — 눈길이 메뉴로 가도록 */
+.foot:not(.hidden)~.lic-btn,body:has(.foot:not(.hidden)) .lic-btn{opacity:.72}
+.lic-btn:hover,.lic-btn:focus-visible{opacity:1}
 .lic-btn:hover{color:var(--ink);border-color:var(--ink-3);
   box-shadow:0 4px 16px rgba(30,35,40,.14)}
 .lic-btn i{font-style:normal;font-size:13px}
@@ -2030,7 +2092,8 @@ button.ttl-b{cursor:pointer}
     <div class="hero">
       <div class="hero-t">
         <h1>내가 고른 목표,<br>어른에게 인증받아 모으는 1년</h1>
-        <p><b>2022 개정 교육과정</b> 초등 성취기준 <b id="heroN">611</b>개를 모두 담았습니다.
+        <p><b>내가 하고 싶은 것</b>을 적고, <b>2022 개정 교육과정</b> 초등 성취기준
+           <b id="heroN">611</b>개에서 고르기도 합니다.
            회원가입도 서버도 없이, 이 기기와 파일 하나로 한 해의 성장을 기록합니다.</p>
       </div>
       <div class="hero-c" id="heroCards" aria-hidden="true"></div>
@@ -2073,7 +2136,7 @@ button.ttl-b{cursor:pointer}
       <div class="sec-h"><h2>이렇게 돌아갑니다</h2><span>회원가입도 서버도 없습니다</span></div>
       <div class="flow">
         <div class="fstep" data-c="1"><div class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3.1" fill="currentColor"/></svg></div>
-          <b>고른다</b><span>내 학년 목표를 담아요</span></div>
+          <b>정한다</b><span>내가 적거나, 611개에서 고르거나</span></div>
         <div class="farr"><svg viewBox="0 0 12 24" fill="none" aria-hidden="true"><path d="M4.2 8.4L7.8 12l-3.6 3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="fstep" data-c="2"><div class="fi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19.6V6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M6.9 11.5 12 6.4l5.1 5.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <b>해낸다</b><span>+1 +2 +3으로 단계를 올려요</span></div>
@@ -2778,7 +2841,8 @@ function renderWho(){
 /* ①③ 샘플 띠 — 지금 보고 있는 것이 샘플임을 늘 알리고, 나가는 두 길을 준다 */
 function renderSDemo(){
   var box=$("#sDemo"); if(!box) return;
-  if(!STU_DEMO || S.role!=="student"){ box.classList.add("hidden"); box.innerHTML=""; return; }
+  if(!STU_DEMO || S.role!=="student"){ box.classList.add("hidden"); box.innerHTML="";
+    document.documentElement.style.setProperty("--sdemoh","0px"); return; }
   box.classList.remove("hidden");
   box.innerHTML='<div class="sd-in container"><span class="sd-dot"></span>'
     +'<span class="sd-t"><b>지금 보고 있는 것은 샘플입니다.</b> '
@@ -2789,6 +2853,8 @@ function renderSDemo(){
     +'</span></div>';
   $("#sdMine").addEventListener("click",function(){ demoStuOff(true); });
   var o=$("#sdOut"); if(o)o.addEventListener("click",function(){ demoStuOff(false); goIntro(); });
+  /* ⑥ 위에 붙는 띠가 둘이 되지 않게, 샘플 띠 높이를 재어 둔다 */
+  document.documentElement.style.setProperty("--sdemoh", box.offsetHeight+"px");
 }
 
 /* ② 샘플을 끝내고 원래 기록으로 되돌린다 */
@@ -3268,21 +3334,42 @@ $("#demoStu").addEventListener("click",function(){
   if(!STU_DEMO) snapTake();          /* ② 지금 기록을 통째로 보관 — 끝내면 그대로 돌아온다 */
   S.me={name:"이서연",grade:3};
   S.my=demoShowcase();
-  /* 나만의 목표 — 직접 쓸 수 있다는 걸 바로 보이게. 인증까지 받아 병이 가득 찬다 */
-  var mid="mydemo1";
-  S.mine=[{id:mid,grade:3,band:bandOf(3),term:0,subject:"나만의 목표",domain:"나만의 목표",
-    code:"",unit:"",title:"줄넘기 2단 뛰기",keys:["몸움직임"],steps:
-    ["한 번 성공했어요","다섯 번 이어서 할 수 있어요","열 번 이어서 할 수 있어요"],mine:true}];
-  S.my.push({gid:mid,st:"bloom",rung:3,sl:3,es:1,
-    ev:"쉬는 시간마다 연습해서 열 번 이어서 했어요",at:demoDays(48),
-    pv:{by:"어머니",at:demoDays(21)},tv:{by:"담임 선생님",at:demoDays(14),
-      sig:codeFor("이서연",3,mid)}});
+  /* ① 나만의 목표 — 하나뿐이라 「고르는 사이트」로 보이던 것을 다섯으로 늘린다.
+     상태도 인증·기다림·도전·담기만으로 흩어 성취기준과 같은 길을 탄다는 것을 보인다 */
+  var DEMO_MINE=[
+    {t:"줄넘기 2단 뛰기",      k:"몸움직임", st:"bloom", r:3, d:48,
+     ev:"쉬는 시간마다 연습해서 열 번 이어서 했어요",
+     s:["세 번 성공했어요","여섯 번 이어서 할 수 있어요","열 번 이어서 할 수 있어요"]},
+    {t:"동생에게 책 읽어 주기", k:"읽기",   st:"bloom", r:3, d:66,
+     ev:"자기 전에 동생한테 그림책을 읽어 줬어요",
+     s:["세 번 읽어 줬어요","여섯 번 읽어 줬어요","열 번 읽어 줬어요"]},
+    {t:"아침에 혼자 일어나기",  k:"실천",   st:"wait",  r:3, d:12,
+     ev:"알람 듣고 엄마 안 깨우고 일어났어요",
+     s:["사흘 동안 했어요","한 주 동안 했어요","한 달 동안 했어요"]},
+    {t:"화분에 물 주기",       k:"환경",   st:"grow",  r:2, d:30,
+     ev:"교실 화분이 시들지 않게 이틀에 한 번 줬어요",
+     s:["세 번 줬어요","여섯 번 줬어요","열 번 줬어요"]},
+    {t:"먼저 인사하기",        k:"배려",   st:"seed",  r:0, d:5, ev:"",
+     s:["세 번 했어요","여섯 번 했어요","열 번 했어요"]}
+  ];
+  var mineIds=[];
+  S.mine=DEMO_MINE.map(function(x,n){
+    var id="mydemo"+(n+1); mineIds.push(id);
+    return {id:id,grade:3,band:bandOf(3),term:0,subject:"나만의 목표",domain:"나만의 목표",
+      code:"",unit:"",title:x.t,keys:[x.k],steps:x.s,mine:true};});
+  DEMO_MINE.forEach(function(x,n){
+    var id=mineIds[n];
+    S.my.push({gid:id,st:x.st,rung:x.r,sl:x.r,es:x.ev?1:0,ev:x.ev,at:demoDays(x.d),
+      pv:(x.st==="bloom"||x.st==="wait")?{by:(n%2?"아버지":"어머니"),at:demoDays(Math.max(4,x.d-20))}:null,
+      tv:(x.st==="bloom")?{by:"담임 선생님",at:demoDays(Math.max(2,x.d-30)),
+        sig:codeFor("이서연",3,id)}:null});});
+  var mid=mineIds[0];
   S.seals=9;
   /* 우리 반 파일도 얹어 '친구 N명'이 보이게 */
   var roster={}; for(var i=0;i<6;i++){var x=demoStudent(i,3);roster[x.name+"|3"]=x;}
   var cc={}; Object.keys(roster).forEach(function(k){
     (roster[k].my||[]).forEach(function(m){cc[m.gid]=(cc[m.gid]||0)+1;});});
-  cc[mid]=0;
+  mineIds.forEach(function(id){cc[id]=0;});
   S.klass={app:"goalboard-class",v:1,grade:3,n:6,at:today(),c:cc};
   S.badge="body"; S.bagElem="";
   S.last=(S.my[S.my.length-3]||{}).gid||"";
@@ -3293,45 +3380,129 @@ $("#demoStu").addEventListener("click",function(){
   show("board");toast("샘플입니다. 위의 띠에서 언제든 나갈 수 있어요");});
 
 /* ═══════ 나만의 목표 ═══════
-   고르기만 하는 사이트가 되지 않도록, 아이가 직접 쓴 목표도 같은 흐름을 탄다. */
+   고르기만 하는 사이트가 되지 않도록, 아이가 직접 쓴 목표도 같은 흐름을 탄다.
+   ⑨ 빈칸 넷을 채우게 하던 창을, 눌러서 고르는 창으로 바꾼다 — 1~2학년도 세울 수 있게. */
+
+/* ⑨ 하고 싶은 것 꾸러미 — 누르면 제목과 속성이 한꺼번에 채워진다 */
+var MINE_PICK=[
+  {i:"🪢",t:"줄넘기 하기",      e:"body"},
+  {i:"🏃",t:"달리기 하기",      e:"body"},
+  {i:"📖",t:"책 읽기",          e:"sound"},
+  {i:"👋",t:"먼저 인사하기",    e:"heart"},
+  {i:"🧹",t:"내 자리 정리하기", e:"heart"},
+  {i:"⏰",t:"아침에 혼자 일어나기",e:"heart"},
+  {i:"🌱",t:"화분에 물 주기",   e:"green"},
+  {i:"🧺",t:"집안일 돕기",      e:"heart"},
+  {i:"✍️",t:"일기 쓰기",        e:"hand"},
+  {i:"🎨",t:"그림 그리기",      e:"hand"},
+  {i:"🔢",t:"수학 문제 풀기",   e:"num"},
+  {i:"🔭",t:"궁금한 것 찾아보기",e:"seek"}
+];
+/* ⑧ 몇 번 할지만 고르면 세 단계가 저절로 만들어진다 — 글자를 한 자도 안 써도 된다 */
+var MINE_HOW=[
+  {k:"5",  n:"5번",  s:["2번 했어요","3번 했어요","5번 했어요"]},
+  {k:"10", n:"10번", s:["3번 했어요","6번 했어요","10번 했어요"]},
+  {k:"20", n:"20번", s:["5번 했어요","12번 했어요","20번 했어요"]},
+  {k:"day",n:"날마다",s:["사흘 동안 했어요","한 주 동안 했어요","한 달 동안 했어요"]}
+];
+function mineHowSteps(k){
+  for(var i=0;i<MINE_HOW.length;i++) if(MINE_HOW[i].k===k) return MINE_HOW[i].s.slice();
+  return ["한 번 해 봤어요","여러 번 할 수 있어요","언제든 잘할 수 있어요"];
+}
+
 function openMine(edit){
   var g = edit ? goalById(edit) : null;
+  var pickEl = g ? elemOf(g).id : "";
+  var how = "10";
+  var st0 = g ? [g.steps[0]||"", g.steps[1]||"", g.steps[2]||""] : mineHowSteps(how);
   var els = ELEM.map(function(e){
-    return '<button class="chip" data-me="'+e.id+'" data-on="'+((g?elemOf(g).id:"")===e.id?"1":"0")+'">'
-      +e.icon+' '+e.name+'</button>';}).join("");
-  modal('<h3>'+(g?"나만의 목표 고치기":"나만의 목표 만들기")+'</h3>'
-    +'<div class="muted">내가 올해 꼭 해 보고 싶은 것을 적어요. 어른에게 인증받는 방법은 똑같아요.</div>'
-    +'<div class="fld" style="margin-top:14px"><label for="mT">목표</label>'
-    +'<input type="text" id="mT" maxlength="40" placeholder="줄넘기 2단 뛰기" autocomplete="off" value="'
+    return '<button type="button" class="chip" data-me="'+e.id+'" data-on="'
+      +(pickEl===e.id?"1":"0")+'">'+e.icon+' '+e.name+'</button>';}).join("");
+
+  modal('<h3>'+(g?"나만의 목표 고치기":"내가 하고 싶은 것")+'</h3>'
+    +'<div class="muted">'+(g
+        ? "고쳐서 다시 담아요. 어른에게 인증받는 방법은 똑같아요."
+        : "하고 싶은 것을 눌러 보세요. 없으면 아래에 직접 적어도 돼요.")+'</div>'
+    /* ⑨ */
+    +(g?"":'<div class="fld" style="margin-top:14px"><label>이런 걸 해 볼까요?</label>'
+        +'<div class="mpk" id="mPk">'
+        +MINE_PICK.map(function(x,n){
+           return '<button type="button" data-mp="'+n+'"><i>'+x.i+'</i>'+esc(x.t)+'</button>';}).join("")
+        +'<button type="button" data-mp="own"><i>✏️</i>직접 적을래요</button>'
+        +'</div></div>')
+    +'<div class="fld"><label for="mT">목표</label>'
+    +'<input type="text" id="mT" maxlength="40" placeholder="예) 줄넘기 하기" autocomplete="off" value="'
     +esc(g?g.title:"")+'"></div>'
+    /* ⑧ */
+    +(g?"":'<div class="fld"><label>몇 번 해 볼까요?</label><div class="mhow" id="mHow">'
+        +MINE_HOW.map(function(x){
+           return '<button type="button" data-mh="'+x.k+'" data-on="'
+             +(x.k===how?"1":"0")+'">'+x.n+'</button>';}).join("")
+        +'</div><div class="mprev" id="mPrev"></div></div>')
+    /* ⑦ 단계는 접어 둔다 — 비워도 되는데 빈칸 셋이 보여 다 채워야 하는 줄 알았다 */
+    +'<details class="mdet"'+(g?" open":"")+'>'
+    +'<summary>'+(g?"속성과 단계":"속성과 단계를 직접 고를래요")+'</summary>'
     +'<div class="fld"><label>어떤 속성인가요?</label><div class="chips" id="mE">'+els+'</div></div>'
     +'<div class="fld"><label for="m1">+1 — 이만큼 하면 해 본 거예요</label>'
-    +'<input type="text" id="m1" maxlength="60" placeholder="한 번 해 봤어요" autocomplete="off" value="'
-    +esc(g?(g.steps[0]||""):"")+'"></div>'
+    +'<input type="text" id="m1" maxlength="60" autocomplete="off" value="'+esc(st0[0])+'"></div>'
     +'<div class="fld"><label for="m2">+2 — 이만큼 하면 할 수 있는 거예요</label>'
-    +'<input type="text" id="m2" maxlength="60" placeholder="다섯 번 이어서 할 수 있어요" autocomplete="off" value="'
-    +esc(g?(g.steps[1]||""):"")+'"></div>'
+    +'<input type="text" id="m2" maxlength="60" autocomplete="off" value="'+esc(st0[1])+'"></div>'
     +'<div class="fld"><label for="m3">+3 — 이만큼 하면 잘하는 거예요</label>'
-    +'<input type="text" id="m3" maxlength="60" placeholder="열 번 이어서 할 수 있어요" autocomplete="off" value="'
-    +esc(g?(g.steps[2]||""):"")+'"></div>'
+    +'<input type="text" id="m3" maxlength="60" autocomplete="off" value="'+esc(st0[2])+'"></div>'
+    +'</details>'
     +'<div id="mMsg"></div>'
     +'<div class="acts" style="margin-top:14px">'
-    +'<button class="btn btn-p btn-full" id="mOk">'+(g?"고치기":"만들어서 담기")+'</button></div>'
+    +'<button class="btn btn-p btn-full" id="mOk">'+(g?"고치기":"이걸로 담기")+'</button></div>'
     +'<div class="acts" style="margin-top:9px">'
     +'<button class="btn btn-q btn-full" onclick="closeModal()">닫기</button></div>',
   function(){
-    var pickEl = g ? elemOf(g).id : "";
+    function setEl(id){ pickEl=id;
+      $$("#mE [data-me]").forEach(function(x){x.dataset.on=(x.dataset.me===pickEl)?"1":"0";}); }
+    function prev(){
+      var box=$("#mPrev"); if(!box) return;
+      var t=$("#mT").value.trim();
+      var e2=pickEl?elemById(pickEl):null;
+      if(!t){ box.innerHTML='<span class="mprev-e">하고 싶은 것을 고르거나 적어 주세요</span>'; return; }
+      box.innerHTML='이렇게 담겨요 — <b>'+(e2?e2.icon+" ":"")+esc(t)+'</b><br>'
+        +'+1 '+esc($("#m1").value)+' · +2 '+esc($("#m2").value)+' · +3 '+esc($("#m3").value);
+    }
+    function setHow(k){
+      how=k;
+      $$("#mHow [data-mh]").forEach(function(x){x.dataset.on=(x.dataset.mh===k)?"1":"0";});
+      var st=mineHowSteps(k);
+      $("#m1").value=st[0]; $("#m2").value=st[1]; $("#m3").value=st[2];
+      prev();
+    }
     $("#mE").addEventListener("click",function(e){
       var b=e.target.closest("[data-me]");if(!b)return;
-      pickEl=(pickEl===b.dataset.me)?"":b.dataset.me;
-      $$("#mE [data-me]").forEach(function(x){x.dataset.on=(x.dataset.me===pickEl)?"1":"0";});});
-    $("#mT").focus();
+      setEl(pickEl===b.dataset.me?"":b.dataset.me); prev();});
+
+    var pk=$("#mPk");
+    if(pk) pk.addEventListener("click",function(e){
+      var b=e.target.closest("[data-mp]");if(!b)return;
+      $$("#mPk [data-mp]").forEach(function(x){x.dataset.on="0";});
+      b.dataset.on="1";
+      if(b.dataset.mp==="own"){ $("#mT").value=""; setEl(""); $("#mT").focus(); prev(); return; }
+      var x=MINE_PICK[+b.dataset.mp]; if(!x) return;
+      $("#mT").value=x.t; setEl(x.e); prev();
+      var hv=$("#mHow");
+      if(hv) try{hv.scrollIntoView({block:"center",behavior:"smooth"});}catch(e){}});
+
+    var hw=$("#mHow"); if(hw) hw.addEventListener("click",function(e){
+      var b=e.target.closest("[data-mh]");if(!b)return; setHow(b.dataset.mh);});
+
+    ["mT","m1","m2","m3"].forEach(function(id){
+      var el=$("#"+id); if(el) el.addEventListener("input",prev);});
+    prev();
+    if(g) $("#mT").focus();
+
     $("#mOk").addEventListener("click",function(){
       var t=$("#mT").value.trim();
-      if(t.length<2){$("#mMsg").innerHTML=warn("목표를 적어 주세요.");return;}
-      var st=[$("#m1").value.trim()||"한 번 해 봤어요",
-              $("#m2").value.trim()||"여러 번 할 수 있어요",
-              $("#m3").value.trim()||"언제든 잘할 수 있어요"];
+      if(t.length<2){$("#mMsg").innerHTML=warn("하고 싶은 것을 고르거나 적어 주세요.");return;}
+      var dft=mineHowSteps(how);
+      var st=[$("#m1").value.trim()||dft[0],
+              $("#m2").value.trim()||dft[1],
+              $("#m3").value.trim()||dft[2]];
       var e2=pickEl?elemById(pickEl):null;
       if(g){
         g.title=t; g.steps=st; g.keys=e2?[e2.keys[0]]:[];
@@ -3343,7 +3514,7 @@ function openMine(edit){
         S.my.push({gid:id,st:"seed",rung:0,ev:"",at:today(),pv:null,tv:null});
       }
       touch();closeModal();show("board");
-      toast(g?"고쳤어요":"나만의 목표를 담았어요!");
+      toast(g?"고쳤어요":"내가 만든 목표를 담았어요!");
     });
   });
 }
@@ -3785,18 +3956,38 @@ function renderIsles(p, subs){
     window.scrollTo({top:0,behavior:"smooth"});});});
 }
 /* ── 교과 안: 영역별 길 ── */
+/* ⑤ 「← [병] 국어 / 모든 교과 보기」 한 덩어리. o가 없으면 교과 이름 없이 나가는 길만 */
+function backBtn(o){
+  return '<button class="isback" id="isBack" type="button">'
+    +'<span class="isb-ar" aria-hidden="true"><svg viewBox="0 0 24 24">'
+      +'<path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></svg></span>'
+    +(o&&o.jar?'<span class="isb-j">'+o.jar+'</span>':'')
+    +'<span class="isb-t">'
+      +(o?'<b>'+esc(o.name)+'</b><em>모든 교과 보기</em>'
+         :'<b>모든 교과 보기</b>')
+    +'</span></button>';
+}
+/* 지도가 좁혀진 상태인가 — 교과를 골랐거나, 찾았거나, 거르개를 걸었거나 */
+function mapNarrowed(){
+  return !!(S.mapSub || S.mapQ || (S.mapFilter && S.mapFilter!=="all") || S.filterElem);
+}
+/* 지도를 교과 목록 처음으로 되돌린다 */
+function mapReset(){
+  S.mapSub=""; S.mapQ=""; S.mapFilter="all"; S.filterElem="";
+  renderMap(); touch(); window.scrollTo({top:0,behavior:"smooth"});
+}
+
 function renderInside(p, q){
   var list=mapPick(), bySub={};
   list.forEach(function(x){(bySub[x.subject]=bySub[x.subject]||[]).push(x);});
   var order=Object.keys(bySub).sort(function(a,b){return subRank(a)-subRank(b);});
   var one=(order.length===1 && !!S.mapSub);
   var a0=one?p.filter(function(x){return x.subject===order[0];}):[];
-  var html='<div class="isbar"><button class="isback" id="isBack">← 모든 교과 보기</button>'
-    +(one?'<span class="isbar-n">'+jarSvg(
-        a0.filter(function(x){return myOf(x.id);}).length,
-        a0.filter(function(x){return stOf(x.id)==="bloom";}).length,
-        a0.length, order[0])
-      +'<b>'+esc(order[0])+'</b></span>':'')+'</div>'
+  var html='<div class="isbar">'+backBtn(one ? {
+        name: order[0],
+        jar: jarSvg(a0.filter(function(x){return myOf(x.id);}).length,
+                    a0.filter(function(x){return stOf(x.id)==="bloom";}).length,
+                    a0.length, order[0])} : null)+'</div>'
     +order.map(function(sn){
       var items=bySub[sn];
       /* 병과 숫자는 좁히기 전 그 교과 전체를 본다 — 「인증」만 보면 가득 찬 것처럼 보이던 문제 */
@@ -3819,11 +4010,9 @@ function renderInside(p, q){
             +'<span>'+(d2?d2+' / ':'')+it.length+'</span></div>'
             +trailHtml(it)+'</div>';}).join("")+'</div></section>';}).join("");
   $("#mapList").innerHTML = order.length ? html
-    : '<button class="isback" id="isBack">← 모든 교과 보기</button>'
+    : '<div class="isbar">'+backBtn(null)+'</div>'
       +'<div class="note">이 조건에 맞는 목표가 없어요. 위에서 조건을 풀어 보세요.</div>';
-  var bk=$("#isBack"); if(bk) bk.addEventListener("click",function(){
-    S.mapSub=""; S.mapQ=""; S.mapFilter="all"; S.filterElem="";
-    renderMap(); touch(); window.scrollTo({top:0,behavior:"smooth"});});
+  var bk=$("#isBack"); if(bk) bk.addEventListener("click",mapReset);
   $$("#mapList [data-dg]").forEach(function(b){b.addEventListener("click",function(){
     openGoal(b.dataset.dg);});});
 }
@@ -4212,8 +4401,13 @@ function renderAddBox(){
   box.innerHTML='<button type="button" class="b-add" id="bAdd">'
     +'<span class="b-add-p">+</span>'
     +'<span class="b-add-t"><b>목표 더 담기</b>'
-    +'<span>아직 담지 않은 '+left+'개에서 고를 수 있어요</span></span></button>';
+    +'<span>아직 담지 않은 '+left+'개에서 고를 수 있어요</span></span></button>'
+    +'<button type="button" class="b-add b-mine" id="bMine">'
+    +'<span class="b-add-p">✎</span>'
+    +'<span class="b-add-t"><b>내가 하고 싶은 것 적기</b>'
+    +'<span>교과에 없는 것도 목표가 돼요</span></span></button>';
   $("#bAdd").addEventListener("click",openAdd);
+  $("#bMine").addEventListener("click",function(){openMine();});
 }
 function addRank(g,q){
   var t=String(g.alt||g.title||"");
@@ -4513,11 +4707,14 @@ function cardHtml(g,m,i){
        예전에는 49×31 글씨 하나(카드 면적의 1.2%)만 눌렸다. */
     var fold=!full(m,i);
     return '<article class="myc'+(fold?' myc-tap':'')+'" data-st="'+m.st+'" data-i="'+i+'"'
+      +(g.mine?' data-mine="1"':"")
       +(fold?' data-more="'+i+'" role="button" tabindex="0" aria-expanded="false"'
              +' aria-label="'+esc(g.alt||g.title)+' — 열어 보기"'
             :' aria-expanded="true"')+'>'
       +'<div class="goal-top" style="margin-bottom:9px">'
-        +'<span class="tier" style="color:'+t.fg+';background:'+t.bg+';border-color:'+t.bd+'">'+t.name+'</span>'
+        +(g.mine ? '<span class="tier tier-mine">✎ 내가 만든 목표</span>'
+                 : '<span class="tier" style="color:'+t.fg+';background:'+t.bg
+                   +';border-color:'+t.bd+'">'+t.name+'</span>')
         +'<span class="elem" style="color:'+el.fg+';background:'+el.bg+';border-color:'+el.bd+'">'
           +el.icon+' '+el.name+'</span>'
         +'<span class="sp"></span><span class="'+st[1]+'">'+st[0]+'</span></div>'
@@ -4613,7 +4810,11 @@ function renderFoot(){
   var sd=$("#tabSaveD"); if(sd) sd.dataset.on=saveNew()?"1":"0";
 }
 $("#btnBoard").addEventListener("click",function(){show("board");});
-$("#btnMap").addEventListener("click",function(){show("map");});
+$("#btnMap").addEventListener("click",function(){
+  /* ⑦ 교과 안에서 지도 탭을 다시 누르면 먼저 교과에서 나온다.
+     예전에는 아무 일도 일어나지 않아 갇힌 느낌을 주던 자리다 */
+  if(S.view==="map" && mapNarrowed()){ mapReset(); return; }
+  show("map");});
 $("#mapFilt").addEventListener("click",function(){S.filtOpen=!S.filtOpen;renderMap();});
 $("#mapMine").addEventListener("click",function(){openMine();});
 $("#btnBag").addEventListener("click",function(){show("bag");});
@@ -4639,7 +4840,7 @@ function openHelp(){
   modal('<h3>해냄 보물상자 사용법</h3><div class="hlp">'
     /* ① 넉 자짜리 칩 네 개가 장식처럼 떠 있던 자리 — 실제 흐름으로 */
     +'<ol class="h-flow">'
-      +step(1,H_PIN, "고른다","목표 지도에서 하고 싶은 목표를 담아요")
+      +step(1,H_PIN, "정한다","하고 싶은 것을 적거나, 목표 지도에서 골라 담아요")
       +step(2,H_UP,  "해낸다","해낸 만큼 +1 · +2 · +3을 눌러요")
       +step(3,H_CHK2,"확인받는다","보호자와 선생님, 두 분께 받아요")
       +step(4,H_GEM, "쌓인다","보석이 되어 보물 주머니에 담겨요")
@@ -7945,6 +8146,8 @@ var armed=false;
 window.addEventListener("popstate",function(){
   if($("#mdl")){closeModal();pushGuard();return;}
   /* ④ 예전엔 board↔map이 서로를 가리켜 영원히 못 나갔다. 이제 한 방향으로 모인다. */
+  /* ⑧ 교과 안이면 먼저 교과에서 나온다 — 예전엔 목표판으로 두 계단 뛰었다 */
+  if(S.view==="map" && mapNarrowed()){ mapReset(); pushGuard(); return; }
   var back={map:"board",bag:"board",pick:"board",dex:"board",
             board:"role",start:"role",parent:"role",teacher:"role"};
   var to=back[S.view];
