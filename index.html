@@ -645,5 +645,36 @@ return qrcode;})();
   }
 })();
 </script>
+<script>
+/* 학교 연장통 바로가기(?q=낱말): 소개 글에서 그 말이 나오는 자리로 내려가 표시합니다. 주소의 ?q= 는 바로 지웁니다. */
+(function(){
+  var q = '';
+  try{ q = (new URLSearchParams(location.search).get('q') || '').trim(); }catch(e){}
+  if(!q) return;
+  try{ history.replaceState(history.state, '', location.pathname + location.hash); }catch(e){}
+  var norm = function(t){ return String(t).toLowerCase().replace(/\s+/g, ''); };
+  var words = q.split(/\s+/).filter(function(w){ return w.length >= 2; }).sort(function(a, b){ return b.length - a.length; });
+  var tries = [norm(q)].concat(words.map(norm)).filter(function(w, i, a){ return w && a.indexOf(w) === i; });
+  setTimeout(function(){
+    for(var i = 0; i < tries.length; i++){
+      var qn = tries[i], hit = null, walk = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT), n;
+      while((n = walk.nextNode())) if(!/^(SCRIPT|STYLE|SELECT|OPTION|BUTTON|INPUT|TEXTAREA|A)$/.test(n.tagName) && norm(n.textContent).indexOf(qn) >= 0 && (!hit || hit.contains(n))) hit = n;   /* 위에서 처음 나오는 자리 */
+      if(!hit) continue;
+      for(var d = hit.closest('details'); d; d = d.parentElement && d.parentElement.closest('details')) d.open = true;
+      var t = hit.closest('li, tr, p, dd, details, section, div') || hit;
+      if(!t.getClientRects().length) continue;
+      t.scrollIntoView({block:'center'});
+      t.classList.add('qfind');
+      setTimeout(function(){ t.classList.remove('qfind'); }, 4000);
+      return;
+    }
+  }, 60);
+})();
+</script>
+<style>
+/* 학교 연장통 바로가기로 찾아온 자리 표시 */
+.qfind{animation:qfind 1.2s 3;border-radius:12px;scroll-margin-top:80px}
+@keyframes qfind{0%,40%{box-shadow:0 0 0 4px rgba(217,119,6,.45)}100%{box-shadow:0 0 0 0 rgba(217,119,6,0)}}
+</style>
 </body>
 </html>
